@@ -1,16 +1,16 @@
 #ifndef __JUCE_PLUGIN_CHARACTERISTICS_H__
 #define __JUCE_PLUGIN_CHARACTERISTICS_H__
 
-#define JucePlugin_Name                     "xclock generator"
-#define JucePlugin_Desc                     "midi clock source"
+#define JucePlugin_Name                     "sklepSeq"
+#define JucePlugin_Desc                     "sklepSeq"
 #define JucePlugin_Manufacturer             "sndlab.com"
 #define JucePlugin_ManufacturerCode         'SndL'
-#define JucePlugin_PluginCode               'xloc'
+#define JucePlugin_PluginCode               'skls'
 #define JucePlugin_MaxNumInputChannels              0
 #define JucePlugin_MaxNumOutputChannels             0
 #define JucePlugin_PreferredChannelConfigurations   { 1, 1 }, { 2, 2 }
 #define JucePlugin_IsSynth                          1
-#define JucePlugin_WantsMidiInput                   0
+#define JucePlugin_WantsMidiInput                   1
 #define JucePlugin_ProducesMidiOutput               1
 #define JucePlugin_SilenceInProducesSilenceOut      0
 #define JucePlugin_EditorRequiresKeyboardFocus      1

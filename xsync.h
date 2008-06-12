@@ -28,7 +28,6 @@ class xsync : public Thread, public ChangeBroadcaster
 		unsigned int midiQuarterNote;
 		unsigned int midiEighthNote;
 		unsigned int midiSixteenthNote;
-
 		void *updateAsync;
 };
 

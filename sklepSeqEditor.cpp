@@ -50,6 +50,7 @@ sklepSeqEditor::sklepSeqEditor (sklepSeqMain *owner, xsync *syncThread)
 sklepSeqEditor::~sklepSeqEditor()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
+	sync->setGui (0);
     //[/Destructor_pre]
 
     deleteAndZero (seqMain);
