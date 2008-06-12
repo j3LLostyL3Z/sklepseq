@@ -30,7 +30,7 @@ sklepSeqMain::~sklepSeqMain()
 
 const String sklepSeqMain::getName() const
 {
-    return "xclock generator";
+    return "seq";
 }
 
 int sklepSeqMain::getNumParameters()
