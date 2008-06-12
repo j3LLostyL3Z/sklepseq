@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  12 Jun 2008 12:44:04 pm
+  Creation date:  12 Jun 2008 2:21:45 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -183,7 +183,7 @@ void sklepSeqMainComponent::paint (Graphics& g)
 
 void sklepSeqMainComponent::resized()
 {
-    component->setBounds (0, 462, 218, 32);
+    component->setBounds (0, 462, 300, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -210,7 +210,7 @@ BEGIN_JUCER_METADATA
     <IMAGE pos="0 0 492 492" resource="sq_back_png" opacity="1" mode="0"/>
   </BACKGROUND>
   <JUCERCOMP name="" id="7895c18604b2892a" memberName="component" virtualName=""
-             explicitFocusOrder="0" pos="0 462 218 32" sourceFile="sklepSeqTransportComponent.cpp"
+             explicitFocusOrder="0" pos="0 462 300 32" sourceFile="sklepSeqTransportComponent.cpp"
              constructorParams=""/>
 </JUCER_COMPONENT>
 

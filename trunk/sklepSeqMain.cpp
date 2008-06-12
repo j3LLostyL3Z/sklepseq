@@ -10,8 +10,15 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 sklepSeqMain::sklepSeqMain()
 {
 	bpm = 120;
+	isSyncedToHost = false;
+
+	zeromem (&lastPosInfo, sizeof (lastPosInfo));
+    lastPosInfo.timeSigNumerator = 4;
+    lastPosInfo.timeSigDenominator = 4;
+    lastPosInfo.bpm = 120;
 
 	sync = new xsync();
+	sync->addChangeListener (this);
 	sync->setBPM (120);
 }
 
@@ -90,6 +97,35 @@ void sklepSeqMain::releaseResources()
 
 void sklepSeqMain::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+	AudioPlayHead::CurrentPositionInfo pos;
+
+    if (getPlayHead() != 0 && getPlayHead()->getCurrentPosition (pos) && isSyncedToHost)
+    {
+        if (memcmp (&pos, &lastPosInfo, sizeof (pos)) != 0)
+        {
+            lastPosInfo = pos;
+            sendChangeMessage (this);
+        }
+    }
+    else
+    {
+        zeromem (&lastPosInfo, sizeof (lastPosInfo));
+        lastPosInfo.timeSigNumerator = 4;
+        lastPosInfo.timeSigDenominator = 4;
+        lastPosInfo.bpm = 120;
+    }
+
+	MidiBuffer::Iterator i (midiMessages);
+	MidiMessage message (0xf4, 0.0);
+    int time;
+
+    while (i.getNextEvent (message, time))
+	{
+		if (message.isNoteOn() || message.isNoteOff())
+		{
+		}
+	}
+
 	return;
 }
 
@@ -136,4 +172,8 @@ void sklepSeqMain::stop()
 bool sklepSeqMain::isPlaying()
 {
 	return (sync->isThreadRunning());
+}
+
+void sklepSeqMain::changeListenerCallback (void *ptr)
+{
 }

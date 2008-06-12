@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  12 Jun 2008 1:43:07 pm
+  Creation date:  12 Jun 2008 3:38:46 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -35,7 +35,10 @@ sklepSeqTransportComponent::sklepSeqTransportComponent ()
       puaseButton (0),
       playButton (0),
       stopButton (0),
-      bpmLabel (0)
+      bpmLabel (0),
+      syncToHost (0),
+      seqNumberOfSteps (0),
+      bpmLabel2 (0)
 {
     addAndMakeVisible (bpmInput = new Slider (T("BPM")));
     bpmInput->setTooltip (T("BPM"));
@@ -50,8 +53,8 @@ sklepSeqTransportComponent::sklepSeqTransportComponent ()
     puaseButton->addButtonListener (this);
 
     puaseButton->setImages (false, true, true,
-                            ImageCache::getFromMemory (rondw_10_png, rondw_10_pngSize), 1.0000f, Colour (0x0),
-                            ImageCache::getFromMemory (rondw_10_png, rondw_10_pngSize), 1.0000f, Colour (0x0),
+                            ImageCache::getFromMemory (rondw_10_png, rondw_10_pngSize), 0.7000f, Colour (0x0),
+                            0, 1.0000f, Colour (0x0),
                             0, 1.0000f, Colour (0x0));
     addAndMakeVisible (playButton = new ImageButton (T("Play")));
     playButton->setTooltip (T("Play"));
@@ -59,8 +62,8 @@ sklepSeqTransportComponent::sklepSeqTransportComponent ()
     playButton->addButtonListener (this);
 
     playButton->setImages (false, true, true,
-                           ImageCache::getFromMemory (rondw_11_png, rondw_11_pngSize), 1.0000f, Colour (0x0),
-                           ImageCache::getFromMemory (rondw_10_png, rondw_10_pngSize), 1.0000f, Colour (0x0),
+                           ImageCache::getFromMemory (rondw_11_png, rondw_11_pngSize), 0.7000f, Colour (0x0),
+                           0, 1.0000f, Colour (0x0),
                            0, 1.0000f, Colour (0x0));
     addAndMakeVisible (stopButton = new ImageButton (T("Stop")));
     stopButton->setTooltip (T("Stop"));
@@ -68,8 +71,8 @@ sklepSeqTransportComponent::sklepSeqTransportComponent ()
     stopButton->addButtonListener (this);
 
     stopButton->setImages (false, true, true,
-                           ImageCache::getFromMemory (rondw_09_png, rondw_09_pngSize), 1.0000f, Colour (0x0),
-                           ImageCache::getFromMemory (rondw_10_png, rondw_10_pngSize), 1.0000f, Colour (0x0),
+                           ImageCache::getFromMemory (rondw_09_png, rondw_09_pngSize), 0.7000f, Colour (0x0),
+                           0, 1.0000f, Colour (0x0),
                            0, 1.0000f, Colour (0x0));
     addAndMakeVisible (bpmLabel = new Label (T("new label"),
                                              T("BPM")));
@@ -80,11 +83,33 @@ sklepSeqTransportComponent::sklepSeqTransportComponent ()
     bpmLabel->setColour (TextEditor::textColourId, Colours::black);
     bpmLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
+    addAndMakeVisible (syncToHost = new ToggleButton (T("Sync To Host")));
+    syncToHost->setTooltip (T("Sync To Host"));
+    syncToHost->setButtonText (T("Sync to host"));
+    syncToHost->addButtonListener (this);
+    syncToHost->setColour (ToggleButton::textColourId, Colour (0xff979797));
+
+    addAndMakeVisible (seqNumberOfSteps = new Slider (T("Number Of Steps")));
+    seqNumberOfSteps->setTooltip (T("Number Of Steps"));
+    seqNumberOfSteps->setRange (1, 16, 1);
+    seqNumberOfSteps->setSliderStyle (Slider::IncDecButtons);
+    seqNumberOfSteps->setTextBoxStyle (Slider::TextBoxLeft, false, 24, 20);
+    seqNumberOfSteps->addListener (this);
+
+    addAndMakeVisible (bpmLabel2 = new Label (T("new label"),
+                                              T("Steps")));
+    bpmLabel2->setFont (Font (9.0000f, Font::plain));
+    bpmLabel2->setJustificationType (Justification::centredLeft);
+    bpmLabel2->setEditable (false, false, false);
+    bpmLabel2->setColour (Label::textColourId, Colour (0xff979797));
+    bpmLabel2->setColour (TextEditor::textColourId, Colours::black);
+    bpmLabel2->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (256, 32);
+    setSize (400, 32);
 
     //[Constructor] You can add your own custom stuff here..
     //[/Constructor]
@@ -100,6 +125,9 @@ sklepSeqTransportComponent::~sklepSeqTransportComponent()
     deleteAndZero (playButton);
     deleteAndZero (stopButton);
     deleteAndZero (bpmLabel);
+    deleteAndZero (syncToHost);
+    deleteAndZero (seqNumberOfSteps);
+    deleteAndZero (bpmLabel2);
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -117,11 +145,14 @@ void sklepSeqTransportComponent::paint (Graphics& g)
 
 void sklepSeqTransportComponent::resized()
 {
-    bpmInput->setBounds (128, 8, 80, 16);
+    bpmInput->setBounds (104, 8, 72, 16);
     puaseButton->setBounds (0, 0, 32, 32);
     playButton->setBounds (32, 0, 32, 32);
     stopButton->setBounds (64, 0, 32, 32);
-    bpmLabel->setBounds (127, 0, 24, 8);
+    bpmLabel->setBounds (104, 0, 24, 8);
+    syncToHost->setBounds (256, 8, 64, 16);
+    seqNumberOfSteps->setBounds (184, 8, 64, 16);
+    bpmLabel2->setBounds (184, 0, 24, 8);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -135,6 +166,11 @@ void sklepSeqTransportComponent::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_bpmInput] -- add your slider handling code here..
         //[/UserSliderCode_bpmInput]
+    }
+    else if (sliderThatWasMoved == seqNumberOfSteps)
+    {
+        //[UserSliderCode_seqNumberOfSteps] -- add your slider handling code here..
+        //[/UserSliderCode_seqNumberOfSteps]
     }
 
     //[UsersliderValueChanged_Post]
@@ -161,6 +197,11 @@ void sklepSeqTransportComponent::buttonClicked (Button* buttonThatWasClicked)
         //[UserButtonCode_stopButton] -- add your button handler code here..
         //[/UserButtonCode_stopButton]
     }
+    else if (buttonThatWasClicked == syncToHost)
+    {
+        //[UserButtonCode_syncToHost] -- add your button handler code here..
+        //[/UserButtonCode_syncToHost]
+    }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
@@ -183,34 +224,47 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="sklepSeqTransportComponent"
                  componentName="sklepSeq Transport" parentClasses="public Component"
                  constructorParams="" variableInitialisers="" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330000013" fixedSize="1" initialWidth="256"
+                 snapShown="1" overlayOpacity="0.330000013" fixedSize="1" initialWidth="400"
                  initialHeight="32">
   <BACKGROUND backgroundColour="0"/>
   <SLIDER name="BPM" id="2d5ba5d657d402b6" memberName="bpmInput" virtualName=""
-          explicitFocusOrder="0" pos="128 8 80 16" tooltip="BPM" min="0"
+          explicitFocusOrder="0" pos="104 8 72 16" tooltip="BPM" min="0"
           max="255" int="1" style="IncDecButtons" textBoxPos="TextBoxLeft"
           textBoxEditable="1" textBoxWidth="40" textBoxHeight="20" skewFactor="1"/>
   <IMAGEBUTTON name="Pause" id="925130e62d507617" memberName="puaseButton" virtualName=""
                explicitFocusOrder="0" pos="0 0 32 32" tooltip="Pause" buttonText="new button"
                connectedEdges="0" needsCallback="1" radioGroupId="0" keepProportions="1"
-               resourceNormal="rondw_10_png" opacityNormal="1" colourNormal="0"
-               resourceOver="rondw_10_png" opacityOver="1" colourOver="0" resourceDown=""
+               resourceNormal="rondw_10_png" opacityNormal="0.699999988" colourNormal="0"
+               resourceOver="" opacityOver="1" colourOver="0" resourceDown=""
                opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="Play" id="48e54d45abe73a6c" memberName="playButton" virtualName=""
                explicitFocusOrder="0" pos="32 0 32 32" tooltip="Play" buttonText="new button"
                connectedEdges="0" needsCallback="1" radioGroupId="0" keepProportions="1"
-               resourceNormal="rondw_11_png" opacityNormal="1" colourNormal="0"
-               resourceOver="rondw_10_png" opacityOver="1" colourOver="0" resourceDown=""
+               resourceNormal="rondw_11_png" opacityNormal="0.699999988" colourNormal="0"
+               resourceOver="" opacityOver="1" colourOver="0" resourceDown=""
                opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="Stop" id="c49c432682d72cc" memberName="stopButton" virtualName=""
                explicitFocusOrder="0" pos="64 0 32 32" tooltip="Stop" buttonText="new button"
                connectedEdges="0" needsCallback="1" radioGroupId="0" keepProportions="1"
-               resourceNormal="rondw_09_png" opacityNormal="1" colourNormal="0"
-               resourceOver="rondw_10_png" opacityOver="1" colourOver="0" resourceDown=""
+               resourceNormal="rondw_09_png" opacityNormal="0.699999988" colourNormal="0"
+               resourceOver="" opacityOver="1" colourOver="0" resourceDown=""
                opacityDown="1" colourDown="0"/>
   <LABEL name="new label" id="2f71138bed2bda08" memberName="bpmLabel"
-         virtualName="" explicitFocusOrder="0" pos="127 0 24 8" textCol="ff979797"
+         virtualName="" explicitFocusOrder="0" pos="104 0 24 8" textCol="ff979797"
          edTextCol="ff000000" edBkgCol="0" labelText="BPM" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="9" bold="0" italic="0" justification="33"/>
+  <TOGGLEBUTTON name="Sync To Host" id="5842cb5b4cd96c78" memberName="syncToHost"
+                virtualName="" explicitFocusOrder="0" pos="256 8 64 16" tooltip="Sync To Host"
+                txtcol="ff979797" buttonText="Sync to host" connectedEdges="0"
+                needsCallback="1" radioGroupId="0" state="0"/>
+  <SLIDER name="Number Of Steps" id="b91f7ccefaee571c" memberName="seqNumberOfSteps"
+          virtualName="" explicitFocusOrder="0" pos="184 8 64 16" tooltip="Number Of Steps"
+          min="1" max="16" int="1" style="IncDecButtons" textBoxPos="TextBoxLeft"
+          textBoxEditable="1" textBoxWidth="24" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="new label" id="ad3b10607539241e" memberName="bpmLabel2"
+         virtualName="" explicitFocusOrder="0" pos="184 0 24 8" textCol="ff979797"
+         edTextCol="ff000000" edBkgCol="0" labelText="Steps" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="9" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>

@@ -21,7 +21,8 @@ sklepSeqCursorComponent::~sklepSeqCursorComponent()
 
 void sklepSeqCursorComponent::paint(Graphics &g)
 {
-	g.drawImage (image, 0, 0, 48, 48, 0, 0, 48, 48);
+	if (isActive)
+		g.drawImage (image, 0, 0, 48, 48, 0, 0, 48, 48);
 }
 
 int sklepSeqCursorComponent::getX()
@@ -32,4 +33,9 @@ int sklepSeqCursorComponent::getX()
 int sklepSeqCursorComponent::getY()
 {
 	return (posY);
+}
+
+void sklepSeqCursorComponent::setActive(bool t)
+{
+	isActive = t;
 }

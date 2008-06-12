@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  12 Jun 2008 1:43:07 pm
+  Creation date:  12 Jun 2008 3:38:46 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_D28BBC9E__
-#define __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_D28BBC9E__
+#ifndef __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_E41D03C4__
+#define __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_E41D03C4__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -79,6 +79,9 @@ private:
     ImageButton* playButton;
     ImageButton* stopButton;
     Label* bpmLabel;
+    ToggleButton* syncToHost;
+    Slider* seqNumberOfSteps;
+    Label* bpmLabel2;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
@@ -87,4 +90,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_D28BBC9E__
+#endif   // __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_E41D03C4__
