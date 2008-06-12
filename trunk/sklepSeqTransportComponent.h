@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  12 Jun 2008 3:38:46 pm
+  Creation date:  12 Jun 2008 4:19:04 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_E41D03C4__
-#define __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_E41D03C4__
+#ifndef __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_76F690FB__
+#define __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_76F690FB__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -65,6 +65,8 @@ public:
     static const int rondw_10_pngSize;
     static const char* rondw_11_png;
     static const int rondw_11_pngSize;
+    static const char* rondw_11_1_png;
+    static const int rondw_11_1_pngSize;
 
     //==============================================================================
     juce_UseDebuggingNewOperator
@@ -90,4 +92,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_E41D03C4__
+#endif   // __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_76F690FB__
