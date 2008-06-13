@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  13 Jun 2008 3:41:28 pm
+  Creation date:  13 Jun 2008 4:01:27 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_5C6BCF58__
-#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_5C6BCF58__
+#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_EDD1BE7F__
+#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_EDD1BE7F__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -29,6 +29,7 @@
 //[/Headers]
 
 #include "sklepSeqTransportComponent.h"
+#include "sklepSeqPatternControl.h"
 
 
 //==============================================================================
@@ -139,6 +140,7 @@ private:
     //==============================================================================
     sklepSeqTransportComponent* transportComponent;
     Label* positionLabel;
+    sklepSeqPatternControl* component;
     Image* internalCachedImage1;
 
     //==============================================================================
@@ -148,4 +150,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_5C6BCF58__
+#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_EDD1BE7F__
