@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  12 Jun 2008 4:19:04 pm
+  Creation date:  13 Jun 2008 2:19:12 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_76F690FB__
-#define __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_76F690FB__
+#ifndef __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_7E2CF4BF__
+#define __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_7E2CF4BF__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -47,6 +47,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void setBpm (int b);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -67,6 +68,14 @@ public:
     static const int rondw_11_pngSize;
     static const char* rondw_11_1_png;
     static const int rondw_11_1_pngSize;
+    static const char* rondw_05_1_png;
+    static const int rondw_05_1_pngSize;
+    static const char* rondw_07_1_png;
+    static const int rondw_07_1_pngSize;
+    static const char* rondw_09_1_png;
+    static const int rondw_09_1_pngSize;
+    static const char* rondw_10_1_png;
+    static const int rondw_10_1_pngSize;
 
     //==============================================================================
     juce_UseDebuggingNewOperator
@@ -82,8 +91,6 @@ private:
     ImageButton* stopButton;
     Label* bpmLabel;
     ToggleButton* syncToHost;
-    Slider* seqNumberOfSteps;
-    Label* bpmLabel2;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
@@ -92,4 +99,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_76F690FB__
+#endif   // __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_7E2CF4BF__

@@ -38,12 +38,12 @@ RSC=rc.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "sklepSeq___Win32_Release"
-# PROP Intermediate_Dir "sklepSeq___Win32_Release"
+# PROP Output_Dir "Release"
+# PROP Intermediate_Dir "Release"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "sklepSeq_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GR /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "sklepSeq_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GR /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "sklepSeq_EXPORTS" /YX /FD /Zm200 /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x415 /d "NDEBUG"
@@ -100,6 +100,10 @@ SOURCE=.\sklepSeqMainComponent.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\sklepSeqPattern.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\sklepSeqTransportComponent.cpp
 # End Source File
 # End Group
@@ -116,19 +120,11 @@ SOURCE=.\sklepSeqMainComponent.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\sklepSeqPattern.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\sklepSeqTransportComponent.h
-# End Source File
-# End Group
-# Begin Group "syncThread"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\xsync.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xsync.h
 # End Source File
 # End Group
 # Begin Group "VST"
