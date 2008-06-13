@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  13 Jun 2008 4:01:27 pm
+  Creation date:  13 Jun 2008 9:08:02 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,17 +19,17 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_EDD1BE7F__
-#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_EDD1BE7F__
+#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_7D284224__
+#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_7D284224__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
 #include "sklepSeqCursorComponent.h"
+#include "sklepSeqPatternControl.h"
 #include "sklepSeqMain.h"
 //[/Headers]
 
 #include "sklepSeqTransportComponent.h"
-#include "sklepSeqPatternControl.h"
 
 
 //==============================================================================
@@ -41,7 +41,8 @@
                                                                     //[/Comments]
 */
 class sklepSeqMainComponent  : public Component,
-                               public AsyncUpdater
+                               public AsyncUpdater,
+                               public ButtonListener
 {
 public:
     //==============================================================================
@@ -50,12 +51,15 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void setPosition (AudioPlayHead::CurrentPositionInfo pos);
+	void setPosition (AudioPlayHead::CurrentPositionInfo pos, sklepSeqPattern *currentPattern);
     void handleAsyncUpdate();
+	void clearCursor();
+
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
+    void buttonClicked (Button* buttonThatWasClicked);
 
     // Binary resources:
     static const char* sq_back_png;
@@ -126,6 +130,8 @@ public:
     static const int sq_step_off_15_pngSize;
     static const char* sq_step_off_16_png;
     static const int sq_step_off_16_pngSize;
+    static const char* rondw_03_png;
+    static const int rondw_03_pngSize;
 
     //==============================================================================
     juce_UseDebuggingNewOperator
@@ -135,12 +141,13 @@ private:
 	OwnedArray <sklepSeqCursorComponent> cursor;
 	DemoJuceFilter *ownerFilter;
 	int prevPos;
+	double prevBpm;
+	sklepSeqPatternControl *options;
     //[/UserVariables]
 
     //==============================================================================
     sklepSeqTransportComponent* transportComponent;
-    Label* positionLabel;
-    sklepSeqPatternControl* component;
+    ImageButton* optionsButton;
     Image* internalCachedImage1;
 
     //==============================================================================
@@ -150,4 +157,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_EDD1BE7F__
+#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_7D284224__

@@ -32,6 +32,7 @@
 #ifndef DEMOJUCEPLUGINFILTER_H
 #define DEMOJUCEPLUGINFILTER_H
 
+#include "sklepSeqPattern.h"
 
 //==============================================================================
 /**
@@ -103,7 +104,8 @@ public:
     // filter's other parameters, and the UI component will update them when it gets
     // resized.
     int lastUIWidth, lastUIHeight;
-
+	OwnedArray <sklepSeqPattern> patterns;
+	sklepSeqPattern *getCurrentPattern();
     //==============================================================================
     juce_UseDebuggingNewOperator
 
