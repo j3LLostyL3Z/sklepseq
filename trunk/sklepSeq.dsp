@@ -104,6 +104,10 @@ SOURCE=.\sklepSeqPattern.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\sklepSeqPatternControl.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\sklepSeqTransportComponent.cpp
 # End Source File
 # End Group
@@ -121,6 +125,10 @@ SOURCE=.\sklepSeqMainComponent.h
 # Begin Source File
 
 SOURCE=.\sklepSeqPattern.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPatternControl.h
 # End Source File
 # Begin Source File
 

@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  13 Jun 2008 3:41:28 pm
+  Creation date:  13 Jun 2008 4:01:27 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -33,6 +33,7 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
     : Component (T("sklepSeq Main Component")),
       transportComponent (0),
       positionLabel (0),
+      component (0),
       internalCachedImage1 (0)
 {
     addAndMakeVisible (transportComponent = new sklepSeqTransportComponent());
@@ -46,6 +47,7 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
     positionLabel->setColour (TextEditor::textColourId, Colours::black);
     positionLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
+    addAndMakeVisible (component = new sklepSeqPatternControl());
     internalCachedImage1 = ImageCache::getFromMemory (sq_back_png, sq_back_pngSize);
 
     //[UserPreSize]
@@ -92,6 +94,7 @@ sklepSeqMainComponent::~sklepSeqMainComponent()
 
     deleteAndZero (transportComponent);
     deleteAndZero (positionLabel);
+    deleteAndZero (component);
     ImageCache::release (internalCachedImage1);
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -119,6 +122,7 @@ void sklepSeqMainComponent::resized()
 {
     transportComponent->setBounds (0, 462, 300, 32);
     positionLabel->setBounds (176, 200, 136, 88);
+    component->setBounds (392, 8, 96, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -151,7 +155,7 @@ void sklepSeqMainComponent::setPosition (AudioPlayHead::CurrentPositionInfo pos)
 		{
 			cursor[_p-1]->setVisible (false);
 			cursor[_p]->setVisible (true);
-	
+
 		}
 	}
 
@@ -195,6 +199,9 @@ BEGIN_JUCER_METADATA
          outlineCol="0" edTextCol="ff000000" edBkgCol="0" labelText="0"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="30.7" bold="1" italic="0" justification="36"/>
+  <JUCERCOMP name="" id="27b7188330828f11" memberName="component" virtualName=""
+             explicitFocusOrder="0" pos="392 8 96 32" sourceFile="sklepSeqPatternControl.cpp"
+             constructorParams=""/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
