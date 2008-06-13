@@ -2,104 +2,133 @@
 #include "sklepSeqMain.h"
 #include "sklepSeqEditor.h"
 
+
+//==============================================================================
+/**
+    This function must be implemented to create a new instance of your
+    plugin object.
+*/
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new sklepSeqMain();
+    return new DemoJuceFilter();
 }
 
-sklepSeqMain::sklepSeqMain()
+//==============================================================================
+DemoJuceFilter::DemoJuceFilter()
 {
-	bpm = 120;
-	isSyncedToHost = false;
+    gain = 1.0f;
+    lastUIWidth = 400;
+    lastUIHeight = 140;
 
-	zeromem (&lastPosInfo, sizeof (lastPosInfo));
+    zeromem (&lastPosInfo, sizeof (lastPosInfo));
     lastPosInfo.timeSigNumerator = 4;
     lastPosInfo.timeSigDenominator = 4;
     lastPosInfo.bpm = 120;
-
-	sync = new xsync();
-	sync->addChangeListener (this);
-	sync->setBPM (120);
 }
 
-sklepSeqMain::~sklepSeqMain()
-{
-	sync->stopThread (100);
-	deleteAndZero (sync);
-}
-
-const String sklepSeqMain::getName() const
-{
-    return "seq";
-}
-
-int sklepSeqMain::getNumParameters()
-{
-    return (0);
-}
-
-float sklepSeqMain::getParameter (int index)
-{
-	return (0.0);
-}
-
-void sklepSeqMain::setParameter (int index, float newValue)
+DemoJuceFilter::~DemoJuceFilter()
 {
 }
 
-const String sklepSeqMain::getParameterName (int index)
+//==============================================================================
+const String DemoJuceFilter::getName() const
 {
-	return String::empty;
+    return "Juce Demo Filter";
 }
 
-const String sklepSeqMain::getParameterText (int index)
+int DemoJuceFilter::getNumParameters()
 {
-	return String::empty;
+    return 1;
 }
 
-const String sklepSeqMain::getInputChannelName (const int channelIndex) const
+float DemoJuceFilter::getParameter (int index)
 {
+    return (index == 0) ? gain
+                        : 0.0f;
+}
+
+void DemoJuceFilter::setParameter (int index, float newValue)
+{
+    if (index == 0)
+    {
+        if (gain != newValue)
+        {
+            gain = newValue;
+
+            // if this is changing the gain, broadcast a change message which
+            // our editor will pick up.
+            sendChangeMessage (this);
+        }
+    }
+}
+
+const String DemoJuceFilter::getParameterName (int index)
+{
+    if (index == 0)
+        return T("gain");
+
     return String::empty;
 }
 
-const String sklepSeqMain::getOutputChannelName (const int channelIndex) const
+const String DemoJuceFilter::getParameterText (int index)
 {
+    if (index == 0)
+        return String (gain, 2);
+
     return String::empty;
 }
 
-bool sklepSeqMain::isInputChannelStereoPair (int index) const
+const String DemoJuceFilter::getInputChannelName (const int channelIndex) const
+{
+    return String (channelIndex + 1);
+}
+
+const String DemoJuceFilter::getOutputChannelName (const int channelIndex) const
+{
+    return String (channelIndex + 1);
+}
+
+bool DemoJuceFilter::isInputChannelStereoPair (int index) const
 {
     return false;
 }
 
-bool sklepSeqMain::isOutputChannelStereoPair (int index) const
+bool DemoJuceFilter::isOutputChannelStereoPair (int index) const
 {
     return false;
 }
 
-bool sklepSeqMain::acceptsMidi() const
-{
-    return false;
-}
-
-bool sklepSeqMain::producesMidi() const
+bool DemoJuceFilter::acceptsMidi() const
 {
     return true;
 }
 
-void sklepSeqMain::prepareToPlay (double sampleRate, int samplesPerBlock)
+bool DemoJuceFilter::producesMidi() const
 {
+    return true;
 }
 
-void sklepSeqMain::releaseResources()
+//==============================================================================
+void DemoJuceFilter::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    // do your pre-playback setup stuff here..
+    keyboardState.reset();
 }
 
-void sklepSeqMain::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
+void DemoJuceFilter::releaseResources()
 {
-	AudioPlayHead::CurrentPositionInfo pos;
+    // when playback stops, you can use this as an opportunity to free up any
+    // spare memory, etc.
+}
 
-    if (getPlayHead() != 0 && getPlayHead()->getCurrentPosition (pos) && isSyncedToHost)
+void DemoJuceFilter::processBlock (AudioSampleBuffer& buffer,
+                                   MidiBuffer& midiMessages)
+{
+    // have a go at getting the current time from the host, and if it's changed, tell
+    // our UI to update itself.
+    AudioPlayHead::CurrentPositionInfo pos;
+
+    if (getPlayHead() != 0 && getPlayHead()->getCurrentPosition (pos))
     {
         if (memcmp (&pos, &lastPosInfo, sizeof (pos)) != 0)
         {
@@ -114,66 +143,51 @@ void sklepSeqMain::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMess
         lastPosInfo.timeSigDenominator = 4;
         lastPosInfo.bpm = 120;
     }
-
-	MidiBuffer::Iterator i (midiMessages);
-	MidiMessage message (0xf4, 0.0);
-    int time;
-
-    while (i.getNextEvent (message, time))
-	{
-		if (message.isNoteOn() || message.isNoteOff())
-		{
-		}
-	}
-
-	return;
 }
 
-AudioProcessorEditor* sklepSeqMain::createEditor()
+//==============================================================================
+AudioProcessorEditor* DemoJuceFilter::createEditor()
 {
-	sklepSeqEditor *e = new sklepSeqEditor (this, sync);
-	sync->setGui (e);
-
-    return e;
+    return new DemoEditorComponent (this);
 }
 
-void sklepSeqMain::getStateInformation (MemoryBlock& destData)
+//==============================================================================
+void DemoJuceFilter::getStateInformation (MemoryBlock& destData)
 {
+    XmlElement xmlState (T("MYPLUGINSETTINGS"));
+
+    // add some attributes to it..
+    xmlState.setAttribute (T("pluginVersion"), 1);
+    xmlState.setAttribute (T("gainLevel"), gain);
+    xmlState.setAttribute (T("uiWidth"), lastUIWidth);
+    xmlState.setAttribute (T("uiHeight"), lastUIHeight);
+
+    // you could also add as many child elements as you need to here..
+
+
+    // then use this helper function to stuff it into the binary blob and return it..
+    copyXmlToBinary (xmlState, destData);
 }
 
-void sklepSeqMain::setStateInformation (const void* data, int sizeInBytes)
+void DemoJuceFilter::setStateInformation (const void* data, int sizeInBytes)
 {
-}
+    // use this helper function to get the XML from this binary blob..
+    XmlElement* const xmlState = getXmlFromBinary (data, sizeInBytes);
 
-void sklepSeqMain::setBPM (unsigned int t)
-{
-	bpm = t;
+    if (xmlState != 0)
+    {
+        // check that it's the right type of xml..
+        if (xmlState->hasTagName (T("MYPLUGINSETTINGS")))
+        {
+            // ok, now pull out our parameters..
+            gain = (float) xmlState->getDoubleAttribute (T("gainLevel"), gain);
 
-	if (sync)
-		sync->setBPM (bpm);
-}
+            lastUIWidth = xmlState->getIntAttribute (T("uiWidth"), lastUIWidth);
+            lastUIHeight = xmlState->getIntAttribute (T("uiHeight"), lastUIHeight);
 
-unsigned int sklepSeqMain::getBPM()
-{
-	return (bpm);
-}
+            sendChangeMessage (this);
+        }
 
-void sklepSeqMain::start()
-{
-	sync->startThread();
-}
-
-void sklepSeqMain::stop()
-{
-	if (sync->isThreadRunning())
-		sync->stopThread (20);
-}
-
-bool sklepSeqMain::isPlaying()
-{
-	return (sync->isThreadRunning());
-}
-
-void sklepSeqMain::changeListenerCallback (void *ptr)
-{
+        delete xmlState;
+    }
 }

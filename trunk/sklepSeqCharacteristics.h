@@ -6,8 +6,8 @@
 #define JucePlugin_Manufacturer             "sndlab.com"
 #define JucePlugin_ManufacturerCode         'SndL'
 #define JucePlugin_PluginCode               'skls'
-#define JucePlugin_MaxNumInputChannels              0
-#define JucePlugin_MaxNumOutputChannels             0
+#define JucePlugin_MaxNumInputChannels              2
+#define JucePlugin_MaxNumOutputChannels             2
 #define JucePlugin_PreferredChannelConfigurations   { 1, 1 }, { 2, 2 }
 #define JucePlugin_IsSynth                          1
 #define JucePlugin_WantsMidiInput                   1
