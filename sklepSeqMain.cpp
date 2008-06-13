@@ -16,6 +16,7 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 //==============================================================================
 DemoJuceFilter::DemoJuceFilter()
 {
+	patterns.add (new sklepSeqPattern(0));
     gain = 1.0f;
     lastUIWidth = 400;
     lastUIHeight = 140;
@@ -190,4 +191,8 @@ void DemoJuceFilter::setStateInformation (const void* data, int sizeInBytes)
 
         delete xmlState;
     }
+}
+sklepSeqPattern *DemoJuceFilter::getCurrentPattern()
+{
+	return (patterns[0]);
 }

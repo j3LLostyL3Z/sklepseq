@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  13 Jun 2008 4:01:27 pm
+  Creation date:  13 Jun 2008 9:08:02 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -32,22 +32,19 @@
 sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
     : Component (T("sklepSeq Main Component")),
       transportComponent (0),
-      positionLabel (0),
-      component (0),
+      optionsButton (0),
       internalCachedImage1 (0)
 {
     addAndMakeVisible (transportComponent = new sklepSeqTransportComponent());
-    addAndMakeVisible (positionLabel = new Label (T("position"),
-                                                  T("0")));
-    positionLabel->setFont (Font (30.7000f, Font::bold));
-    positionLabel->setJustificationType (Justification::centred);
-    positionLabel->setEditable (false, false, false);
-    positionLabel->setColour (Label::textColourId, Colour (0xffc1c1c1));
-    positionLabel->setColour (Label::outlineColourId, Colour (0x0));
-    positionLabel->setColour (TextEditor::textColourId, Colours::black);
-    positionLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
+    addAndMakeVisible (optionsButton = new ImageButton (T("Options")));
+    optionsButton->setTooltip (T("Options"));
+    optionsButton->setButtonText (T("new button"));
+    optionsButton->addButtonListener (this);
 
-    addAndMakeVisible (component = new sklepSeqPatternControl());
+    optionsButton->setImages (false, true, true,
+                              ImageCache::getFromMemory (rondw_03_png, rondw_03_pngSize), 0.7000f, Colour (0x0),
+                              0, 1.0000f, Colour (0x0),
+                              0, 1.0000f, Colour (0x0));
     internalCachedImage1 = ImageCache::getFromMemory (sq_back_png, sq_back_pngSize);
 
     //[UserPreSize]
@@ -79,6 +76,10 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
 		cursor[x]->setBounds (cursor[x]->getX(), cursor[x]->getY(), 48, 48);
 		addChildComponent (cursor[x]);
 	}
+
+	options = new sklepSeqPatternControl();
+	options->setBounds (32,0,427,100);
+	addChildComponent (options);
     //[/UserPreSize]
 
     setSize (492, 492);
@@ -93,8 +94,7 @@ sklepSeqMainComponent::~sklepSeqMainComponent()
     //[/Destructor_pre]
 
     deleteAndZero (transportComponent);
-    deleteAndZero (positionLabel);
-    deleteAndZero (component);
+    deleteAndZero (optionsButton);
     ImageCache::release (internalCachedImage1);
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -121,35 +121,59 @@ void sklepSeqMainComponent::paint (Graphics& g)
 void sklepSeqMainComponent::resized()
 {
     transportComponent->setBounds (0, 462, 300, 32);
-    positionLabel->setBounds (176, 200, 136, 88);
-    component->setBounds (392, 8, 96, 32);
+    optionsButton->setBounds (0, 0, 32, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
+}
+
+void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == optionsButton)
+    {
+        //[UserButtonCode_optionsButton] -- add your button handler code here..
+		if (!options->isVisible())
+		{
+			options->setVisible (true);
+		}
+		else
+		{
+			options->setVisible (false);
+		}
+        //[/UserButtonCode_optionsButton]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
 }
 
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void sklepSeqMainComponent::setPosition (AudioPlayHead::CurrentPositionInfo pos)
+void sklepSeqMainComponent::setPosition (AudioPlayHead::CurrentPositionInfo pos, sklepSeqPattern *currentPattern)
 {
 
     const int ppqPerBar = (pos.timeSigNumerator * 4 / pos.timeSigDenominator);
     const double beats  = (fmod (pos.ppqPosition, ppqPerBar) / ppqPerBar) * pos.timeSigNumerator;
-
-    const int bar       = ((int) pos.ppqPosition) / ppqPerBar + 1;
-    const int beat      = ((int) beats) + 1;
-    const int ticks     = ((int) (fmod (beats, 1.0) * 960.0));
-
-	positionLabel->setText (String::formatted (T("%.2f"), beats * 4 * 4), false);
+	const double bpm	= pos.bpm;
 	const double cursorPos = beats*4;
 	const int _p = (int)cursorPos;
+	const int pLength = currentPattern->getPatternLength();
+
+	if (bpm != prevBpm)
+	{
+		transportComponent->setBpm ((int)pos.bpm);
+		clearCursor();
+	}
 
 	if (_p != prevPos)
 	{
 		if (_p == 0)
 		{
 			cursor[_p]->setVisible (true);
-			cursor[cursor.size()-1]->setVisible (false);
+			cursor[pLength-1]->setVisible (false);
 		}
 		else if (_p > 0)
 		{
@@ -160,18 +184,26 @@ void sklepSeqMainComponent::setPosition (AudioPlayHead::CurrentPositionInfo pos)
 	}
 
 	prevPos = _p;
-	transportComponent->setBpm ((int)pos.bpm);
+	prevBpm = bpm;
 }
 
 void sklepSeqMainComponent::handleAsyncUpdate()
 {
 	ownerFilter->getCallbackLock().enter();
 	const AudioPlayHead::CurrentPositionInfo positionInfo (ownerFilter->lastPosInfo);
+	sklepSeqPattern *currentPattern = ownerFilter->getCurrentPattern();
 	ownerFilter->getCallbackLock().exit();
 
-	setPosition (positionInfo);
+	setPosition (positionInfo, currentPattern);
 }
 
+void sklepSeqMainComponent::clearCursor()
+{
+	for (int x=0; x<cursor.size(); x++)
+	{
+		cursor[x]->setVisible (false);
+	}
+}
 //[/MiscUserCode]
 
 
@@ -194,14 +226,13 @@ BEGIN_JUCER_METADATA
   <JUCERCOMP name="" id="7895c18604b2892a" memberName="transportComponent"
              virtualName="" explicitFocusOrder="0" pos="0 462 300 32" sourceFile="sklepSeqTransportComponent.cpp"
              constructorParams=""/>
-  <LABEL name="position" id="22c15df5d8c6de0d" memberName="positionLabel"
-         virtualName="" explicitFocusOrder="0" pos="176 200 136 88" textCol="ffc1c1c1"
-         outlineCol="0" edTextCol="ff000000" edBkgCol="0" labelText="0"
-         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="30.7" bold="1" italic="0" justification="36"/>
-  <JUCERCOMP name="" id="27b7188330828f11" memberName="component" virtualName=""
-             explicitFocusOrder="0" pos="392 8 96 32" sourceFile="sklepSeqPatternControl.cpp"
-             constructorParams=""/>
+  <IMAGEBUTTON name="Options" id="4350618ff8a1dac3" memberName="optionsButton"
+               virtualName="" explicitFocusOrder="0" pos="0 0 32 32" tooltip="Options"
+               buttonText="new button" connectedEdges="0" needsCallback="1"
+               radioGroupId="0" keepProportions="1" resourceNormal="rondw_03_png"
+               opacityNormal="0.699999988" colourNormal="0" resourceOver=""
+               opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
+               colourDown="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
@@ -8373,3 +8404,31 @@ static const unsigned char resource_sklepSeqMainComponent_sq_step_off_16_png[] =
 
 const char* sklepSeqMainComponent::sq_step_off_16_png = (const char*) resource_sklepSeqMainComponent_sq_step_off_16_png;
 const int sklepSeqMainComponent::sq_step_off_16_pngSize = 5900;
+
+// JUCER_RESOURCE: rondw_03_png, 1292, "C:\rondw_03.png"
+static const unsigned char resource_sklepSeqMainComponent_rondw_03_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,32,0,0,0,32,8,6,0,0,0,115,122,122,244,0,0,4,211,73,68,65,84,120,218,197,
+150,107,76,155,85,24,199,75,7,3,185,56,29,83,103,198,212,56,169,25,209,72,134,126,16,34,67,67,72,116,113,49,70,19,252,70,244,203,54,201,166,9,65,63,152,44,26,47,24,156,184,37,70,24,75,140,6,195,82,167,
+164,110,241,3,155,208,150,210,118,200,26,185,180,64,144,113,43,247,251,253,206,227,243,127,115,78,243,190,29,123,11,205,18,223,228,151,54,231,60,207,255,249,159,231,61,231,180,6,34,50,252,159,236,40,248,
+210,165,178,61,204,91,76,25,211,40,104,22,159,63,50,121,204,67,247,220,0,139,238,23,69,215,111,220,168,166,182,54,31,141,142,142,42,76,76,140,43,159,29,29,237,100,179,213,82,69,197,79,196,113,191,48,79,
+221,19,3,44,148,207,204,121,60,141,180,177,177,65,155,155,155,33,105,110,110,130,137,21,230,211,176,13,112,242,110,172,218,225,168,163,201,201,9,165,248,78,88,92,92,36,228,178,198,175,76,124,56,6,202,
+156,78,7,173,175,175,107,88,91,91,211,37,56,222,237,118,194,132,133,217,181,109,3,28,124,210,225,176,223,33,190,186,186,170,48,59,59,75,125,125,125,212,217,217,169,128,239,24,147,243,193,121,245,245,74,
+39,62,223,150,1,14,60,128,119,142,141,37,5,193,202,202,74,0,20,44,44,40,208,128,49,117,140,58,119,126,126,30,6,214,153,212,237,24,40,187,117,235,111,77,209,229,229,101,13,29,29,29,244,225,153,51,26,48,
+22,28,167,54,211,218,218,2,19,213,186,6,112,134,225,84,10,44,45,45,41,96,67,169,105,107,107,163,83,39,78,104,192,88,112,156,204,151,122,102,243,101,152,120,90,207,192,73,187,221,26,40,46,133,22,22,22,
+52,248,124,62,122,55,47,79,3,198,130,227,130,141,184,92,202,134,252,88,207,192,207,62,159,87,83,120,124,124,156,186,186,186,200,235,245,6,168,169,169,161,119,114,115,53,96,76,29,131,28,228,170,141,116,
+119,119,195,192,95,122,6,26,253,254,126,37,9,27,103,110,110,78,217,229,111,28,63,30,22,200,133,6,180,228,98,184,134,95,207,64,239,216,216,104,160,56,142,86,75,75,11,229,100,103,135,5,114,161,33,77,224,
+19,55,164,174,129,222,222,30,26,26,26,162,129,129,1,234,239,239,39,167,211,73,25,233,233,97,129,92,104,64,11,154,32,148,129,70,180,109,120,120,152,6,7,7,201,239,247,147,199,227,161,212,212,212,176,64,
+46,52,160,5,77,188,94,174,49,170,103,224,114,83,211,63,52,50,50,18,232,2,54,19,132,92,46,87,0,139,197,66,38,147,73,3,198,212,49,200,65,174,92,61,52,219,219,219,97,160,78,207,192,123,215,175,87,211,216,
+216,152,198,4,192,74,36,40,112,48,41,73,3,198,212,49,50,15,26,88,61,110,86,151,171,30,6,190,210,51,176,23,23,17,12,32,1,137,16,64,11,165,32,112,187,221,180,47,49,81,3,198,212,49,200,81,23,199,9,184,114,
+197,12,3,105,6,131,97,107,3,120,240,26,26,26,110,242,31,141,9,146,70,208,13,105,6,52,52,52,80,124,92,156,6,140,201,121,196,2,228,65,3,90,94,111,43,138,223,52,136,231,174,6,74,75,191,79,198,78,133,192,
+228,228,164,226,92,26,145,224,120,69,69,69,105,192,152,58,6,57,200,133,198,212,212,20,93,189,106,161,139,23,127,200,9,105,128,159,136,242,242,210,207,106,107,107,104,122,122,90,73,134,8,86,1,65,128,22,
+227,234,197,70,3,248,142,49,57,143,88,89,24,26,54,155,21,197,203,89,219,8,125,61,3,152,220,197,196,112,39,254,172,171,179,209,204,204,140,198,136,4,69,212,168,231,100,97,228,58,157,245,196,90,238,140,
+140,244,7,88,55,114,59,6,162,152,251,77,166,228,228,243,231,191,173,183,90,107,148,2,184,209,32,40,13,109,133,156,151,183,159,221,110,163,11,23,74,60,153,153,47,189,192,154,123,153,104,217,133,187,25,
+48,138,32,4,155,152,163,133,133,5,191,87,85,253,198,239,184,89,185,78,229,149,186,21,114,30,255,144,175,93,251,131,206,158,253,196,154,144,144,240,26,235,60,203,60,194,196,138,14,235,26,216,205,60,200,
+28,98,50,152,55,179,178,50,191,40,42,250,242,223,202,202,10,254,123,229,160,219,183,187,148,43,86,254,236,226,253,247,244,116,43,63,183,102,115,37,21,23,127,221,123,236,216,171,223,113,110,46,243,10,147,
+194,60,204,220,23,170,3,17,226,61,197,49,251,153,195,194,4,86,241,118,74,202,225,15,242,243,79,153,217,76,251,185,115,197,189,124,90,112,180,168,164,228,155,129,226,226,162,206,211,167,223,175,74,75,59,
+242,145,40,252,58,147,197,60,199,28,100,246,136,197,25,67,237,1,163,216,7,241,194,245,19,98,5,71,152,23,153,76,230,101,38,155,201,17,100,139,149,30,101,210,153,231,153,103,68,23,31,21,197,163,101,251,
+67,30,67,149,137,24,38,129,73,20,239,240,0,243,152,48,245,164,40,112,72,124,199,216,227,76,146,232,222,62,81,56,86,104,5,138,135,50,32,77,72,35,145,162,117,49,66,44,78,116,39,33,136,120,49,23,43,98,163,
+131,10,71,168,11,132,50,16,108,68,154,49,10,65,73,164,10,57,102,84,93,56,119,20,222,169,129,80,166,182,98,91,143,172,249,31,149,126,4,0,44,118,84,205,0,0,0,0,73,69,78,68,174,66,96,130,0,0};
+
+const char* sklepSeqMainComponent::rondw_03_png = (const char*) resource_sklepSeqMainComponent_rondw_03_png;
+const int sklepSeqMainComponent::rondw_03_pngSize = 1292;
