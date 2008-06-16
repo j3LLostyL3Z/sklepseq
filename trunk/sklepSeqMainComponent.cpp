@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  16 Jun 2008 2:30:01 pm
+  Creation date:  16 Jun 2008 4:47:28 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -38,7 +38,7 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
       nextPatternLabel (0),
       internalCachedImage1 (0)
 {
-    addAndMakeVisible (transportComponent = new sklepSeqTransportComponent());
+    addAndMakeVisible (transportComponent = new sklepSeqTransportComponent (f));
     addAndMakeVisible (optionsButton = new ImageButton (T("Options")));
     optionsButton->setTooltip (T("Options"));
     optionsButton->setButtonText (T("new button"));
@@ -239,6 +239,7 @@ void sklepSeqMainComponent::setPosition (AudioPlayHead::CurrentPositionInfo pos,
 
 	if (bpm != prevBpm)
 	{
+		Logger::writeToLog (T("bpm changed"));
 		transportComponent->setBpm ((int)pos.bpm);
 		clearCursor();
 	}
@@ -302,7 +303,7 @@ BEGIN_JUCER_METADATA
   </BACKGROUND>
   <JUCERCOMP name="" id="7895c18604b2892a" memberName="transportComponent"
              virtualName="" explicitFocusOrder="0" pos="0 462 300 32" sourceFile="sklepSeqTransportComponent.cpp"
-             constructorParams=""/>
+             constructorParams="f"/>
   <IMAGEBUTTON name="Options" id="4350618ff8a1dac3" memberName="optionsButton"
                virtualName="" explicitFocusOrder="0" pos="0 0 32 32" tooltip="Options"
                buttonText="new button" connectedEdges="0" needsCallback="1"

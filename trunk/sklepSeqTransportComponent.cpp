@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  13 Jun 2008 2:19:12 pm
+  Creation date:  16 Jun 2008 4:47:46 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -29,7 +29,7 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-sklepSeqTransportComponent::sklepSeqTransportComponent ()
+sklepSeqTransportComponent::sklepSeqTransportComponent (DemoJuceFilter *_f)
     : Component (T("sklepSeq Transport")),
       bpmInput (0),
       puaseButton (0),
@@ -89,6 +89,9 @@ sklepSeqTransportComponent::sklepSeqTransportComponent ()
 
 
     //[UserPreSize]
+	parent = _f;
+
+	syncToHost->setToggleState (parent->getSyncToHost(), false);
     //[/UserPreSize]
 
     setSize (400, 32);
@@ -173,6 +176,7 @@ void sklepSeqTransportComponent::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == syncToHost)
     {
         //[UserButtonCode_syncToHost] -- add your button handler code here..
+		parent->setSyncToHost (syncToHost->getToggleState());
         //[/UserButtonCode_syncToHost]
     }
 
@@ -200,9 +204,9 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="sklepSeqTransportComponent"
                  componentName="sklepSeq Transport" parentClasses="public Component"
-                 constructorParams="" variableInitialisers="" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330000013" fixedSize="1" initialWidth="400"
-                 initialHeight="32">
+                 constructorParams="DemoJuceFilter *_f" variableInitialisers=""
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
+                 fixedSize="1" initialWidth="400" initialHeight="32">
   <BACKGROUND backgroundColour="0"/>
   <SLIDER name="BPM" id="2d5ba5d657d402b6" memberName="bpmInput" virtualName=""
           explicitFocusOrder="0" pos="104 8 72 16" tooltip="BPM" min="0"

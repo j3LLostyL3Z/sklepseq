@@ -105,7 +105,13 @@ public:
     // resized.
     int lastUIWidth, lastUIHeight;
 	OwnedArray <sklepSeqPattern> patterns;
+	sklepSeqPattern *currentPatternPtr;
+	short currentPattern;
+	
 	sklepSeqPattern *getCurrentPattern();
+	void setCurrentPattern (int p);
+	void setSyncToHost (bool t);
+	bool getSyncToHost();
     //==============================================================================
     juce_UseDebuggingNewOperator
 
@@ -113,6 +119,7 @@ private:
     // this is our gain - the UI and the host can access this by getting/setting
     // parameter 0.
     float gain;
+	bool isSyncedToHost;
 };
 
 
