@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  13 Jun 2008 2:19:12 pm
+  Creation date:  16 Jun 2008 4:47:46 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,11 +19,12 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_7E2CF4BF__
-#define __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_7E2CF4BF__
+#ifndef __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_72DE6187__
+#define __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_72DE6187__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
+#include "sklepSeqMain.h"
 //[/Headers]
 
 
@@ -42,7 +43,7 @@ class sklepSeqTransportComponent  : public Component,
 {
 public:
     //==============================================================================
-    sklepSeqTransportComponent ();
+    sklepSeqTransportComponent (DemoJuceFilter *_f);
     ~sklepSeqTransportComponent();
 
     //==============================================================================
@@ -82,6 +83,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+	DemoJuceFilter *parent;
     //[/UserVariables]
 
     //==============================================================================
@@ -91,7 +93,7 @@ private:
     ImageButton* stopButton;
     Label* bpmLabel;
     ToggleButton* syncToHost;
-
+	
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
     sklepSeqTransportComponent (const sklepSeqTransportComponent&);
@@ -99,4 +101,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_7E2CF4BF__
+#endif   // __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_72DE6187__

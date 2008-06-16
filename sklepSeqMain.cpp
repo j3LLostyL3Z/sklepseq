@@ -16,10 +16,12 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 //==============================================================================
 DemoJuceFilter::DemoJuceFilter()
 {
-	patterns.add (new sklepSeqPattern(0));
-    gain = 1.0f;
-    lastUIWidth = 400;
-    lastUIHeight = 140;
+	for (int x=0; x<32; x++)
+		patterns.add (new sklepSeqPattern(x));
+
+	currentPattern = 0;
+	currentPatternPtr = patterns[0];
+	isSyncedToHost = true;
 
     zeromem (&lastPosInfo, sizeof (lastPosInfo));
     lastPosInfo.timeSigNumerator = 4;
@@ -127,23 +129,26 @@ void DemoJuceFilter::processBlock (AudioSampleBuffer& buffer,
 {
     // have a go at getting the current time from the host, and if it's changed, tell
     // our UI to update itself.
-    AudioPlayHead::CurrentPositionInfo pos;
+	if (isSyncedToHost)
+	{
+		AudioPlayHead::CurrentPositionInfo pos;
 
-    if (getPlayHead() != 0 && getPlayHead()->getCurrentPosition (pos))
-    {
-        if (memcmp (&pos, &lastPosInfo, sizeof (pos)) != 0)
-        {
-            lastPosInfo = pos;
-            sendChangeMessage (this);
-        }
-    }
-    else
-    {
-        zeromem (&lastPosInfo, sizeof (lastPosInfo));
-        lastPosInfo.timeSigNumerator = 4;
-        lastPosInfo.timeSigDenominator = 4;
-        lastPosInfo.bpm = 120;
-    }
+		if (getPlayHead() != 0 && getPlayHead()->getCurrentPosition (pos))
+		{
+	        if (memcmp (&pos, &lastPosInfo, sizeof (pos)) != 0)
+			{
+	            lastPosInfo = pos;
+				sendChangeMessage (this);
+			}
+		}
+		else
+		{
+	        zeromem (&lastPosInfo, sizeof (lastPosInfo));
+			lastPosInfo.timeSigNumerator = 4;
+	        lastPosInfo.timeSigDenominator = 4;
+			lastPosInfo.bpm = 120;
+	   }	
+	}
 }
 
 //==============================================================================
@@ -192,7 +197,42 @@ void DemoJuceFilter::setStateInformation (const void* data, int sizeInBytes)
         delete xmlState;
     }
 }
+
 sklepSeqPattern *DemoJuceFilter::getCurrentPattern()
 {
-	return (patterns[0]);
+	return (currentPatternPtr);
+}
+
+void DemoJuceFilter::setCurrentPattern (int p)
+{
+	if (patterns[p])
+	{
+		currentPatternPtr = patterns[p];
+		currentPattern = p;
+	}
+	else
+	{
+		currentPatternPtr = patterns[0];
+		currentPattern = 0;
+	}
+}
+
+void DemoJuceFilter::setSyncToHost (bool t)
+{
+	if (t != isSyncedToHost)
+	{
+		zeromem (&lastPosInfo, sizeof (lastPosInfo));
+		lastPosInfo.timeSigNumerator = 4;
+		lastPosInfo.timeSigDenominator = 4;
+		lastPosInfo.bpm = 120;
+
+		sendChangeMessage (this);
+	}
+	
+	isSyncedToHost = t;
+}
+
+bool DemoJuceFilter::getSyncToHost ()
+{
+	return (isSyncedToHost);
 }
