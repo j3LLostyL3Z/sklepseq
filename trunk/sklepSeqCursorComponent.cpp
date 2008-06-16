@@ -10,9 +10,9 @@
 
 sklepSeqCursorComponent::sklepSeqCursorComponent(Image *i, int x, int y)
 {
-	posX = x;
-	posY = y;
-	image = i;
+	posX		= x;
+	posY		= y;
+	image		= i;
 }
 
 sklepSeqCursorComponent::~sklepSeqCursorComponent()
@@ -21,7 +21,10 @@ sklepSeqCursorComponent::~sklepSeqCursorComponent()
 
 void sklepSeqCursorComponent::paint(Graphics &g)
 {
-	g.drawImage (image, 0, 0, 48, 48, 0, 0, 48, 48);
+	if (isMouseOver())
+		g.drawImage (imageOver, 0, 0, 48, 48, 0, 0, 48, 48);
+	else
+		g.drawImage (image, 0, 0, 48, 48, 0, 0, 48, 48);
 }
 
 int sklepSeqCursorComponent::getX()
