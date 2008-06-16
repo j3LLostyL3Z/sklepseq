@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  13 Jun 2008 9:08:02 pm
+  Creation date:  16 Jun 2008 2:30:01 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,14 +19,15 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_7D284224__
-#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_7D284224__
+#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_72637082__
+#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_72637082__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
 #include "sklepSeqCursorComponent.h"
 #include "sklepSeqPatternControl.h"
 #include "sklepSeqMain.h"
+#include "sklepSeqStep.h"
 //[/Headers]
 
 #include "sklepSeqTransportComponent.h"
@@ -132,6 +133,40 @@ public:
     static const int sq_step_off_16_pngSize;
     static const char* rondw_03_png;
     static const int rondw_03_pngSize;
+    static const char* sq_step_over_1_png;
+    static const int sq_step_over_1_pngSize;
+    static const char* sq_step_over_2_png;
+    static const int sq_step_over_2_pngSize;
+    static const char* sq_step_over_3_png;
+    static const int sq_step_over_3_pngSize;
+    static const char* sq_step_over_4_png;
+    static const int sq_step_over_4_pngSize;
+    static const char* sq_step_over_5_png;
+    static const int sq_step_over_5_pngSize;
+    static const char* sq_step_over_6_png;
+    static const int sq_step_over_6_pngSize;
+    static const char* sq_step_over_7_png;
+    static const int sq_step_over_7_pngSize;
+    static const char* sq_step_over_8_png;
+    static const int sq_step_over_8_pngSize;
+    static const char* sq_step_over_9_png;
+    static const int sq_step_over_9_pngSize;
+    static const char* sq_step_over_10_png;
+    static const int sq_step_over_10_pngSize;
+    static const char* sq_step_over_11_png;
+    static const int sq_step_over_11_pngSize;
+    static const char* sq_step_over_12_png;
+    static const int sq_step_over_12_pngSize;
+    static const char* sq_step_over_13_png;
+    static const int sq_step_over_13_pngSize;
+    static const char* sq_step_over_14_png;
+    static const int sq_step_over_14_pngSize;
+    static const char* sq_step_over_15_png;
+    static const int sq_step_over_15_pngSize;
+    static const char* sq_step_over_16_png;
+    static const int sq_step_over_16_pngSize;
+    static const char* lcd_bin;
+    static const int lcd_binSize;
 
     //==============================================================================
     juce_UseDebuggingNewOperator
@@ -139,15 +174,22 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	OwnedArray <sklepSeqCursorComponent> cursor;
+	OwnedArray <sklepSeqStep> step;
+
 	DemoJuceFilter *ownerFilter;
 	int prevPos;
 	double prevBpm;
 	sklepSeqPatternControl *options;
+	Font *lcdBigFont;
+	Font *lcdSmallFont;
     //[/UserVariables]
 
     //==============================================================================
     sklepSeqTransportComponent* transportComponent;
     ImageButton* optionsButton;
+    Label* currentPatternLabel;
+    Label* currentStepInPatternLabel;
+    Label* nextPatternLabel;
     Image* internalCachedImage1;
 
     //==============================================================================
@@ -157,4 +199,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_7D284224__
+#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_72637082__

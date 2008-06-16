@@ -19,6 +19,7 @@ class sklepSeqCursorComponent : public Component
 	private:
 		int posX, posY;
 		Image *image;
+		Image *imageOver;
 };
 
 #endif // !defined(AFX_SKLEPSEQCURSORCOMPONENT_H__3F42890E_F4E2_4B05_B2CC_A98DE6F0484D__INCLUDED_)
