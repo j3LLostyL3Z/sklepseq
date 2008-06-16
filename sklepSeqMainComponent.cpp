@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  16 Jun 2008 4:47:28 pm
+  Creation date:  16 Jun 2008 10:05:06 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -36,6 +36,10 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
       currentPatternLabel (0),
       currentStepInPatternLabel (0),
       nextPatternLabel (0),
+      patternLenLabel (0),
+      patternLenDown (0),
+      patternLenUp (0),
+      label000 (0),
       internalCachedImage1 (0)
 {
     addAndMakeVisible (transportComponent = new sklepSeqTransportComponent (f));
@@ -53,16 +57,16 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
     currentPatternLabel->setFont (Font (37.0000f, Font::plain));
     currentPatternLabel->setJustificationType (Justification::centred);
     currentPatternLabel->setEditable (false, false, false);
-    currentPatternLabel->setColour (Label::textColourId, Colour (0xff62ff00));
+    currentPatternLabel->setColour (Label::textColourId, Colour (0xff00ff5e));
     currentPatternLabel->setColour (TextEditor::textColourId, Colours::black);
     currentPatternLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
-    addAndMakeVisible (currentStepInPatternLabel = new Label (T("new label"),
+    addAndMakeVisible (currentStepInPatternLabel = new Label (String::empty,
                                                               T("0.0")));
     currentStepInPatternLabel->setFont (Font (19.6000f, Font::plain));
     currentStepInPatternLabel->setJustificationType (Justification::centred);
     currentStepInPatternLabel->setEditable (false, false, false);
-    currentStepInPatternLabel->setColour (Label::textColourId, Colour (0xff62ff00));
+    currentStepInPatternLabel->setColour (Label::textColourId, Colour (0xff00ff5e));
     currentStepInPatternLabel->setColour (TextEditor::textColourId, Colours::black);
     currentStepInPatternLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
@@ -71,9 +75,44 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
     nextPatternLabel->setFont (Font (37.0000f, Font::plain));
     nextPatternLabel->setJustificationType (Justification::centred);
     nextPatternLabel->setEditable (false, false, false);
-    nextPatternLabel->setColour (Label::textColourId, Colour (0xff62ff00));
+    nextPatternLabel->setColour (Label::textColourId, Colour (0xff00ff5e));
     nextPatternLabel->setColour (TextEditor::textColourId, Colours::black);
     nextPatternLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (patternLenLabel = new Label (T("new label"),
+                                                    T("16")));
+    patternLenLabel->setTooltip (T("Pattern length in steps"));
+    patternLenLabel->setFont (Font (37.0000f, Font::plain));
+    patternLenLabel->setJustificationType (Justification::centred);
+    patternLenLabel->setEditable (false, false, false);
+    patternLenLabel->setColour (Label::textColourId, Colour (0xff7cffac));
+    patternLenLabel->setColour (TextEditor::textColourId, Colours::black);
+    patternLenLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (patternLenDown = new ImageButton (T("new button")));
+    patternLenDown->setTooltip (T("Decrease Pattern Length"));
+    patternLenDown->addButtonListener (this);
+
+    patternLenDown->setImages (false, true, true,
+                               ImageCache::getFromMemory (down_small_png, down_small_pngSize), 0.7000f, Colour (0x0),
+                               0, 1.0000f, Colour (0x0),
+                               0, 1.0000f, Colour (0x0));
+    addAndMakeVisible (patternLenUp = new ImageButton (T("new button")));
+    patternLenUp->setTooltip (T("Increase Pattern Length"));
+    patternLenUp->addButtonListener (this);
+
+    patternLenUp->setImages (false, true, true,
+                             ImageCache::getFromMemory (up_small_png, up_small_pngSize), 0.7000f, Colour (0x0),
+                             0, 1.0000f, Colour (0x0),
+                             0, 1.0000f, Colour (0x0));
+    addAndMakeVisible (label000 = new Label (String::empty,
+                                             T("0.0")));
+    label000->setFont (Font (19.6000f, Font::plain));
+    label000->setJustificationType (Justification::centred);
+    label000->setEditable (false, false, false);
+    label000->setColour (Label::textColourId, Colour (0xff00ff5e));
+    label000->setColour (TextEditor::textColourId, Colours::black);
+    label000->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
     internalCachedImage1 = ImageCache::getFromMemory (sq_back_png, sq_back_pngSize);
 
@@ -145,10 +184,15 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
 	currentPatternLabel->setFont (*lcdBigFont);
 	nextPatternLabel->setFont (*lcdBigFont);
 	currentStepInPatternLabel->setFont (*lcdSmallFont);
+	patternLenLabel->setFont (*lcdBigFont);
 
 	options = new sklepSeqPatternControl();
 	options->setBounds (32,0,427,100);
 	addChildComponent (options);
+
+	ownerFilter->getCallbackLock().enter();
+	patternLenLabel->setText (String::formatted (T("%d"), ownerFilter->getCurrentPattern()->getPatternLength()), false);
+	ownerFilter->getCallbackLock().exit();
     //[/UserPreSize]
 
     setSize (492, 492);
@@ -167,6 +211,10 @@ sklepSeqMainComponent::~sklepSeqMainComponent()
     deleteAndZero (currentPatternLabel);
     deleteAndZero (currentStepInPatternLabel);
     deleteAndZero (nextPatternLabel);
+    deleteAndZero (patternLenLabel);
+    deleteAndZero (patternLenDown);
+    deleteAndZero (patternLenUp);
+    deleteAndZero (label000);
     ImageCache::release (internalCachedImage1);
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -186,6 +234,9 @@ void sklepSeqMainComponent::paint (Graphics& g)
                  0, 0, 492, 492,
                  0, 0, internalCachedImage1->getWidth(), internalCachedImage1->getHeight());
 
+    g.setColour (Colour (0x5f000000));
+    g.fillRoundedRectangle (207.0f, 274.0f, 75.0f, 38.0f, 10.0000f);
+
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
 }
@@ -197,6 +248,10 @@ void sklepSeqMainComponent::resized()
     currentPatternLabel->setBounds (184, 192, 64, 24);
     currentStepInPatternLabel->setBounds (256, 200, 40, 16);
     nextPatternLabel->setBounds (184, 224, 64, 24);
+    patternLenLabel->setBounds (203, 279, 68, 26);
+    patternLenDown->setBounds (259, 293, 16, 16);
+    patternLenUp->setBounds (259, 279, 16, 16);
+    label000->setBounds (256, 232, 40, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -219,6 +274,33 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 		}
         //[/UserButtonCode_optionsButton]
     }
+    else if (buttonThatWasClicked == patternLenDown)
+    {
+        //[UserButtonCode_patternLenDown] -- add your button handler code here..
+		const int l = ownerFilter->getCurrentPattern()->getPatternLength();
+		if (l == 1)
+			return;
+		ownerFilter->getCallbackLock().enter();
+		ownerFilter->getCurrentPattern()->setPatternLength(l-1);
+		ownerFilter->getCallbackLock().exit();
+
+		patternLenLabel->setText (String::formatted (T("%d"), l-1), false);
+        //[/UserButtonCode_patternLenDown]
+    }
+    else if (buttonThatWasClicked == patternLenUp)
+    {
+        //[UserButtonCode_patternLenUp] -- add your button handler code here..
+		const int l = ownerFilter->getCurrentPattern()->getPatternLength();
+		if (l == 32)
+			return;
+
+		ownerFilter->getCallbackLock().enter();
+		ownerFilter->getCurrentPattern()->setPatternLength(l+1);
+		ownerFilter->getCallbackLock().exit();
+
+		patternLenLabel->setText (String::formatted (T("%d"), l+1), false);
+        //[/UserButtonCode_patternLenUp]
+    }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
@@ -227,52 +309,40 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void sklepSeqMainComponent::setPosition (AudioPlayHead::CurrentPositionInfo pos, sklepSeqPattern *currentPattern)
+void sklepSeqMainComponent::setPosition (int beat, int bpm)
 {
-
-    const int ppqPerBar = (pos.timeSigNumerator * 4 / pos.timeSigDenominator);
-    const double beats  = (fmod (pos.ppqPosition, ppqPerBar) / ppqPerBar) * pos.timeSigNumerator;
-	const double bpm	= pos.bpm;
-	const double cursorPos = beats*4;
-	const int _p = (int)cursorPos;
-	const int pLength = currentPattern->getPatternLength();
-
 	if (bpm != prevBpm)
 	{
-		Logger::writeToLog (T("bpm changed"));
-		transportComponent->setBpm ((int)pos.bpm);
+		transportComponent->setBpm (bpm);
 		clearCursor();
 	}
 
-	if (_p != prevPos)
+	if (beat != prevPos)
 	{
-		if (_p == 0)
-		{
-			cursor[_p]->setVisible (true);
-			cursor[pLength-1]->setVisible (false);
-		}
-		else if (_p > 0)
-		{
-			cursor[_p-1]->setVisible (false);
-			cursor[_p]->setVisible (true);
+		if (prevPos >= beat)
+			clearCursor();
 
-		}
+		if (beat-1 >= 0)
+			cursor[beat-1]->setVisible (true);
 
-		currentStepInPatternLabel->setText (String::formatted (T("%d"), _p), false);
+		if (beat-2 >= 0)
+			cursor[beat-2]->setVisible (false);
+
+		currentStepInPatternLabel->setText (String::formatted (T("%d"), beat), false);
 	}
 
-	prevPos = _p;
+	prevPos = beat;
 	prevBpm = bpm;
 }
 
 void sklepSeqMainComponent::handleAsyncUpdate()
 {
 	ownerFilter->getCallbackLock().enter();
-	const AudioPlayHead::CurrentPositionInfo positionInfo (ownerFilter->lastPosInfo);
-	sklepSeqPattern *currentPattern = ownerFilter->getCurrentPattern();
+	const int beat = ownerFilter->currentBeat;
+	const int bpm = ownerFilter->currentBpm;
 	ownerFilter->getCallbackLock().exit();
 
-	setPosition (positionInfo, currentPattern);
+	setPosition (beat, bpm);
 }
 
 void sklepSeqMainComponent::clearCursor()
@@ -300,6 +370,7 @@ BEGIN_JUCER_METADATA
                  initialHeight="492">
   <BACKGROUND backgroundColour="ffffffff">
     <IMAGE pos="0 0 492 492" resource="sq_back_png" opacity="1" mode="0"/>
+    <ROUNDRECT pos="207 274 75 38" cornerSize="10" fill="solid: 5f000000" hasStroke="0"/>
   </BACKGROUND>
   <JUCERCOMP name="" id="7895c18604b2892a" memberName="transportComponent"
              virtualName="" explicitFocusOrder="0" pos="0 462 300 32" sourceFile="sklepSeqTransportComponent.cpp"
@@ -312,20 +383,44 @@ BEGIN_JUCER_METADATA
                opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
                colourDown="0"/>
   <LABEL name="new label" id="2cf458c75bd5bfc8" memberName="currentPatternLabel"
-         virtualName="" explicitFocusOrder="0" pos="184 192 64 24" textCol="ff62ff00"
+         virtualName="" explicitFocusOrder="0" pos="184 192 64 24" textCol="ff00ff5e"
          edTextCol="ff000000" edBkgCol="0" labelText="0.0" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="37" bold="0" italic="0" justification="36"/>
-  <LABEL name="new label" id="9202c88ac0788122" memberName="currentStepInPatternLabel"
-         virtualName="" explicitFocusOrder="0" pos="256 200 40 16" textCol="ff62ff00"
+  <LABEL name="" id="9202c88ac0788122" memberName="currentStepInPatternLabel"
+         virtualName="" explicitFocusOrder="0" pos="256 200 40 16" textCol="ff00ff5e"
          edTextCol="ff000000" edBkgCol="0" labelText="0.0" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="19.6" bold="0" italic="0" justification="36"/>
   <LABEL name="new label" id="8a392823f1d7d1c7" memberName="nextPatternLabel"
-         virtualName="" explicitFocusOrder="0" pos="184 224 64 24" textCol="ff62ff00"
+         virtualName="" explicitFocusOrder="0" pos="184 224 64 24" textCol="ff00ff5e"
          edTextCol="ff000000" edBkgCol="0" labelText="0.0" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="37" bold="0" italic="0" justification="36"/>
+  <LABEL name="new label" id="6ac240eabb144fb5" memberName="patternLenLabel"
+         virtualName="" explicitFocusOrder="0" pos="203 279 68 26" tooltip="Pattern length in steps"
+         textCol="ff7cffac" edTextCol="ff000000" edBkgCol="0" labelText="16"
+         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
+         fontname="Default font" fontsize="37" bold="0" italic="0" justification="36"/>
+  <IMAGEBUTTON name="new button" id="16def4070b9c7f94" memberName="patternLenDown"
+               virtualName="" explicitFocusOrder="0" pos="259 293 16 16" tooltip="Decrease Pattern Length"
+               buttonText="new button" connectedEdges="0" needsCallback="1"
+               radioGroupId="0" keepProportions="1" resourceNormal="down_small_png"
+               opacityNormal="0.699999988" colourNormal="0" resourceOver=""
+               opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
+               colourDown="0"/>
+  <IMAGEBUTTON name="new button" id="d6d8b968fe628cd8" memberName="patternLenUp"
+               virtualName="" explicitFocusOrder="0" pos="259 279 16 16" tooltip="Increase Pattern Length"
+               buttonText="new button" connectedEdges="0" needsCallback="1"
+               radioGroupId="0" keepProportions="1" resourceNormal="up_small_png"
+               opacityNormal="0.699999988" colourNormal="0" resourceOver=""
+               opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
+               colourDown="0"/>
+  <LABEL name="" id="1058caab4a11e0" memberName="label000" virtualName=""
+         explicitFocusOrder="0" pos="256 232 40 16" textCol="ff00ff5e"
+         edTextCol="ff000000" edBkgCol="0" labelText="0.0" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="19.6" bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
@@ -10720,3 +10815,95 @@ static const unsigned char resource_sklepSeqMainComponent_lcd_bin[] = { 120,156,
 
 const char* sklepSeqMainComponent::lcd_bin = (const char*) resource_sklepSeqMainComponent_lcd_bin;
 const int sklepSeqMainComponent::lcd_binSize = 5469;
+
+// JUCER_RESOURCE: down_big_png, 1365, "C:\down_big.png"
+static const unsigned char resource_sklepSeqMainComponent_down_big_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,32,0,0,0,32,8,6,0,0,0,115,122,122,244,0,0,0,1,115,82,71,66,0,174,206,28,
+233,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,11,19,0,0,11,19,1,0,154,156,24,0,0,0,7,116,73,77,69,7,216,6,16,16,37,35,187,82,148,56,0,0,4,213,73,68,65,84,88,195,197,
+151,75,108,19,87,20,134,191,153,193,175,66,108,55,36,74,162,196,6,74,8,137,121,132,16,33,18,22,21,69,66,98,85,9,9,193,186,50,216,160,182,98,211,162,162,136,162,110,90,202,34,114,197,10,195,44,80,9,98,
+129,196,10,177,104,23,32,53,64,3,9,36,33,9,20,74,21,220,224,40,4,140,235,224,218,241,99,186,232,140,53,118,198,47,186,232,72,191,102,230,206,189,231,255,207,185,231,158,59,87,80,20,133,255,243,90,86,77,
+103,89,14,58,128,221,42,186,213,102,51,176,8,140,3,55,129,107,94,175,239,101,165,54,133,74,34,32,203,193,70,224,27,192,187,122,245,26,169,185,185,133,149,43,235,0,144,36,145,76,38,75,36,242,154,217,217,
+48,161,208,115,18,137,196,37,224,164,215,235,123,250,159,5,200,114,240,51,224,187,173,91,187,87,116,118,118,33,8,66,89,193,15,31,142,51,52,116,103,17,56,229,245,250,78,190,147,0,89,14,154,129,51,237,237,
+30,159,199,227,193,225,112,86,53,183,201,100,146,145,145,97,30,61,154,188,2,124,226,245,250,22,140,250,137,37,108,156,241,120,54,248,122,122,122,177,219,29,40,138,130,162,40,100,179,217,146,208,250,153,
+205,102,122,122,122,217,184,113,211,62,96,64,150,131,82,197,2,100,57,120,164,189,189,195,183,109,219,246,156,65,141,92,255,110,132,194,62,221,221,219,232,232,240,124,172,230,80,121,1,178,28,108,6,78,183,
+181,181,87,77,94,172,111,103,103,23,192,87,178,28,220,82,73,4,190,238,234,218,186,194,233,116,190,19,185,209,152,127,167,99,135,4,156,46,41,64,150,131,245,128,119,195,134,77,101,231,186,90,180,182,174,
+195,110,119,236,150,229,224,250,82,17,216,215,214,182,94,2,170,246,184,18,184,92,110,128,189,165,42,97,111,93,93,61,217,108,22,189,8,128,68,34,65,52,26,37,145,72,148,93,130,86,171,21,135,195,129,213,106,
+205,171,27,141,141,77,76,76,140,239,6,78,21,19,224,177,219,237,75,148,3,68,34,17,206,157,61,91,113,29,56,228,247,211,208,208,128,32,8,57,212,212,212,0,172,47,21,129,122,139,197,98,40,64,81,20,22,22,22,
+42,22,160,31,171,93,22,139,5,160,190,228,102,20,143,199,73,167,51,75,10,11,192,190,253,251,57,23,12,150,247,222,231,3,32,26,141,34,8,2,162,40,34,138,198,53,175,176,245,229,226,98,42,47,108,26,172,86,43,
+46,151,11,159,223,207,171,249,249,162,240,249,253,184,92,174,220,252,235,145,201,164,1,162,165,4,60,141,199,223,26,10,208,139,56,222,215,199,220,252,252,18,28,239,235,43,74,46,8,2,11,11,111,1,30,151,18,
+240,211,220,220,92,46,100,162,40,230,66,168,23,225,118,187,9,4,2,121,158,7,2,1,220,110,119,142,220,104,108,36,242,10,224,151,82,2,174,78,79,255,145,1,114,131,244,6,10,69,92,28,24,32,18,137,112,113,96,
+32,143,188,112,172,230,204,204,204,12,192,21,253,210,204,219,142,5,65,224,252,249,179,151,55,111,222,114,96,237,218,86,195,18,92,184,229,38,147,73,44,22,139,150,225,57,59,218,93,35,159,157,13,115,251,
+246,224,208,193,131,254,237,218,42,49,220,11,210,233,244,137,177,177,7,139,169,84,10,73,146,242,166,67,146,164,188,54,155,205,134,211,233,196,102,179,45,249,174,61,107,239,207,158,253,78,54,155,61,81,
+118,51,58,124,248,211,167,138,162,124,63,53,53,105,104,168,176,173,220,119,81,20,25,27,27,37,28,126,113,222,231,59,242,51,32,148,18,32,0,226,161,67,135,191,125,252,120,234,250,248,248,104,94,4,10,147,
+179,112,190,141,48,57,57,193,212,212,196,175,23,46,252,248,165,145,195,98,145,218,96,238,239,15,28,29,25,25,190,117,255,254,48,153,76,102,137,87,70,222,23,182,141,142,62,224,222,189,161,251,151,46,93,
+254,124,112,240,150,8,72,170,147,66,177,36,20,1,19,176,28,168,3,154,142,29,251,226,104,111,111,239,222,214,214,117,172,89,243,1,250,4,90,242,131,169,38,223,204,204,159,60,121,242,27,119,239,14,221,236,
+239,255,225,116,44,22,11,1,115,64,12,72,2,89,69,53,98,36,96,153,42,160,22,104,4,26,118,238,252,176,123,207,158,61,7,86,173,114,175,117,187,87,211,212,212,132,201,100,166,182,182,22,128,55,111,222,144,
+74,45,18,14,135,9,133,166,153,158,126,254,252,198,141,27,87,175,93,187,126,71,37,158,5,230,117,2,148,98,2,4,53,76,22,160,6,120,95,21,226,0,150,123,60,29,205,187,118,125,180,163,165,165,101,179,201,100,
+178,57,28,118,55,64,44,22,123,145,78,167,227,161,80,232,225,224,224,237,59,195,195,35,211,192,91,149,48,2,188,6,254,2,254,6,210,106,4,40,38,64,47,226,61,29,172,106,155,73,253,46,233,114,40,171,34,3,164,
+212,147,82,66,37,140,171,72,104,228,106,4,140,11,145,46,73,52,18,147,122,252,90,166,66,35,22,117,201,164,104,134,85,17,105,21,41,29,178,186,62,148,18,128,206,176,160,35,211,147,10,133,235,89,53,172,20,
+136,201,234,160,245,201,75,228,98,135,83,125,154,103,84,8,5,226,10,159,149,34,247,194,231,170,78,199,70,70,132,42,198,148,189,254,1,12,58,95,52,115,65,115,108,0,0,0,0,73,69,78,68,174,66,96,130,0,0};
+
+const char* sklepSeqMainComponent::down_big_png = (const char*) resource_sklepSeqMainComponent_down_big_png;
+const int sklepSeqMainComponent::down_big_pngSize = 1365;
+
+// JUCER_RESOURCE: down_small_png, 670, "C:\down_small.png"
+static const unsigned char resource_sklepSeqMainComponent_down_small_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,16,0,0,0,16,8,6,0,0,0,31,243,255,97,0,0,0,1,115,82,71,66,0,174,206,28,
+233,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,11,19,0,0,11,19,1,0,154,156,24,0,0,0,7,116,73,77,69,7,216,6,16,18,6,38,118,21,195,184,0,0,2,30,73,68,65,84,56,203,125,
+147,63,104,83,81,20,198,127,183,125,47,70,104,133,52,49,154,87,112,48,106,255,184,85,65,92,92,116,40,86,93,139,130,21,93,28,181,32,184,56,116,19,17,92,4,17,92,28,28,156,116,168,22,10,226,38,216,224,212,
+162,45,45,110,162,189,73,159,208,54,220,152,119,255,60,135,190,164,73,76,61,112,224,114,239,57,223,249,238,119,206,17,116,55,15,56,3,156,4,122,128,21,224,19,160,59,3,69,151,228,169,177,177,177,135,67,
+67,67,65,238,96,14,33,4,97,24,178,182,186,38,75,165,210,12,240,124,79,128,124,62,255,100,124,124,124,58,159,207,119,165,181,17,110,48,247,126,238,69,185,92,190,13,196,0,189,173,149,39,46,79,60,26,200,
+12,96,140,233,234,169,84,138,66,80,56,181,180,180,180,1,148,90,1,252,145,209,145,119,197,98,177,95,27,205,255,220,243,61,172,177,103,165,148,79,1,237,37,0,231,130,32,8,148,82,0,56,235,176,214,182,139,
+37,4,158,231,129,128,66,80,200,44,46,46,158,7,102,27,0,195,190,231,163,170,59,0,23,175,92,224,198,245,155,8,177,43,209,159,168,202,181,201,91,120,189,222,14,16,140,2,179,61,141,0,85,83,40,181,227,175,
+95,189,97,97,225,51,177,237,1,231,17,69,134,251,247,30,80,175,215,81,74,81,83,53,146,246,54,53,56,208,215,223,55,37,132,32,210,17,198,26,230,231,63,112,244,216,17,6,178,25,238,222,153,230,219,215,21,180,
+214,68,58,98,107,107,11,41,229,51,96,185,193,209,203,229,114,63,130,32,56,212,250,111,231,28,195,163,199,89,93,249,222,166,135,148,114,91,74,57,8,108,55,24,56,165,84,53,157,78,95,138,227,184,217,54,107,
+45,114,189,220,214,202,90,173,70,165,82,153,177,214,126,236,28,164,180,239,251,47,179,217,236,100,34,210,63,102,140,33,12,195,89,173,245,85,64,1,113,111,203,68,166,157,115,203,74,169,253,90,235,19,206,
+57,223,57,135,49,134,40,138,168,86,171,245,205,205,205,183,214,218,199,192,111,32,2,226,86,6,41,32,11,12,2,135,129,211,64,144,168,253,11,248,2,172,3,63,129,10,80,239,4,16,73,87,82,192,190,100,35,155,26,
+1,38,169,90,79,206,241,94,219,216,184,239,124,139,27,73,173,246,23,226,242,23,171,3,123,192,114,0,0,0,0,73,69,78,68,174,66,96,130,0,0};
+
+const char* sklepSeqMainComponent::down_small_png = (const char*) resource_sklepSeqMainComponent_down_small_png;
+const int sklepSeqMainComponent::down_small_pngSize = 670;
+
+// JUCER_RESOURCE: up_big_png, 1374, "C:\downloads\icon\ronds\up_big.png"
+static const unsigned char resource_sklepSeqMainComponent_up_big_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,32,0,0,0,32,8,6,0,0,0,115,122,122,244,0,0,0,1,115,82,71,66,0,174,206,28,233,
+0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,11,19,0,0,11,19,1,0,154,156,24,0,0,0,7,116,73,77,69,7,216,6,16,16,37,46,197,227,232,133,0,0,4,222,73,68,65,84,88,195,197,
+151,95,76,83,103,24,198,127,223,169,165,101,74,203,16,50,144,138,186,33,66,213,33,18,51,240,98,113,38,38,94,45,49,49,241,14,179,20,170,102,91,76,204,102,136,137,51,187,217,31,140,108,139,87,212,157,11,
+179,204,236,194,196,121,97,188,216,46,52,19,199,80,80,64,65,167,83,106,65,16,255,180,91,241,208,210,246,156,93,120,14,57,150,246,180,184,139,157,228,73,79,191,243,190,239,243,124,239,247,158,239,61,159,
+208,52,141,255,243,90,180,16,99,89,14,184,129,109,58,26,245,225,2,96,22,24,2,46,2,231,124,62,255,227,124,99,138,124,50,32,203,129,114,224,115,192,183,114,229,42,91,101,165,135,165,75,75,1,176,217,36,82,
+41,149,112,248,25,147,147,19,132,66,15,136,197,98,167,128,35,62,159,255,238,127,22,32,203,129,143,128,47,55,110,108,92,82,95,223,128,16,34,167,224,27,55,134,232,237,237,153,5,190,242,249,252,71,94,73,
+128,44,7,10,128,227,181,181,94,191,215,235,197,237,46,94,208,218,198,227,113,250,251,251,184,117,107,248,52,240,129,207,231,159,206,100,39,89,196,56,238,245,174,245,55,53,53,227,114,185,209,52,13,77,211,
+80,85,213,18,134,93,65,65,1,77,77,205,172,91,183,126,39,240,163,44,7,108,121,11,144,229,192,190,218,218,58,255,166,77,239,204,5,52,200,205,255,51,33,221,166,177,113,19,117,117,222,247,245,26,202,45,64,
+150,3,149,64,71,77,77,237,130,201,179,217,214,215,55,0,180,203,114,96,67,62,25,248,172,161,97,227,146,226,226,226,87,34,207,228,243,98,57,54,219,128,14,75,1,178,28,40,3,124,107,215,174,207,185,214,170,
+170,162,40,10,225,112,24,69,81,114,218,86,87,175,198,229,114,111,147,229,192,26,171,12,236,172,169,89,99,3,114,206,112,102,102,134,96,48,200,55,199,142,17,12,6,153,153,153,201,233,179,124,121,21,192,14,
+43,1,205,165,165,101,47,165,47,83,250,13,242,19,93,93,76,79,79,115,162,171,43,163,136,116,223,242,242,10,244,93,52,171,0,175,203,229,178,124,221,20,69,97,116,116,148,163,29,29,132,35,145,57,28,237,232,
+96,116,116,52,235,114,104,154,70,81,81,17,128,229,18,148,57,28,142,156,105,63,212,222,206,211,39,79,230,225,80,123,187,229,114,56,28,14,128,50,203,102,164,40,10,201,100,106,222,198,18,143,199,25,27,27,
+227,192,129,3,150,59,96,91,91,27,157,157,157,120,60,30,156,78,39,66,8,36,73,66,146,164,188,186,225,227,217,217,68,149,195,241,194,209,188,239,71,163,81,118,183,180,228,181,13,239,110,105,225,231,179,103,
+41,44,44,156,139,35,132,32,153,76,0,252,109,37,224,174,162,60,111,116,185,92,243,4,8,33,8,135,195,121,247,2,51,177,129,233,233,231,0,183,173,4,252,50,53,53,181,107,217,178,202,185,1,85,85,17,66,224,118,
+187,249,237,210,37,98,177,88,78,114,167,211,137,219,237,158,75,191,33,32,28,126,10,112,201,74,192,153,96,240,126,215,134,13,13,54,195,73,146,36,52,77,195,233,116,226,116,58,95,41,3,70,13,140,143,143,3,
+156,22,66,96,116,225,151,42,163,181,117,207,51,224,244,253,251,247,176,217,108,243,96,4,202,5,179,173,225,251,232,209,36,145,72,184,183,181,117,79,159,101,47,72,38,147,135,7,7,175,207,38,18,137,121,164,
+185,132,152,159,167,11,191,119,239,47,84,85,61,156,179,25,237,221,251,225,93,77,211,190,30,25,25,206,24,40,125,44,215,115,73,146,24,28,28,96,98,226,225,247,126,255,190,95,1,97,37,64,0,82,91,219,222,47,
+110,223,30,57,63,52,52,144,117,182,233,21,158,205,110,120,248,38,35,35,55,255,56,121,242,135,79,51,77,88,202,242,141,80,208,217,249,237,254,254,254,190,203,215,174,245,145,74,165,230,205,42,211,236,211,
+199,6,6,174,115,245,106,239,181,83,167,126,250,184,187,251,178,4,216,244,73,138,140,223,132,66,8,9,176,3,139,129,82,160,226,224,193,79,246,55,55,55,239,168,174,94,205,170,85,111,98,116,202,108,149,15,
+48,62,62,198,157,59,127,114,229,74,239,197,206,206,239,58,162,209,104,8,152,2,162,64,28,80,53,61,72,38,1,139,116,1,37,64,57,240,198,150,45,239,54,110,223,190,125,215,138,21,85,111,85,85,173,164,162,162,
+2,187,189,128,146,146,18,0,34,145,8,137,196,44,19,19,19,132,66,65,130,193,7,15,46,92,184,112,230,220,185,243,61,58,241,36,240,196,36,64,203,38,64,232,105,114,0,69,192,235,186,16,55,176,216,235,173,171,
+220,186,245,189,205,30,143,231,109,187,221,94,232,118,187,170,244,109,250,97,50,153,84,66,161,208,141,238,238,223,123,250,250,250,131,192,115,157,48,12,60,3,254,1,102,128,164,158,1,178,9,48,139,120,205,
+4,167,62,102,215,159,219,76,53,164,234,72,1,9,253,164,20,211,9,21,29,49,131,92,207,64,70,1,152,138,196,32,177,235,199,175,69,58,12,98,201,84,76,154,17,88,23,145,212,145,48,65,53,217,96,37,0,83,96,97,34,
+51,147,138,244,247,89,15,172,165,137,81,77,48,108,94,42,228,108,135,83,115,153,167,116,136,52,113,233,247,90,150,223,244,251,5,157,142,51,5,17,11,240,201,121,253,11,34,144,159,11,84,250,159,220,0,0,0,
+0,73,69,78,68,174,66,96,130,0,0};
+
+const char* sklepSeqMainComponent::up_big_png = (const char*) resource_sklepSeqMainComponent_up_big_png;
+const int sklepSeqMainComponent::up_big_pngSize = 1374;
+
+// JUCER_RESOURCE: up_small_png, 632, "C:\up_small.png"
+static const unsigned char resource_sklepSeqMainComponent_up_small_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,16,0,0,0,16,8,6,0,0,0,31,243,255,97,0,0,0,1,115,82,71,66,0,174,206,28,233,
+0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,11,19,0,0,11,19,1,0,154,156,24,0,0,0,7,116,73,77,69,7,216,6,16,18,6,23,39,203,195,130,0,0,1,248,73,68,65,84,56,203,141,147,
+177,111,211,64,20,198,127,78,237,16,134,12,109,28,211,184,99,36,66,91,85,130,128,84,177,176,176,84,42,204,136,5,54,16,29,80,97,109,144,186,33,132,196,210,5,137,34,241,31,48,0,29,217,88,34,182,12,20,186,
+34,192,73,140,72,235,158,101,223,249,204,80,39,152,144,72,124,210,147,78,239,221,247,189,211,251,222,25,76,134,9,172,2,203,64,1,216,7,62,0,114,252,162,49,129,124,171,217,108,62,110,52,26,174,93,181,49,
+12,3,223,247,57,248,114,224,181,219,237,109,224,249,84,1,199,113,158,173,173,173,61,112,28,103,226,179,250,126,159,189,119,123,47,186,221,238,93,32,5,152,201,119,94,191,190,254,100,110,118,14,165,212,
+196,40,22,139,212,220,218,197,78,167,211,7,218,121,1,107,113,105,241,109,189,94,47,75,37,25,133,148,68,113,132,210,106,148,51,45,147,68,37,151,61,207,219,1,100,33,19,184,226,186,174,43,132,96,20,199,130,
+106,181,194,157,123,183,57,252,117,72,190,86,115,107,179,192,85,178,9,3,156,179,76,11,17,136,81,56,142,205,86,107,139,11,43,171,220,223,220,56,17,201,106,166,105,2,44,229,5,16,225,159,14,243,110,149,214,
+163,22,90,65,20,197,172,44,159,103,243,225,6,65,16,32,132,32,20,225,136,107,102,252,125,223,247,41,151,203,39,98,66,240,114,119,247,47,7,52,9,193,113,64,161,80,24,10,124,206,219,104,218,182,253,213,117,
+221,51,252,7,60,207,59,242,60,111,1,56,26,186,160,133,16,65,169,84,186,150,166,233,84,27,149,82,132,97,72,175,215,219,78,146,228,253,248,34,149,44,203,122,85,169,84,110,100,67,250,7,74,41,124,223,127,
+35,165,188,9,8,32,157,201,109,100,73,107,253,73,8,113,90,74,121,86,107,109,105,173,81,74,17,199,49,65,16,68,131,193,224,117,146,36,79,129,159,64,12,164,249,23,20,129,10,176,0,204,3,151,0,55,155,246,119,
+224,35,240,3,248,6,244,128,104,92,192,200,54,179,8,156,202,28,26,205,8,80,89,215,40,59,167,211,126,227,48,63,94,75,135,164,60,126,3,247,241,29,79,115,3,189,187,0,0,0,0,73,69,78,68,174,66,96,130,0,0};
+
+const char* sklepSeqMainComponent::up_small_png = (const char*) resource_sklepSeqMainComponent_up_small_png;
+const int sklepSeqMainComponent::up_small_pngSize = 632;

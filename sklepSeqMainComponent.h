@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  16 Jun 2008 4:47:28 pm
+  Creation date:  16 Jun 2008 10:05:06 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_9BD6A629__
-#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_9BD6A629__
+#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_AAD1E788__
+#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_AAD1E788__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -52,7 +52,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void setPosition (AudioPlayHead::CurrentPositionInfo pos, sklepSeqPattern *currentPattern);
+	void setPosition (int beat, int bpm);
     void handleAsyncUpdate();
 	void clearCursor();
 
@@ -167,6 +167,14 @@ public:
     static const int sq_step_over_16_pngSize;
     static const char* lcd_bin;
     static const int lcd_binSize;
+    static const char* down_big_png;
+    static const int down_big_pngSize;
+    static const char* down_small_png;
+    static const int down_small_pngSize;
+    static const char* up_big_png;
+    static const int up_big_pngSize;
+    static const char* up_small_png;
+    static const int up_small_pngSize;
 
     //==============================================================================
     juce_UseDebuggingNewOperator
@@ -190,6 +198,10 @@ private:
     Label* currentPatternLabel;
     Label* currentStepInPatternLabel;
     Label* nextPatternLabel;
+    Label* patternLenLabel;
+    ImageButton* patternLenDown;
+    ImageButton* patternLenUp;
+    Label* label000;
     Image* internalCachedImage1;
 
     //==============================================================================
@@ -199,4 +211,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_9BD6A629__
+#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_AAD1E788__
