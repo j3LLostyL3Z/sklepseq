@@ -21,10 +21,7 @@ sklepSeqCursorComponent::~sklepSeqCursorComponent()
 
 void sklepSeqCursorComponent::paint(Graphics &g)
 {
-	if (isMouseOver())
-		g.drawImage (imageOver, 0, 0, 48, 48, 0, 0, 48, 48);
-	else
-		g.drawImage (image, 0, 0, 48, 48, 0, 0, 48, 48);
+	g.drawImage (image, 0, 0, 48, 48, 0, 0, 48, 48);
 }
 
 int sklepSeqCursorComponent::getX()

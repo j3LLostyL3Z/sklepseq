@@ -19,6 +19,8 @@ DemoJuceFilter::DemoJuceFilter()
 	for (int x=0; x<32; x++)
 		patterns.add (new sklepSeqPattern(x));
 
+	patterns[0]->setActive (true);
+	_p = 1;
 	currentPattern = 0;
 	currentPatternPtr = patterns[0];
 	isSyncedToHost = true;
@@ -138,7 +140,26 @@ void DemoJuceFilter::processBlock (AudioSampleBuffer& buffer,
 	        if (memcmp (&pos, &lastPosInfo, sizeof (pos)) != 0)
 			{
 	            lastPosInfo = pos;
-				sendChangeMessage (this);
+
+				const int ppqPerBar		= (pos.timeSigNumerator * 4 / pos.timeSigDenominator);
+				const double beats		= (fmod (pos.ppqPosition, ppqPerBar) / ppqPerBar) * pos.timeSigNumerator;
+				const double position	= beats*4;
+				const int beat			= (int)position;
+				
+				currentBpm	= (int)pos.bpm;
+
+				if (_p != beat)
+				{
+					currentPatternPtr->forward(beat+1);
+					currentBeat = currentPatternPtr->getCurrentPosition();
+
+					if (currentBeat > 16)
+						currentBeat = currentBeat - 16;
+
+					sendChangeMessage (this);
+				}
+				
+				_p = beat;
 			}
 		}
 		else
@@ -165,8 +186,6 @@ void DemoJuceFilter::getStateInformation (MemoryBlock& destData)
     // add some attributes to it..
     xmlState.setAttribute (T("pluginVersion"), 1);
     xmlState.setAttribute (T("gainLevel"), gain);
-    xmlState.setAttribute (T("uiWidth"), lastUIWidth);
-    xmlState.setAttribute (T("uiHeight"), lastUIHeight);
 
     // you could also add as many child elements as you need to here..
 
@@ -187,9 +206,6 @@ void DemoJuceFilter::setStateInformation (const void* data, int sizeInBytes)
         {
             // ok, now pull out our parameters..
             gain = (float) xmlState->getDoubleAttribute (T("gainLevel"), gain);
-
-            lastUIWidth = xmlState->getIntAttribute (T("uiWidth"), lastUIWidth);
-            lastUIHeight = xmlState->getIntAttribute (T("uiHeight"), lastUIHeight);
 
             sendChangeMessage (this);
         }

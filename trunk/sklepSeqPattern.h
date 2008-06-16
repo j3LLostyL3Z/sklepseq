@@ -18,13 +18,25 @@ class sklepSeqPattern  : public Component
 		MidiMessage *getMidiEvent (int n);
 		int getPatternId();
 		int getPatternLength();
-
+		void setPatternLength(int len);
+		void forward(int pos);
+		void setActive (bool t);
+		bool getActive();
+		int getCurrentPosition();
+		enum patternMode
+		{
+			patternForward,
+			patternReverse,
+			patternRandom
+		};
 	private:
 		MidiBuffer midiNotes;
-		int seqBpm;
-		bool hostSync;
 		int patternLength;
 		int patternId;
+		int currentPosition;
+		int previousPosition;
+		bool isActive;
+		short mode;
 };
 
 #endif // !defined(AFX_SKLEPSEQPATTERN_H__F277BDA6_FA04_4DC5_8E91_89AF43BE3A54__INCLUDED_)
