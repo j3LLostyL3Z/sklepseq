@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  17 Jun 2008 1:13:33 pm
+  Creation date:  17 Jun 2008 10:02:00 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_275EC986__
-#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_275EC986__
+#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_F778B20C__
+#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_F778B20C__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -175,6 +175,10 @@ public:
     static const int up_big_pngSize;
     static const char* up_small_png;
     static const int up_small_pngSize;
+    static const char* power_off_png;
+    static const int power_off_pngSize;
+    static const char* power_on_png;
+    static const int power_on_pngSize;
 
     //==============================================================================
     juce_UseDebuggingNewOperator
@@ -202,6 +206,7 @@ private:
     Label* currentPatternLabel;
     ImageButton* currentPatternDown;
     ImageButton* currentPatternUp;
+    ImageButton* powerButton;
     Image* internalCachedImage1;
 
     //==============================================================================
@@ -211,4 +216,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_275EC986__
+#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_F778B20C__
