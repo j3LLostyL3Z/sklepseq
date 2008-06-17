@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  16 Jun 2008 10:05:06 pm
+  Creation date:  17 Jun 2008 1:13:33 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_AAD1E788__
-#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_AAD1E788__
+#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_275EC986__
+#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_275EC986__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -55,7 +55,7 @@ public:
 	void setPosition (int beat, int bpm);
     void handleAsyncUpdate();
 	void clearCursor();
-
+	void patternChanged();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -195,13 +195,13 @@ private:
     //==============================================================================
     sklepSeqTransportComponent* transportComponent;
     ImageButton* optionsButton;
-    Label* currentPatternLabel;
     Label* currentStepInPatternLabel;
-    Label* nextPatternLabel;
     Label* patternLenLabel;
     ImageButton* patternLenDown;
     ImageButton* patternLenUp;
-    Label* label000;
+    Label* currentPatternLabel;
+    ImageButton* currentPatternDown;
+    ImageButton* currentPatternUp;
     Image* internalCachedImage1;
 
     //==============================================================================
@@ -211,4 +211,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_AAD1E788__
+#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_275EC986__
