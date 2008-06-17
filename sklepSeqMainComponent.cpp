@@ -200,6 +200,12 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
 	options = new sklepSeqPatternControl();
 	options->setBounds (32,0,427,100);
 	addChildComponent (options);
+	
+	powerButton->setMouseCursor (MouseCursor::PointingHandCursor);
+	currentPatternUp->setMouseCursor (MouseCursor::PointingHandCursor);
+	currentPatternDown->setMouseCursor (MouseCursor::PointingHandCursor);
+	patternLenDown->setMouseCursor (MouseCursor::PointingHandCursor);
+	patternLenUp->setMouseCursor (MouseCursor::PointingHandCursor);
 
 	ownerFilter->getCallbackLock().enter();
 	patternChanged();
@@ -352,6 +358,19 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == powerButton)
     {
         //[UserButtonCode_powerButton] -- add your button handler code here..
+		ownerFilter->getCallbackLock().enter();
+		const bool t = ownerFilter->getCurrentPattern()->getActive();
+		if (t)
+		{
+			ownerFilter->getCurrentPattern()->setActive (false);
+		}
+		else
+		{
+			ownerFilter->getCurrentPattern()->setActive (true);
+		}
+		ownerFilter->getCallbackLock().exit();
+
+		patternChanged();
         //[/UserButtonCode_powerButton]
     }
 
@@ -414,6 +433,21 @@ void sklepSeqMainComponent::patternChanged()
 
 	currentPatternLabel->setText (String::formatted (T("%d"), p->getPatternId()), false);
 	patternLenLabel->setText (String::formatted (T("%d"), p->getPatternLength()), false);
+
+	if (p->getActive())
+	{
+		powerButton->setImages (false, true, true,
+		                     ImageCache::getFromMemory (power_on_png, power_on_pngSize), 0.9000f, Colour (0x0),
+		                     ImageCache::getFromMemory (power_on_png, power_on_pngSize), 1.0000f, Colour (0x0),
+			                    0, 1.0000f, Colour (0x0));
+	}
+	else
+	{
+		powerButton->setImages (false, true, true,
+		                     ImageCache::getFromMemory (power_off_png, power_off_pngSize), 0.7000f, Colour (0x0),
+		                     ImageCache::getFromMemory (power_off_png, power_off_pngSize), 1.0000f, Colour (0x0),
+			                    0, 1.0000f, Colour (0x0));
+	}
 }
 //[/MiscUserCode]
 
