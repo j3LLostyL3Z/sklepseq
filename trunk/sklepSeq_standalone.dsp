@@ -1,10 +1,10 @@
-# Microsoft Developer Studio Project File - Name="juce_application" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="sklepSeq_standalone" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
 
-CFG=juce_application - Win32 Debug
+CFG=sklepSeq_standalone - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
@@ -13,12 +13,12 @@ CFG=juce_application - Win32 Debug
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "sklepSeq_standalone.mak" CFG="juce_application - Win32 Debug"
+!MESSAGE NMAKE /f "sklepSeq_standalone.mak" CFG="sklepSeq_standalone - Win32 Debug"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "juce_application - Win32 Release" (based on "Win32 (x86) Application")
-!MESSAGE "juce_application - Win32 Debug" (based on "Win32 (x86) Application")
+!MESSAGE "sklepSeq_standalone - Win32 Release" (based on "Win32 (x86) Application")
+!MESSAGE "sklepSeq_standalone - Win32 Debug" (based on "Win32 (x86) Application")
 !MESSAGE 
 
 # Begin Project
@@ -29,7 +29,7 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "juce_application - Win32 Release"
+!IF  "$(CFG)" == "sklepSeq_standalone - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -55,7 +55,7 @@ LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib wldap32.lib ws2_32.lib /nologo /subsystem:windows /machine:I386 /libpath:"../../bin"
 
-!ELSEIF  "$(CFG)" == "juce_application - Win32 Debug"
+!ELSEIF  "$(CFG)" == "sklepSeq_standalone - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -85,8 +85,8 @@ LINK32=link.exe
 
 # Begin Target
 
-# Name "juce_application - Win32 Release"
-# Name "juce_application - Win32 Debug"
+# Name "sklepSeq_standalone - Win32 Release"
+# Name "sklepSeq_standalone - Win32 Debug"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
