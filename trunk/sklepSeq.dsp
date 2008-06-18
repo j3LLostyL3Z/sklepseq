@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /out:"Release/sklepSeq_vst.dll"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /out:"Release/sklepSeq_release_vst.dll"
 
 !ELSEIF  "$(CFG)" == "sklepSeq - Win32 Debug"
 
@@ -79,7 +79,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /out:"Debug/sklepSeq_vst.dll" /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /out:"Debug/sklepSeq_debug_vst.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -116,6 +116,10 @@ SOURCE=.\sklepSeqStep.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\sklepSeqStepComponentEditor.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\sklepSeqTransportComponent.cpp
 # End Source File
 # End Group
@@ -145,6 +149,10 @@ SOURCE=.\sklepSeqPatternControl.h
 # Begin Source File
 
 SOURCE=.\sklepSeqStep.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqStepComponentEditor.h
 # End Source File
 # Begin Source File
 

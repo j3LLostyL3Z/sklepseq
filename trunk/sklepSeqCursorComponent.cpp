@@ -10,6 +10,7 @@
 
 sklepSeqCursorComponent::sklepSeqCursorComponent(Image *i, int x, int y)
 {
+	setBufferedToImage (true);
 	posX		= x;
 	posY		= y;
 	image		= i;

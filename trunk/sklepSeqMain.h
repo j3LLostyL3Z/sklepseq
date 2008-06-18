@@ -33,6 +33,7 @@
 #define DEMOJUCEPLUGINFILTER_H
 
 #include "sklepSeqPattern.h"
+#include "midiMessageManager.h"
 
 //==============================================================================
 /**
@@ -114,15 +115,18 @@ public:
 	void setCurrentPattern (int p);
 	void setSyncToHost (bool t);
 	bool getSyncToHost();
+	void activatePattern (bool t, int pId);
+	void addPatternToActiveList (bool t, int pId);
     //==============================================================================
     juce_UseDebuggingNewOperator
 
 private:
     // this is our gain - the UI and the host can access this by getting/setting
     // parameter 0.
-    float gain;
-	bool isSyncedToHost;
+	midiMessageManager midiManager;
 	int _p;
+	bool isSyncedToHost;
+	Array <bool> activePatterns;
 };
 
 

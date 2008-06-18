@@ -15,6 +15,11 @@ sklepSeqPattern::sklepSeqPattern(int _id)
 	isActive		=	false;
 	currentPosition	=	1;
 	mode			=	patternForward;
+
+	for (int x=0; x<32; x++)
+	{
+		midiNotes.addEvent (MidiMessage (0xf0, (double)x));
+	}
 }
 
 sklepSeqPattern::~sklepSeqPattern()
@@ -44,6 +49,12 @@ void sklepSeqPattern::forward(int pos)
 	if (pos == currentPosition)
 		return;
 
+	if (patternHasBeenActivated)
+	{
+		currentPosition = pos;
+		patternHasBeenActivated = false;
+	}
+
 	if (mode == patternForward)
 		currentPosition++;
 
@@ -58,6 +69,11 @@ void sklepSeqPattern::forward(int pos)
 
 void sklepSeqPattern::setActive (bool t)
 {
+	if (!isActive)
+	{
+		patternHasBeenActivated = true;
+	}
+
 	isActive = t;
 }
 
@@ -69,4 +85,9 @@ bool sklepSeqPattern::getActive ()
 int sklepSeqPattern::getCurrentPosition ()
 {
 	return (currentPosition);
+}
+
+void sklepSeqPattern::addMidiManager (midiMessageManager *m)
+{
+	midiManager = m;
 }
