@@ -128,6 +128,7 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
     internalCachedImage1 = ImageCache::getFromMemory (sq_back_png, sq_back_pngSize);
 
     //[UserPreSize]
+	setBufferedToImage (true);
 	ownerFilter = f;
 	prevPos = 1;
 
@@ -360,13 +361,15 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
         //[UserButtonCode_powerButton] -- add your button handler code here..
 		ownerFilter->getCallbackLock().enter();
 		const bool t = ownerFilter->getCurrentPattern()->getActive();
+		const int pId = ownerFilter->getCurrentPattern()->getPatternId();
+
 		if (t)
 		{
-			ownerFilter->getCurrentPattern()->setActive (false);
+			ownerFilter->activatePattern (false, pId);
 		}
 		else
 		{
-			ownerFilter->getCurrentPattern()->setActive (true);
+			ownerFilter->activatePattern (true, pId);
 		}
 		ownerFilter->getCallbackLock().exit();
 
@@ -400,7 +403,7 @@ void sklepSeqMainComponent::setPosition (int beat, int bpm)
 		if (beat-2 >= 0)
 			cursor[beat-2]->setVisible (false);
 
-		currentStepInPatternLabel->setText (String::formatted (T("%d"), beat), false);
+		// currentStepInPatternLabel->setText (String (beat), false);
 	}
 
 	prevPos = beat;

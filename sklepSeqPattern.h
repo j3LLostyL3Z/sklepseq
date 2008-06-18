@@ -6,6 +6,7 @@
 #define AFX_SKLEPSEQPATTERN_H__F277BDA6_FA04_4DC5_8E91_89AF43BE3A54__INCLUDED_
 
 #include <juce.h>
+#include "midiMessageManager.h"
 
 class sklepSeqPattern  : public Component
 {
@@ -29,14 +30,18 @@ class sklepSeqPattern  : public Component
 			patternReverse,
 			patternRandom
 		};
+		void addMidiManager (midiMessageManager *m);
+
 	private:
-		MidiBuffer midiNotes;
+		MidiMessageSequence midiNotes;
 		int patternLength;
 		int patternId;
 		int currentPosition;
 		int previousPosition;
 		bool isActive;
 		short mode;
+		bool patternHasBeenActivated;
+		midiMessageManager *midiManager;
 };
 
 #endif // !defined(AFX_SKLEPSEQPATTERN_H__F277BDA6_FA04_4DC5_8E91_89AF43BE3A54__INCLUDED_)

@@ -7,14 +7,16 @@
 
 #include <juce.h>
 
-class sklepSeqStep : public ImageButton  
+class sklepSeqStepComponentEditor;
+
+class sklepSeqStep : public ImageButton, public MidiKeyboardState
 {
 	public:
 		sklepSeqStep(Image *i, Image *i2, int x, int y);
 		~sklepSeqStep();
 		int getX();
 		int getY();
-
+		void clicked (const ModifierKeys &modifiers);
 
 	private:
 		int posX, posY;

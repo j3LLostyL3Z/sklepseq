@@ -13,8 +13,11 @@ DemoJuceFilter::DemoJuceFilter()
 	{
 		patterns.add (new sklepSeqPattern(x));
 		patterns[x]->setActive (false);
+		patterns[x]->addMidiManager (&midiManager);
+		activePatterns.add (false);
 	}
 
+	activePatterns.set (0, true);
 	patterns[0]->setActive (true);
 	_p = 1;
 
@@ -123,7 +126,14 @@ void DemoJuceFilter::processBlock (AudioSampleBuffer& buffer,
 
 				if (_p != beat)
 				{
-					currentPatternPtr->forward(beat+1);
+					for (int x=0; x<64; x++)
+					{
+						if (activePatterns[x])
+						{
+							patterns[x]->forward(beat+1);
+						}
+					}
+
 					currentBeat = currentPatternPtr->getCurrentPosition();
 
 					if (currentBeat > 16)
@@ -154,7 +164,6 @@ void DemoJuceFilter::getStateInformation (MemoryBlock& destData)
 {
     XmlElement xmlState (T("MYPLUGINSETTINGS"));
     xmlState.setAttribute (T("pluginVersion"), 1);
-    xmlState.setAttribute (T("gainLevel"), gain);
     copyXmlToBinary (xmlState, destData);
 }
 
@@ -165,7 +174,6 @@ void DemoJuceFilter::setStateInformation (const void* data, int sizeInBytes)
     {
         if (xmlState->hasTagName (T("MYPLUGINSETTINGS")))
         {
-            gain = (float) xmlState->getDoubleAttribute (T("gainLevel"), gain);
             sendChangeMessage (this);
         }
         delete xmlState;
@@ -209,4 +217,18 @@ void DemoJuceFilter::setSyncToHost (bool t)
 bool DemoJuceFilter::getSyncToHost ()
 {
 	return (isSyncedToHost);
+}
+
+void DemoJuceFilter::activatePattern (bool t, int pId)
+{
+	if (patterns[pId])
+	{
+		addPatternToActiveList (t, pId);
+		patterns[pId]->setActive (t);
+	}
+}
+
+void DemoJuceFilter::addPatternToActiveList (bool t, int pId)
+{
+	activePatterns.set (pId, t);
 }
