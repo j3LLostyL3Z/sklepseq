@@ -100,18 +100,51 @@ void sklepSeqPattern::addMidiManager (midiMessageManager *m)
 	midiManager = m;
 }
 
-void sklepSeqPattern::setNote (int nId, int nNumber, float nVelo)
+void sklepSeqPattern::setStep (int nId, int nNumber, float nVelo)
 {
 	if (nNumber == 0 && nVelo == 0.0)
 	{
-		if (notes[nId]->m)
+		if (notes[nId]->enabled)
+		{
+			notes[nId]->enabled = false;
 			deleteAndZero (notes[nId]->m);
+		}
 	}
 	else
 	{
-		if (notes[nId]->m)
+		if (notes[nId]->enabled)
 			deleteAndZero (notes[nId]->m);
 		
 		notes[nId]->m = new MidiMessage (MidiMessage::noteOn (midiChannel, nNumber, nVelo));
+	}
+}
+
+MidiMessage* sklepSeqPattern::getStep (int nId)
+{
+	if (notes[nId])
+	{
+		if (notes[nId]->enabled)
+			return (notes[nId]->m);
+		else
+			return (0);
+	}
+	else
+	{
+		return (0);
+	}
+}
+
+void sklepSeqPattern::toggleStep(int nId)
+{
+	if (notes[nId])
+	{
+		if (notes[nId]->enabled)
+		{
+			notes[nId]->enabled = false;
+		}
+		else
+		{
+			notes[nId]->enabled = true;
+		}
 	}
 }

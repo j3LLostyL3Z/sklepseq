@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  17 Jun 2008 10:02:00 pm
+  Creation date:  20 Jun 2008 9:25:48 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_F778B20C__
-#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_F778B20C__
+#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_4CC53235__
+#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_4CC53235__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -56,6 +56,8 @@ public:
     void handleAsyncUpdate();
 	void clearCursor();
 	void patternChanged();
+	void stepLeftClicked(int i);
+	void stepRightClicked(int i);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -99,72 +101,8 @@ public:
     static const int sq_kursor_15_pngSize;
     static const char* sq_kursor_16_png;
     static const int sq_kursor_16_pngSize;
-    static const char* sq_step_off_1_png;
-    static const int sq_step_off_1_pngSize;
-    static const char* sq_step_off_2_png;
-    static const int sq_step_off_2_pngSize;
-    static const char* sq_step_off_3_png;
-    static const int sq_step_off_3_pngSize;
-    static const char* sq_step_off_4_png;
-    static const int sq_step_off_4_pngSize;
-    static const char* sq_step_off_5_png;
-    static const int sq_step_off_5_pngSize;
-    static const char* sq_step_off_6_png;
-    static const int sq_step_off_6_pngSize;
-    static const char* sq_step_off_7_png;
-    static const int sq_step_off_7_pngSize;
-    static const char* sq_step_off_8_png;
-    static const int sq_step_off_8_pngSize;
-    static const char* sq_step_off_9_png;
-    static const int sq_step_off_9_pngSize;
-    static const char* sq_step_off_10_png;
-    static const int sq_step_off_10_pngSize;
-    static const char* sq_step_off_11_png;
-    static const int sq_step_off_11_pngSize;
-    static const char* sq_step_off_12_png;
-    static const int sq_step_off_12_pngSize;
-    static const char* sq_step_off_13_png;
-    static const int sq_step_off_13_pngSize;
-    static const char* sq_step_off_14_png;
-    static const int sq_step_off_14_pngSize;
-    static const char* sq_step_off_15_png;
-    static const int sq_step_off_15_pngSize;
-    static const char* sq_step_off_16_png;
-    static const int sq_step_off_16_pngSize;
     static const char* rondw_03_png;
     static const int rondw_03_pngSize;
-    static const char* sq_step_over_1_png;
-    static const int sq_step_over_1_pngSize;
-    static const char* sq_step_over_2_png;
-    static const int sq_step_over_2_pngSize;
-    static const char* sq_step_over_3_png;
-    static const int sq_step_over_3_pngSize;
-    static const char* sq_step_over_4_png;
-    static const int sq_step_over_4_pngSize;
-    static const char* sq_step_over_5_png;
-    static const int sq_step_over_5_pngSize;
-    static const char* sq_step_over_6_png;
-    static const int sq_step_over_6_pngSize;
-    static const char* sq_step_over_7_png;
-    static const int sq_step_over_7_pngSize;
-    static const char* sq_step_over_8_png;
-    static const int sq_step_over_8_pngSize;
-    static const char* sq_step_over_9_png;
-    static const int sq_step_over_9_pngSize;
-    static const char* sq_step_over_10_png;
-    static const int sq_step_over_10_pngSize;
-    static const char* sq_step_over_11_png;
-    static const int sq_step_over_11_pngSize;
-    static const char* sq_step_over_12_png;
-    static const int sq_step_over_12_pngSize;
-    static const char* sq_step_over_13_png;
-    static const int sq_step_over_13_pngSize;
-    static const char* sq_step_over_14_png;
-    static const int sq_step_over_14_pngSize;
-    static const char* sq_step_over_15_png;
-    static const int sq_step_over_15_pngSize;
-    static const char* sq_step_over_16_png;
-    static const int sq_step_over_16_pngSize;
     static const char* lcd_bin;
     static const int lcd_binSize;
     static const char* down_big_png;
@@ -216,4 +154,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_F778B20C__
+#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_4CC53235__
