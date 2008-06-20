@@ -8,6 +8,18 @@
 #include <juce.h>
 #include "midiMessageManager.h"
 
+class midiMessage2
+{
+	public:
+		midiMessage2()
+		{
+			m = 0;
+			id = 0;
+		};
+		MidiMessage *m;
+		int id;
+};
+
 class sklepSeqPattern  : public Component
 {
 	public:
@@ -31,9 +43,10 @@ class sklepSeqPattern  : public Component
 			patternRandom
 		};
 		void addMidiManager (midiMessageManager *m);
+		void triggerEvents ();
+		void setNote (int nId, int nNumber, float nVelo);
 
 	private:
-		MidiMessageSequence midiNotes;
 		int patternLength;
 		int patternId;
 		int currentPosition;
@@ -42,6 +55,8 @@ class sklepSeqPattern  : public Component
 		short mode;
 		bool patternHasBeenActivated;
 		midiMessageManager *midiManager;
+		int midiChannel;
+		OwnedArray <midiMessage2> notes;
 };
 
 #endif // !defined(AFX_SKLEPSEQPATTERN_H__F277BDA6_FA04_4DC5_8E91_89AF43BE3A54__INCLUDED_)
