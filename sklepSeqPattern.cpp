@@ -104,6 +104,14 @@ void sklepSeqPattern::setNote (int nId, int nNumber, float nVelo)
 {
 	if (nNumber == 0 && nVelo == 0.0)
 	{
-		deleteAndZero (notes[nId]->m);
+		if (notes[nId]->m)
+			deleteAndZero (notes[nId]->m);
+	}
+	else
+	{
+		if (notes[nId]->m)
+			deleteAndZero (notes[nId]->m);
+		
+		notes[nId]->m = new MidiMessage (MidiMessage::noteOn (midiChannel, nNumber, nVelo));
 	}
 }
