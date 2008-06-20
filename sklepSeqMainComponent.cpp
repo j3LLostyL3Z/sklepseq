@@ -299,6 +299,8 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 		{
 			options->setVisible (false);
 		}
+
+		return;
         //[/UserButtonCode_optionsButton]
     }
     else if (buttonThatWasClicked == patternLenDown)
@@ -313,6 +315,8 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 		ownerFilter->getCallbackLock().exit();
 
 		patternLenLabel->setText (String::formatted (T("%d"), l-1), false);
+
+		return;
         //[/UserButtonCode_patternLenDown]
     }
     else if (buttonThatWasClicked == patternLenUp)
@@ -327,6 +331,8 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 		ownerFilter->getCallbackLock().exit();
 
 		patternLenLabel->setText (String::formatted (T("%d"), l+1), false);
+
+		return;
         //[/UserButtonCode_patternLenUp]
     }
     else if (buttonThatWasClicked == currentPatternDown)
@@ -341,6 +347,8 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 		ownerFilter->getCallbackLock().exit();
 
 		patternChanged();
+
+		return;
         //[/UserButtonCode_currentPatternDown]
     }
     else if (buttonThatWasClicked == currentPatternUp)
@@ -355,6 +363,8 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 		ownerFilter->getCallbackLock().exit();
 
 		patternChanged();
+
+		return;
         //[/UserButtonCode_currentPatternUp]
     }
     else if (buttonThatWasClicked == powerButton)
@@ -375,12 +385,17 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 		ownerFilter->getCallbackLock().exit();
 
 		patternChanged();
+
+		return;
         //[/UserButtonCode_powerButton]
     }
 
     //[UserbuttonClicked_Post]
 	sklepSeqStep *step = (sklepSeqStep *)buttonThatWasClicked;
 	const int i = step->getIndex();
+
+	if (i<=0)
+		return;
 
 	if (step->getPopup())
 	{
