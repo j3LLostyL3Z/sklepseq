@@ -22,6 +22,7 @@ class sklepSeqStep : public ImageButton, public MidiKeyboardState
 		int posX, posY;
 		Image *image;
 		Image *imageOver;
+		int midiChannel;
 
 };
 

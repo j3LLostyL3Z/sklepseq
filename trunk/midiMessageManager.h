@@ -37,7 +37,10 @@ class midiMessageManager
 		void addMidiMessage (MidiMessage *msg, int device = 0);
 		void addMidiBuffer (MidiBuffer *mBuf, int device = 0);
 		void processMidiEvents ();
-		MidiBuffer *getLeftMessages();
+		MidiBuffer getLeftMessages();
+		void clear();
+		void sendMessageToDevice (midiMessage *m);
+		bool isDeviceOpen(int device);
 
 	private:
 		StringArray midiOutputList;

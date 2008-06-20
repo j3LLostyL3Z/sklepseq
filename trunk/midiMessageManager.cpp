@@ -34,6 +34,22 @@ void midiMessageManager::processMidiEvents ()
 {
 	if (m.size() > 0)
 	{
+		for (int x=0; x<m.size(); x++)
+		{
+			midiMessage *msg = m[x];
+			if (msg)
+			{
+				if (msg->id > 0)
+				{
+					/* out to device */
+					if (isDeviceOpen (msg->id))
+					{
+						sendMessageToDevice (msg);
+					}
+					m.remove (x, true);
+				}
+			}
+		}
 	}
 	else
 	{
@@ -41,7 +57,35 @@ void midiMessageManager::processMidiEvents ()
 	}
 }
 
-MidiBuffer *midiMessageManager::getLeftMessages()
+MidiBuffer midiMessageManager::getLeftMessages()
 {
-	return (0);
+	MidiBuffer b;
+
+	for (int x=0; x<m.size(); x++)
+	{
+		if (m[x]->m)
+		{
+			b.addEvent (*m[x]->m, x);
+		}
+		if (m[x]->mB)
+		{
+			b.addEvents (*m[x]->mB, 0, 0, 0);
+		}
+	}
+
+	return (b);
+}
+
+void midiMessageManager::clear()
+{
+	m.clear();
+}
+
+void midiMessageManager::sendMessageToDevice (midiMessage *m)
+{
+}
+
+bool midiMessageManager::isDeviceOpen(int device)
+{
+	return (false);
 }
