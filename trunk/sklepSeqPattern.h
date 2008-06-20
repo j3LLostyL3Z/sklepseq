@@ -13,11 +13,13 @@ class midiMessage2
 	public:
 		midiMessage2()
 		{
-			m = 0;
+			m = new MidiMessage (MidiMessage::noteOn (1, 64, 1.0f));
 			id = 0;
+			enabled = false;
 		};
 		MidiMessage *m;
 		int id;
+		bool enabled;
 };
 
 class sklepSeqPattern  : public Component
@@ -44,7 +46,9 @@ class sklepSeqPattern  : public Component
 		};
 		void addMidiManager (midiMessageManager *m);
 		void triggerEvents ();
-		void setNote (int nId, int nNumber, float nVelo);
+		void setStep (int nId, int nNumber, float nVelo);
+		MidiMessage* getStep (int nId);
+		void toggleStep(int nId);
 
 	private:
 		int patternLength;
