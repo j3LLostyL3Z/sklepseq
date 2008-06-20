@@ -144,8 +144,6 @@ void sklepSeqStep::clicked (const ModifierKeys &modifiers)
 	if (modifiers.isPopupMenu())
 	{
 		popup = true;
-
-
 	}
 	else
 	{
