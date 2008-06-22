@@ -394,12 +394,12 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 	sklepSeqStep *step = (sklepSeqStep *)buttonThatWasClicked;
 	const int i = step->getIndex();
 
-	if (i<=0)
+	if (i<0)
 		return;
 
 	if (step->getPopup())
 	{
-		Logger::writeToLog (String::formatted (T("step %d right click"), i));
+		DialogWindow::showModalDialog (T("Event properties"), new sklepSeqStepComponentEditor(), this, Colours::white, true, false, false);
 	}
 	else
 	{

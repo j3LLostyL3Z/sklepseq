@@ -34,6 +34,7 @@
 
 #include "sklepSeqMain.h"
 #include "sklepSeqMainComponent.h"
+#include "sklepSeqSkin.h"
 
 //==============================================================================
 /**

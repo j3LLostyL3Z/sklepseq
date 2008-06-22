@@ -25,6 +25,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
 #include "sklepSeqCursorComponent.h"
+#include "sklepSeqStepComponentEditor.h"
 #include "sklepSeqPatternControl.h"
 #include "sklepSeqMain.h"
 #include "sklepSeqStep.h"

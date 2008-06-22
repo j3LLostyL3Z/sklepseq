@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  18 Jun 2008 9:23:13 pm
+  Creation date:  21 Jun 2008 8:03:49 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -29,17 +29,13 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-sklepSeqStepComponentEditor::sklepSeqStepComponentEditor (sklepSeqStep *parent)
-    : keyboardCmp (0)
+sklepSeqStepComponentEditor::sklepSeqStepComponentEditor ()
 {
-    addAndMakeVisible (keyboardCmp = new MidiKeyboardComponent (*parent,MidiKeyboardComponent::horizontalKeyboard ));
-    keyboardCmp->setName (T("Keyboard"));
-
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (256, 92);
+    setSize (340, 120);
 
     //[Constructor] You can add your own custom stuff here..
     //[/Constructor]
@@ -50,7 +46,7 @@ sklepSeqStepComponentEditor::~sklepSeqStepComponentEditor()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    deleteAndZero (keyboardCmp);
+
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -62,11 +58,11 @@ void sklepSeqStepComponentEditor::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.setColour (Colour (0x6cffffff));
-    g.fillRoundedRectangle (0.0f, 0.0f, 256.0f, 92.0f, 10.5000f);
+    g.setColour (Colour (0x7dffffff));
+    g.fillRoundedRectangle (0.0f, 0.0f, 340.0f, 120.0f, 10.0000f);
 
-    g.setColour (Colour (0xffcfcfcf));
-    g.drawRoundedRectangle (0.0f, 0.0f, 256.0f, 92.0f, 10.5000f, 1.0000f);
+    g.setColour (Colour (0xffb9b9b9));
+    g.drawRoundedRectangle (0.0f, 0.0f, 340.0f, 120.0f, 10.0000f, 0.1000f);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -74,7 +70,6 @@ void sklepSeqStepComponentEditor::paint (Graphics& g)
 
 void sklepSeqStepComponentEditor::resized()
 {
-    keyboardCmp->setBounds (8, 40, 240, 48);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -94,17 +89,14 @@ void sklepSeqStepComponentEditor::resized()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="sklepSeqStepComponentEditor"
-                 componentName="" parentClasses="public Component" constructorParams="sklepSeqStep *parent"
+                 componentName="" parentClasses="public Component" constructorParams=""
                  variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
-                 overlayOpacity="0.330000013" fixedSize="1" initialWidth="256"
-                 initialHeight="92">
+                 overlayOpacity="0.330000013" fixedSize="1" initialWidth="340"
+                 initialHeight="120">
   <BACKGROUND backgroundColour="ffffff">
-    <ROUNDRECT pos="0 0 256 92" cornerSize="10.5" fill="solid: 6cffffff" hasStroke="1"
-               stroke="1, mitered, butt" strokeColour="solid: ffcfcfcf"/>
+    <ROUNDRECT pos="0 0 340 120" cornerSize="10" fill="solid: 7dffffff" hasStroke="1"
+               stroke="0.100000001, mitered, butt" strokeColour="solid: ffb9b9b9"/>
   </BACKGROUND>
-  <GENERICCOMPONENT name="Keyboard" id="3f760baf8d941098" memberName="keyboardCmp"
-                    virtualName="" explicitFocusOrder="0" pos="8 40 240 48" class="MidiKeyboardComponent"
-                    params="*parent,MidiKeyboardComponent::horizontalKeyboard "/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
