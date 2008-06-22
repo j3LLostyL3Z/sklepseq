@@ -120,6 +120,10 @@ SOURCE=.\sklepSeqPatternControl.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\sklepSeqSkin.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\sklepSeqStep.cpp
 # End Source File
 # Begin Source File
