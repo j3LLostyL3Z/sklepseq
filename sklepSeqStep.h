@@ -7,7 +7,6 @@
 
 #include <juce.h>
 
-class sklepSeqStepComponentEditor;
 class sklepSeqMainComponent;
 
 class sklepSeqStep : public ImageButton, public MidiKeyboardState

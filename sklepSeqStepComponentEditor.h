@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  18 Jun 2008 9:23:13 pm
+  Creation date:  21 Jun 2008 8:03:49 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_C03C055D__
-#define __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_C03C055D__
+#ifndef __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_BE112414__
+#define __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_BE112414__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -41,7 +41,7 @@ class sklepSeqStepComponentEditor  : public Component
 {
 public:
     //==============================================================================
-    sklepSeqStepComponentEditor (sklepSeqStep *parent);
+    sklepSeqStepComponentEditor ();
     ~sklepSeqStepComponentEditor();
 
     //==============================================================================
@@ -60,7 +60,7 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    MidiKeyboardComponent* keyboardCmp;
+
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
@@ -69,4 +69,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_C03C055D__
+#endif   // __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_BE112414__

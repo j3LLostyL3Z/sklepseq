@@ -74,6 +74,8 @@ static const String ppqToBarsBeatsString (const double ppq,
 DemoEditorComponent::DemoEditorComponent (DemoJuceFilter* const ownerFilter)
     : AudioProcessorEditor (ownerFilter)
 {
+	LookAndFeel::setDefaultLookAndFeel (new sklepSeqSkin());
+
 	main  = new sklepSeqMainComponent(ownerFilter);
 	addAndMakeVisible (main);
 
