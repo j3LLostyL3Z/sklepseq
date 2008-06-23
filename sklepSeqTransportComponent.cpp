@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  16 Jun 2008 4:47:46 pm
+  Creation date:  23 Jun 2008 2:06:24 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -36,7 +36,8 @@ sklepSeqTransportComponent::sklepSeqTransportComponent (DemoJuceFilter *_f)
       playButton (0),
       stopButton (0),
       bpmLabel (0),
-      syncToHost (0)
+      syncToHost (0),
+      playlistButton (0)
 {
     addAndMakeVisible (bpmInput = new Slider (T("BPM")));
     bpmInput->setTooltip (T("BPM"));
@@ -87,6 +88,13 @@ sklepSeqTransportComponent::sklepSeqTransportComponent (DemoJuceFilter *_f)
     syncToHost->addButtonListener (this);
     syncToHost->setColour (ToggleButton::textColourId, Colour (0xff979797));
 
+    addAndMakeVisible (playlistButton = new ImageButton (T("new button")));
+    playlistButton->addButtonListener (this);
+
+    playlistButton->setImages (false, true, true,
+                               ImageCache::getFromMemory (playlist_png, playlist_pngSize), 0.7000f, Colour (0x0),
+                               ImageCache::getFromMemory (playlist_png, playlist_pngSize), 1.0000f, Colour (0x0),
+                               0, 1.0000f, Colour (0x0));
 
     //[UserPreSize]
 	parent = _f;
@@ -111,6 +119,7 @@ sklepSeqTransportComponent::~sklepSeqTransportComponent()
     deleteAndZero (stopButton);
     deleteAndZero (bpmLabel);
     deleteAndZero (syncToHost);
+    deleteAndZero (playlistButton);
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -134,6 +143,7 @@ void sklepSeqTransportComponent::resized()
     stopButton->setBounds (64, 0, 32, 32);
     bpmLabel->setBounds (104, 0, 24, 8);
     syncToHost->setBounds (184, 8, 64, 16);
+    playlistButton->setBounds (256, 2, 24, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -178,6 +188,11 @@ void sklepSeqTransportComponent::buttonClicked (Button* buttonThatWasClicked)
         //[UserButtonCode_syncToHost] -- add your button handler code here..
 		parent->setSyncToHost (syncToHost->getToggleState());
         //[/UserButtonCode_syncToHost]
+    }
+    else if (buttonThatWasClicked == playlistButton)
+    {
+        //[UserButtonCode_playlistButton] -- add your button handler code here..
+        //[/UserButtonCode_playlistButton]
     }
 
     //[UserbuttonClicked_Post]
@@ -239,6 +254,12 @@ BEGIN_JUCER_METADATA
                 virtualName="" explicitFocusOrder="0" pos="184 8 64 16" tooltip="Sync To Host"
                 txtcol="ff979797" buttonText="Sync to host" connectedEdges="0"
                 needsCallback="1" radioGroupId="0" state="0"/>
+  <IMAGEBUTTON name="new button" id="7049ee62e1739e42" memberName="playlistButton"
+               virtualName="" explicitFocusOrder="0" pos="256 2 24 24" buttonText="new button"
+               connectedEdges="0" needsCallback="1" radioGroupId="0" keepProportions="1"
+               resourceNormal="playlist_png" opacityNormal="0.699999988" colourNormal="0"
+               resourceOver="playlist_png" opacityOver="1" colourOver="0" resourceDown=""
+               opacityDown="1" colourDown="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
@@ -625,3 +646,26 @@ static const unsigned char resource_sklepSeqTransportComponent_rondw_10_1_png[] 
 
 const char* sklepSeqTransportComponent::rondw_10_1_png = (const char*) resource_sklepSeqTransportComponent_rondw_10_1_png;
 const int sklepSeqTransportComponent::rondw_10_1_pngSize = 2289;
+
+// JUCER_RESOURCE: playlist_png, 971, "C:\playlist.png"
+static const unsigned char resource_sklepSeqTransportComponent_playlist_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,32,0,0,0,32,8,6,0,0,0,115,122,122,244,0,0,0,1,115,82,71,66,0,174,206,
+28,233,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,11,19,0,0,11,19,1,0,154,156,24,0,0,0,7,116,73,77,69,7,216,6,23,12,3,40,103,181,172,57,0,0,3,75,73,68,65,84,88,195,
+189,151,65,75,244,70,24,199,127,147,236,186,89,92,216,224,130,138,7,241,240,162,31,160,231,94,219,155,87,15,253,4,94,91,122,42,253,12,162,82,16,15,125,115,84,94,17,65,16,68,240,80,60,9,149,101,143,94,
+10,178,120,240,16,217,21,107,178,73,102,122,121,39,205,206,38,155,236,235,219,14,12,153,76,50,249,63,207,255,249,63,207,76,224,223,246,1,248,11,80,255,113,255,3,104,107,208,90,198,128,31,58,157,206,218,
+246,246,54,0,74,41,148,82,133,227,236,156,148,50,247,153,185,238,245,245,21,207,243,190,5,190,3,62,153,6,216,237,118,155,173,173,45,54,54,54,248,146,166,193,138,218,209,209,17,158,231,1,52,242,24,0,64,
+8,65,189,94,231,255,106,181,105,158,248,190,79,28,199,40,165,144,82,166,87,61,110,54,155,44,45,45,189,203,0,203,4,206,139,117,22,60,251,252,107,132,168,144,1,165,20,142,227,76,0,154,31,25,12,6,133,239,
+40,165,104,52,26,180,90,173,234,6,100,61,127,126,126,78,67,80,165,107,134,178,125,97,97,97,54,3,178,70,116,58,29,148,82,8,33,190,152,234,90,173,54,91,8,178,214,63,62,62,18,69,81,174,135,166,183,69,247,
+139,139,139,172,175,175,87,51,192,164,111,117,117,53,77,205,105,215,105,227,119,137,240,225,225,129,209,104,148,206,229,197,184,140,13,205,128,174,150,149,67,32,165,100,121,121,185,212,99,211,219,188,
+251,209,104,132,16,98,118,13,60,61,61,141,101,65,149,186,159,117,32,73,18,92,215,101,109,109,13,203,178,170,105,64,131,72,41,113,93,119,34,11,166,197,90,175,75,146,36,157,171,215,235,99,70,207,20,130,
+193,96,144,126,204,52,174,74,13,0,104,183,219,172,172,172,140,205,85,54,192,172,132,166,49,211,20,174,239,29,199,65,74,57,155,6,180,151,97,24,166,227,172,135,101,231,5,83,35,173,86,171,26,3,217,197,26,
+48,27,79,29,243,172,46,166,85,74,61,47,165,172,38,66,147,1,33,4,182,109,79,80,156,183,49,21,133,192,182,237,66,239,75,53,16,4,193,88,220,167,29,203,250,253,62,190,239,79,60,155,155,155,99,126,126,30,203,
+178,240,125,191,90,37,212,12,104,17,150,237,253,74,41,194,48,100,115,115,19,199,113,82,250,117,8,226,56,230,248,248,152,147,147,19,128,240,243,225,183,156,129,151,151,151,194,242,107,246,183,183,55,108,
+219,198,178,172,20,92,8,65,146,36,156,157,157,113,112,112,64,175,215,11,129,31,129,63,43,109,70,174,235,142,137,45,43,72,115,93,191,223,39,138,34,108,219,30,3,63,61,61,101,111,111,143,187,187,187,16,248,
+9,248,8,4,165,155,145,153,187,65,16,164,133,41,155,154,186,15,135,67,226,56,38,142,99,132,16,196,113,204,249,249,57,59,59,59,244,122,189,24,248,25,248,29,120,171,188,23,104,112,33,4,141,70,99,236,0,106,
+150,100,125,128,141,162,136,36,73,184,184,184,96,119,119,87,131,255,146,7,94,170,1,253,113,157,235,89,131,204,177,14,81,16,4,92,93,93,177,191,191,159,5,255,13,120,45,77,195,162,63,154,60,64,179,16,233,
+180,189,185,185,225,240,240,144,110,183,91,10,94,168,129,102,179,57,118,150,203,163,93,171,61,187,235,93,95,95,227,121,30,183,183,183,149,192,39,12,136,162,136,110,183,203,253,253,125,46,19,69,251,126,
+16,4,12,135,67,46,47,47,103,2,55,219,247,64,252,206,63,223,8,248,21,152,175,10,42,140,191,164,111,128,117,99,190,242,105,252,115,133,235,2,127,87,93,244,15,185,98,100,24,26,4,154,104,0,0,0,0,73,69,78,
+68,174,66,96,130,0,0};
+
+const char* sklepSeqTransportComponent::playlist_png = (const char*) resource_sklepSeqTransportComponent_playlist_png;
+const int sklepSeqTransportComponent::playlist_pngSize = 971;

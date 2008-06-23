@@ -19,7 +19,8 @@ class sklepSeqStep : public ImageButton, public MidiKeyboardState
 		void clicked (const ModifierKeys &modifiers);
 		int getIndex();
 		bool getPopup();
-
+		void setOff();
+		void setOn();
 	private:
 		int posX, posY;
 		Image *image;
