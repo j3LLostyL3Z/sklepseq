@@ -112,6 +112,14 @@ SOURCE=.\sklepSeqPatternControl.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\sklepSeqPlaylist.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylistComponent.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\sklepSeqSkin.cpp
 # End Source File
 # Begin Source File
@@ -149,6 +157,14 @@ SOURCE=.\sklepSeqPattern.h
 # Begin Source File
 
 SOURCE=.\sklepSeqPatternControl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylist.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylistComponent.h
 # End Source File
 # Begin Source File
 

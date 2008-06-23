@@ -150,15 +150,11 @@ void sklepSeqStep::clicked (const ModifierKeys &modifiers)
 
 		if (getToggleState())
 		{
-			setImages (true, false, true,	ImageCache::getFromMemory (ion[index], ions[index]), 1.0f, Colour(0x0), 
-							ImageCache::getFromMemory (iover[index], iovers[index]), 1.0f, Colour(0x0), 
-							ImageCache::getFromMemory (ioff[index], ioffs[index]), 1.0f, Colour(0x0));
+			setOn();
 		}
 		else
 		{
-			setImages (true, false, true,	ImageCache::getFromMemory (ioff[index], ioffs[index]), 1.0f, Colour(0x0), 
-							ImageCache::getFromMemory (iover[index], iovers[index]), 1.0f, Colour(0x0), 
-							ImageCache::getFromMemory (ion[index], ions[index]), 1.0f, Colour(0x0));
+			setOff();
 		}
 	}
 }
@@ -173,7 +169,19 @@ bool sklepSeqStep::getPopup()
 	return (popup);
 }
 
+void sklepSeqStep::setOff()
+{
+	setImages (true, false, true,	ImageCache::getFromMemory (ioff[index], ioffs[index]), 1.0f, Colour(0x0), 
+				ImageCache::getFromMemory (iover[index], iovers[index]), 1.0f, Colour(0x0), 
+				ImageCache::getFromMemory (ion[index], ions[index]), 1.0f, Colour(0x0));
+}
 
+void sklepSeqStep::setOn()
+{
+	setImages (true, false, true,	ImageCache::getFromMemory (ion[index], ions[index]), 1.0f, Colour(0x0), 
+					ImageCache::getFromMemory (iover[index], iovers[index]), 1.0f, Colour(0x0), 
+					ImageCache::getFromMemory (ioff[index], ioffs[index]), 1.0f, Colour(0x0));
+}
 
 // JUCER_RESOURCE: sq_step_on_1_png, 8024, "C:\Documents and Settings\Administrator\My Documents\sq_step_on_1.png"
 static const unsigned char resource_sklepSeqStep_sq_step_on_1_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,84,0,0,0,84,8,6,0,0,0,28,107,16,193,0,0,0,1,115,82,71,66,0,174,206,28,233,0,

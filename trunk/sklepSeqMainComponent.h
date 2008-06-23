@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  20 Jun 2008 9:25:48 pm
+  Creation date:  23 Jun 2008 2:06:28 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_4CC53235__
-#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_4CC53235__
+#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_E4ED219A__
+#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_E4ED219A__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -59,6 +59,7 @@ public:
 	void patternChanged();
 	void stepLeftClicked(int i);
 	void stepRightClicked(int i);
+	void clearSteps();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -133,6 +134,7 @@ private:
 	sklepSeqPatternControl *options;
 	Font *lcdBigFont;
 	Font *lcdSmallFont;
+	bool firstHalf;
     //[/UserVariables]
 
     //==============================================================================
@@ -155,4 +157,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_4CC53235__
+#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_E4ED219A__
