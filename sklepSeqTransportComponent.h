@@ -25,6 +25,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
 #include "sklepSeqMain.h"
+#include "sklepSeqPlaylist.h"
 //[/Headers]
 
 
@@ -49,6 +50,7 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
 	void setBpm (int b);
+	void closePlaylist();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -86,6 +88,7 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	DemoJuceFilter *parent;
+	sklepSeqPlaylist *playlist;
     //[/UserVariables]
 
     //==============================================================================

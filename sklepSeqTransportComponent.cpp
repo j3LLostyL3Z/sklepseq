@@ -98,7 +98,7 @@ sklepSeqTransportComponent::sklepSeqTransportComponent (DemoJuceFilter *_f)
 
     //[UserPreSize]
 	parent = _f;
-
+	playlist = 0;
 	syncToHost->setToggleState (parent->getSyncToHost(), false);
     //[/UserPreSize]
 
@@ -192,6 +192,16 @@ void sklepSeqTransportComponent::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == playlistButton)
     {
         //[UserButtonCode_playlistButton] -- add your button handler code here..
+		if (playlist)
+		{
+			playlist->setVisible (true);
+			playlist->toFront(true);
+		}
+		else
+		{
+			playlist = new sklepSeqPlaylist(this);
+			playlist->setVisible (true);
+		}
         //[/UserButtonCode_playlistButton]
     }
 
@@ -205,6 +215,14 @@ void sklepSeqTransportComponent::buttonClicked (Button* buttonThatWasClicked)
 void sklepSeqTransportComponent::setBpm (int b)
 {
 	bpmInput->setValue (b, false);
+}
+
+void sklepSeqTransportComponent::closePlaylist()
+{
+	if (playlist)
+	{
+		playlist = 0;
+	}
 }
 //[/MiscUserCode]
 
