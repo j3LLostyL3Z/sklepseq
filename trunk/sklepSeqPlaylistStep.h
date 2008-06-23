@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  23 Jun 2008 9:24:31 pm
+  Creation date:  23 Jun 2008 9:22:28 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,12 +19,12 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQPLAYLISTCOMPONENT_SKLEPSEQPLAYLISTCOMPONENT_AB1FE1E5__
-#define __JUCER_HEADER_SKLEPSEQPLAYLISTCOMPONENT_SKLEPSEQPLAYLISTCOMPONENT_AB1FE1E5__
+#ifndef __JUCER_HEADER_SKLEPSEQPLAYLISTSTEP_SKLEPSEQPLAYLISTSTEP_656DC97D__
+#define __JUCER_HEADER_SKLEPSEQPLAYLISTSTEP_SKLEPSEQPLAYLISTSTEP_656DC97D__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
-#include "sklepSeqPlaylistStep.h"
+class sklepSeqPlaylistComponent;
 //[/Headers]
 
 
@@ -37,42 +37,46 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class sklepSeqPlaylistComponent  : public Component
+class sklepSeqPlaylistStep  : public Component,
+                              public ButtonListener
 {
 public:
     //==============================================================================
-    sklepSeqPlaylistComponent ();
-    ~sklepSeqPlaylistComponent();
+    sklepSeqPlaylistStep (int _x, int _y);
+    ~sklepSeqPlaylistStep();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void mouseDown (const MouseEvent &e);
-	void stepClicked (int _x, int _y);
-	
+	int getXindex();
+	int getYindex();
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
+    void buttonClicked (Button* buttonThatWasClicked);
 
+    // Binary resources:
+    static const char* boing_png;
+    static const int boing_pngSize;
 
     //==============================================================================
     juce_UseDebuggingNewOperator
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	Image *stepImage;
-	OwnedArray <sklepSeqPlaylistStep> steps[32];
-
+	int index;
+	Image *image;
+	int x,y;
     //[/UserVariables]
 
     //==============================================================================
-
+    ImageButton* imageButton;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
-    sklepSeqPlaylistComponent (const sklepSeqPlaylistComponent&);
-    const sklepSeqPlaylistComponent& operator= (const sklepSeqPlaylistComponent&);
+    sklepSeqPlaylistStep (const sklepSeqPlaylistStep&);
+    const sklepSeqPlaylistStep& operator= (const sklepSeqPlaylistStep&);
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQPLAYLISTCOMPONENT_SKLEPSEQPLAYLISTCOMPONENT_AB1FE1E5__
+#endif   // __JUCER_HEADER_SKLEPSEQPLAYLISTSTEP_SKLEPSEQPLAYLISTSTEP_656DC97D__

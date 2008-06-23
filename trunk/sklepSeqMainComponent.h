@@ -29,6 +29,7 @@
 #include "sklepSeqPatternControl.h"
 #include "sklepSeqMain.h"
 #include "sklepSeqStep.h"
+#include "sklepSeqPlaylist.h"
 //[/Headers]
 
 #include "sklepSeqTransportComponent.h"
@@ -135,6 +136,7 @@ private:
 	Font *lcdBigFont;
 	Font *lcdSmallFont;
 	bool firstHalf;
+	sklepSeqPlaylist *playlist;
     //[/UserVariables]
 
     //==============================================================================

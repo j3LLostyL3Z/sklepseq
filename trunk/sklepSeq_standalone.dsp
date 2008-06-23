@@ -215,5 +215,49 @@ SOURCE=.\wrapper\formats\Standalone\juce_StandaloneFilterWindow.cpp
 SOURCE=.\wrapper\formats\Standalone\juce_StandaloneFilterWindow.h
 # End Source File
 # End Group
+# Begin Group "playlist"
+
+# PROP Default_Filter ""
+# Begin Group "src"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylist.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylistComponent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylistStep.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylistView.cpp
+# End Source File
+# End Group
+# Begin Group "include"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylist.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylistComponent.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylistStep.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylistView.h
+# End Source File
+# End Group
+# End Group
 # End Target
 # End Project
