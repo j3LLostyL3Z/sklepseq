@@ -104,10 +104,6 @@ SOURCE=.\sklepSeqEditor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\sklepSeqSkin.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\sklepSeqStep.cpp
 # End Source File
 # Begin Source File
@@ -265,6 +261,18 @@ SOURCE=.\sklepSeqPatternControl.cpp
 # Begin Source File
 
 SOURCE=.\sklepSeqPatternControl.h
+# End Source File
+# End Group
+# Begin Group "skin"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sklepSeqSkin.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqSkin.h
 # End Source File
 # End Group
 # End Target
