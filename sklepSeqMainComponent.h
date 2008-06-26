@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  23 Jun 2008 2:06:28 pm
+  Creation date:  26 Jun 2008 4:27:51 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_E4ED219A__
-#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_E4ED219A__
+#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_B3087ADC__
+#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_B3087ADC__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -45,6 +45,7 @@
 */
 class sklepSeqMainComponent  : public Component,
                                public AsyncUpdater,
+                               public ChangeListener,
                                public ButtonListener
 {
 public:
@@ -61,6 +62,7 @@ public:
 	void stepLeftClicked(int i);
 	void stepRightClicked(int i);
 	void clearSteps();
+	void changeListenerCallback(void *ptr);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -159,4 +161,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_E4ED219A__
+#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_B3087ADC__
