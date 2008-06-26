@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  13 Jun 2008 9:14:51 pm
+  Creation date:  26 Jun 2008 4:45:18 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,11 +19,12 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_BD62641B__
-#define __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_BD62641B__
+#ifndef __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_A5CF43C8__
+#define __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_A5CF43C8__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
+#include "sklepSeqPattern.h"
 //[/Headers]
 
 
@@ -36,7 +37,10 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class sklepSeqPatternControl  : public Component
+class sklepSeqPatternControl  : public Component,
+                                public ChangeBroadcaster,
+                                public ComboBoxListener,
+                                public SliderListener
 {
 public:
     //==============================================================================
@@ -45,10 +49,15 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void setPattern (sklepSeqPattern *p);
+	int getMidiChannel();
+	int getMidiDevice();
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
     // Binary resources:
     static const char* rondw_03_png;
@@ -67,10 +76,15 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+	int pId;
     //[/UserVariables]
 
     //==============================================================================
-
+    ComboBox* deviceList;
+    Slider* midiCh;
+    Label* label;
+    Label* label2;
+    Label* patternId;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
@@ -79,4 +93,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_BD62641B__
+#endif   // __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_A5CF43C8__

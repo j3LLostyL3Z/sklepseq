@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  13 Jun 2008 9:14:51 pm
+  Creation date:  26 Jun 2008 4:45:18 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -30,9 +30,62 @@
 
 //==============================================================================
 sklepSeqPatternControl::sklepSeqPatternControl ()
+    : deviceList (0),
+      midiCh (0),
+      label (0),
+      label2 (0),
+      patternId (0)
 {
+    addAndMakeVisible (deviceList = new ComboBox (T("new combo box")));
+    deviceList->setEditableText (false);
+    deviceList->setJustificationType (Justification::centredLeft);
+    deviceList->setTextWhenNothingSelected (String::empty);
+    deviceList->setTextWhenNoChoicesAvailable (T("(no choices)"));
+    deviceList->addListener (this);
+
+    addAndMakeVisible (midiCh = new Slider (T("new slider")));
+    midiCh->setRange (1, 16, 1);
+    midiCh->setSliderStyle (Slider::IncDecButtons);
+    midiCh->setTextBoxStyle (Slider::TextBoxLeft, false, 20, 20);
+    midiCh->addListener (this);
+
+    addAndMakeVisible (label = new Label (T("new label"),
+                                          T("Device")));
+    label->setFont (Font (10.0000f, Font::bold));
+    label->setJustificationType (Justification::centredLeft);
+    label->setEditable (false, false, false);
+    label->setColour (Label::textColourId, Colours::white);
+    label->setColour (TextEditor::textColourId, Colours::black);
+    label->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (label2 = new Label (T("new label"),
+                                           T("MIDI Ch")));
+    label2->setFont (Font (10.0000f, Font::bold));
+    label2->setJustificationType (Justification::centredLeft);
+    label2->setEditable (false, false, false);
+    label2->setColour (Label::textColourId, Colours::white);
+    label2->setColour (TextEditor::textColourId, Colours::black);
+    label2->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (patternId = new Label (T("patternId"),
+                                              T("0")));
+    patternId->setFont (Font (15.0000f, Font::bold));
+    patternId->setJustificationType (Justification::centred);
+    patternId->setEditable (false, false, false);
+    patternId->setColour (Label::backgroundColourId, Colour (0xffffff));
+    patternId->setColour (Label::textColourId, Colours::white);
+    patternId->setColour (TextEditor::textColourId, Colours::black);
+    patternId->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
 
     //[UserPreSize]
+	StringArray d = MidiOutput::getDevices();
+	deviceList->addItem (T("VST MIDI"), 1);
+
+	for (int x=0; x<d.size(); x++)
+	{
+		deviceList->addItem (d[x], x+2);
+	}
     //[/UserPreSize]
 
     setSize (427, 100);
@@ -46,7 +99,11 @@ sklepSeqPatternControl::~sklepSeqPatternControl()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-
+    deleteAndZero (deviceList);
+    deleteAndZero (midiCh);
+    deleteAndZero (label);
+    deleteAndZero (label2);
+    deleteAndZero (patternId);
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -61,19 +118,77 @@ void sklepSeqPatternControl::paint (Graphics& g)
     g.setColour (Colour (0x7b000000));
     g.fillRoundedRectangle (0.0f, (float) (-8), 427.0f, 108.0f, 10.0000f);
 
+    g.setColour (Colour (0xff979797));
+    g.fillRoundedRectangle (390.0f, 71.0f, 27.0f, 25.0f, 3.0000f);
+
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
 }
 
 void sklepSeqPatternControl::resized()
 {
+    deviceList->setBounds (40, 8, 144, 16);
+    midiCh->setBounds (232, 8, 63, 16);
+    label->setBounds (0, 16, 40, 8);
+    label2->setBounds (192, 16, 40, 8);
+    patternId->setBounds (392, 72, 24, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
+}
+
+void sklepSeqPatternControl::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == deviceList)
+    {
+        //[UserComboBoxCode_deviceList] -- add your combo box handling code here..
+		sendChangeMessage (this);
+        //[/UserComboBoxCode_deviceList]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
+}
+
+void sklepSeqPatternControl::sliderValueChanged (Slider* sliderThatWasMoved)
+{
+    //[UsersliderValueChanged_Pre]
+    //[/UsersliderValueChanged_Pre]
+
+    if (sliderThatWasMoved == midiCh)
+    {
+        //[UserSliderCode_midiCh] -- add your slider handling code here..
+		sendChangeMessage (this);
+        //[/UserSliderCode_midiCh]
+    }
+
+    //[UsersliderValueChanged_Post]
+    //[/UsersliderValueChanged_Post]
 }
 
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void sklepSeqPatternControl::setPattern (sklepSeqPattern *p)
+{
+	pId = p->getPatternId();
+
+	midiCh->setValue (p->getMidiChannel(), false);
+	deviceList->setSelectedId (p->getMidiDevice(), false);
+	patternId->setText (String (pId), false);
+}
+
+int sklepSeqPatternControl::getMidiChannel()
+{
+	return ((int)midiCh->getValue());
+}
+
+int sklepSeqPatternControl::getMidiDevice()
+{
+	return (deviceList->getSelectedId());
+}
 //[/MiscUserCode]
 
 
@@ -86,12 +201,36 @@ void sklepSeqPatternControl::resized()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="sklepSeqPatternControl" componentName=""
-                 parentClasses="public Component" constructorParams="" variableInitialisers=""
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
-                 fixedSize="1" initialWidth="427" initialHeight="100">
+                 parentClasses="public Component, public ChangeBroadcaster" constructorParams=""
+                 variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
+                 overlayOpacity="0.330000013" fixedSize="1" initialWidth="427"
+                 initialHeight="100">
   <BACKGROUND backgroundColour="585858">
     <ROUNDRECT pos="0 -8 427 108" cornerSize="10" fill="solid: 7b000000" hasStroke="0"/>
+    <ROUNDRECT pos="390 71 27 25" cornerSize="3" fill="solid: ff979797" hasStroke="0"/>
   </BACKGROUND>
+  <COMBOBOX name="new combo box" id="ad9083a58e20b22d" memberName="deviceList"
+            virtualName="" explicitFocusOrder="0" pos="40 8 144 16" editable="0"
+            layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
+  <SLIDER name="new slider" id="6ae84f8a8c793c2b" memberName="midiCh" virtualName=""
+          explicitFocusOrder="0" pos="232 8 63 16" min="1" max="16" int="1"
+          style="IncDecButtons" textBoxPos="TextBoxLeft" textBoxEditable="1"
+          textBoxWidth="20" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="new label" id="9f8d9f578256953a" memberName="label" virtualName=""
+         explicitFocusOrder="0" pos="0 16 40 8" textCol="ffffffff" edTextCol="ff000000"
+         edBkgCol="0" labelText="Device" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="10"
+         bold="1" italic="0" justification="33"/>
+  <LABEL name="new label" id="757fcf827c0f86ca" memberName="label2" virtualName=""
+         explicitFocusOrder="0" pos="192 16 40 8" textCol="ffffffff" edTextCol="ff000000"
+         edBkgCol="0" labelText="MIDI Ch" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="10"
+         bold="1" italic="0" justification="33"/>
+  <LABEL name="patternId" id="f472554973292e30" memberName="patternId"
+         virtualName="" explicitFocusOrder="0" pos="392 72 24 24" bkgCol="ffffff"
+         textCol="ffffffff" edTextCol="ff000000" edBkgCol="0" labelText="0"
+         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
+         fontname="Default font" fontsize="15" bold="1" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -38,6 +38,10 @@ class sklepSeqPattern  : public Component
 		void setActive (bool t);
 		bool getActive();
 		int getCurrentPosition();
+		void setMidiChannel (int c);
+		int getMidiChannel ();
+		int getMidiDevice();
+		void setMidiDevice(int d);
 		enum patternMode
 		{
 			patternForward,
@@ -60,6 +64,7 @@ class sklepSeqPattern  : public Component
 		bool patternHasBeenActivated;
 		midiMessageManager *midiManager;
 		int midiChannel;
+		int midiDevice;
 		OwnedArray <midiMessage2> notes;
 };
 

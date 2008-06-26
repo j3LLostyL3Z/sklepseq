@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  23 Jun 2008 2:06:28 pm
+  Creation date:  26 Jun 2008 4:27:51 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -201,6 +201,7 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
 
 	options = new sklepSeqPatternControl();
 	options->setBounds (32,0,427,100);
+	options->addChangeListener (this);
 	addChildComponent (options);
 
 	powerButton->setMouseCursor (MouseCursor::PointingHandCursor);
@@ -270,7 +271,7 @@ void sklepSeqMainComponent::paint (Graphics& g)
 void sklepSeqMainComponent::resized()
 {
     transportComponent->setBounds (0, 462, 488, 32);
-    optionsButton->setBounds (0, 0, 32, 32);
+    optionsButton->setBounds (3, 3, 24, 24);
     currentStepInPatternLabel->setBounds (256, 200, 40, 16);
     patternLenLabel->setBounds (203, 279, 68, 26);
     patternLenDown->setBounds (259, 293, 16, 16);
@@ -475,6 +476,7 @@ void sklepSeqMainComponent::patternChanged()
 
 	currentPatternLabel->setText (String::formatted (T("%d"), p->getPatternId()), false);
 	patternLenLabel->setText (String::formatted (T("%d"), p->getPatternLength()), false);
+	options->setPattern (p);
 
 	if (p->getActive())
 	{
@@ -529,8 +531,21 @@ void sklepSeqMainComponent::stepLeftClicked(int i)
 
 	ownerFilter->getCallbackLock().exit();
 }
+
 void sklepSeqMainComponent::stepRightClicked(int i)
 {
+}
+
+void sklepSeqMainComponent::changeListenerCallback(void *ptr)
+{
+	if (ptr == options)
+	{
+		ownerFilter->getCallbackLock().enter();
+		sklepSeqPattern *p = ownerFilter->getCurrentPattern();
+		p->setMidiChannel (options->getMidiChannel());
+		p->setMidiDevice (options->getMidiDevice());
+		ownerFilter->getCallbackLock().exit();
+	}
 }
 //[/MiscUserCode]
 
@@ -544,10 +559,10 @@ void sklepSeqMainComponent::stepRightClicked(int i)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="sklepSeqMainComponent" componentName="sklepSeq Main Component"
-                 parentClasses="public Component, public AsyncUpdater" constructorParams="DemoJuceFilter *f"
-                 variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
-                 overlayOpacity="0.330000013" fixedSize="1" initialWidth="492"
-                 initialHeight="492">
+                 parentClasses="public Component, public AsyncUpdater, public ChangeListener"
+                 constructorParams="DemoJuceFilter *f" variableInitialisers=""
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
+                 fixedSize="1" initialWidth="492" initialHeight="492">
   <BACKGROUND backgroundColour="ffffffff">
     <IMAGE pos="0 0 492 492" resource="sq_back_png" opacity="1" mode="0"/>
     <ROUNDRECT pos="207 274 75 38" cornerSize="10" fill="solid: 5f000000" hasStroke="0"/>
@@ -558,7 +573,7 @@ BEGIN_JUCER_METADATA
              virtualName="" explicitFocusOrder="0" pos="0 462 488 32" sourceFile="sklepSeqTransportComponent.cpp"
              constructorParams="f"/>
   <IMAGEBUTTON name="Options" id="4350618ff8a1dac3" memberName="optionsButton"
-               virtualName="" explicitFocusOrder="0" pos="0 0 32 32" tooltip="Options"
+               virtualName="" explicitFocusOrder="0" pos="3 3 24 24" tooltip="Options"
                buttonText="new button" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="rondw_03_png"
                opacityNormal="0.699999988" colourNormal="0" resourceOver=""

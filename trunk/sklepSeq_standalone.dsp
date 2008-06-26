@@ -104,22 +104,6 @@ SOURCE=.\sklepSeqEditor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\sklepSeqMain.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqMainComponent.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqPattern.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqPatternControl.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\sklepSeqSkin.cpp
 # End Source File
 # Begin Source File
@@ -157,22 +141,6 @@ SOURCE=.\sklepSeqCursorComponent.h
 # Begin Source File
 
 SOURCE=.\sklepSeqEditor.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqMain.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqMainComponent.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqPattern.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqPatternControl.h
 # End Source File
 # Begin Source File
 
@@ -258,6 +226,46 @@ SOURCE=.\sklepSeqPlaylistStep.h
 SOURCE=.\sklepSeqPlaylistView.h
 # End Source File
 # End Group
+# End Group
+# Begin Group "main"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sklepSeqMain.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqMain.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqMainComponent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqMainComponent.h
+# End Source File
+# End Group
+# Begin Group "pattern"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sklepSeqPattern.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPattern.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPatternControl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPatternControl.h
+# End Source File
 # End Group
 # End Target
 # End Project

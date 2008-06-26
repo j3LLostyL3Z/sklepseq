@@ -16,6 +16,7 @@ sklepSeqPattern::sklepSeqPattern(int _id)
 	currentPosition	=	1;
 	mode			=	patternForward;
 	midiChannel		=	1;
+	midiDevice		=	1;
 
 	for (int x=0; x<32; x++)
 	{
@@ -147,4 +148,27 @@ void sklepSeqPattern::toggleStep(int nId)
 			notes[nId]->enabled = true;
 		}
 	}
+}
+
+void sklepSeqPattern::setMidiChannel (int c)
+{
+	if (c>1 && c<16)
+		midiChannel = c;
+	else
+		midiChannel = 1;
+}
+
+int sklepSeqPattern::getMidiChannel ()
+{
+	return (midiChannel);
+}
+
+void sklepSeqPattern::setMidiDevice (int d)
+{
+	midiDevice = d;
+}
+
+int sklepSeqPattern::getMidiDevice ()
+{
+	return (midiDevice);
 }
