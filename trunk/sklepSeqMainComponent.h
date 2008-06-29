@@ -59,7 +59,6 @@ public:
     void handleAsyncUpdate();
 	void clearCursor();
 	void patternChanged();
-	void stepLeftClicked(int i);
 	void stepRightClicked(int i);
 	void clearSteps();
 	void changeListenerCallback(void *ptr);

@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  21 Jun 2008 8:03:49 pm
+  Creation date:  27 Jun 2008 10:00:44 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_BE112414__
-#define __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_BE112414__
+#ifndef __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_DDBF0930__
+#define __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_DDBF0930__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -41,7 +41,7 @@ class sklepSeqStepComponentEditor  : public Component
 {
 public:
     //==============================================================================
-    sklepSeqStepComponentEditor ();
+    sklepSeqStepComponentEditor (MidiMessage *msg);
     ~sklepSeqStepComponentEditor();
 
     //==============================================================================
@@ -69,4 +69,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_BE112414__
+#endif   // __JUCER_HEADER_SKLEPSEQSTEPCOMPONENTEDITOR_SKLEPSEQSTEPCOMPONENTEDITOR_DDBF0930__

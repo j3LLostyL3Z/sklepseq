@@ -30,7 +30,6 @@ class sklepSeqPattern  : public Component
 		bool fromXml (XmlElement *e);
 		void setMidiData (MidiBuffer b);
 		void setMidiEvent (int n, MidiMessage note);
-		MidiMessage *getMidiEvent (int n);
 		int getPatternId();
 		int getPatternLength();
 		void setPatternLength(int len);

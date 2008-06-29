@@ -92,10 +92,6 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\midiMessageManager.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\sklepSeqCursorComponent.cpp
 # End Source File
 # Begin Source File
@@ -104,28 +100,12 @@ SOURCE=.\sklepSeqEditor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\sklepSeqStep.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqStepComponentEditor.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\sklepSeqTransportComponent.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xsync.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
-# Begin Source File
-
-SOURCE=.\midiMessageManager.h
-# End Source File
 # Begin Source File
 
 SOURCE=.\sklepSeqCharacteristics.h
@@ -140,19 +120,7 @@ SOURCE=.\sklepSeqEditor.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\sklepSeqStep.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqStepComponentEditor.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\sklepSeqTransportComponent.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xsync.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"
@@ -273,6 +241,46 @@ SOURCE=.\sklepSeqSkin.cpp
 # Begin Source File
 
 SOURCE=.\sklepSeqSkin.h
+# End Source File
+# End Group
+# Begin Group "midi"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\midiMessageManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\midiMessageManager.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xsync.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xsync.h
+# End Source File
+# End Group
+# Begin Group "step"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sklepSeqStep.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqStep.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqStepComponentEditor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqStepComponentEditor.h
 # End Source File
 # End Group
 # End Target

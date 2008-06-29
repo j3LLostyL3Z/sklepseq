@@ -140,6 +140,8 @@ int sklepSeqStep::getY()
 
 void sklepSeqStep::clicked (const ModifierKeys &modifiers)
 {
+	Button::clicked (modifiers);
+
 	if (modifiers.isPopupMenu())
 	{
 		popup = true;
@@ -150,10 +152,12 @@ void sklepSeqStep::clicked (const ModifierKeys &modifiers)
 
 		if (getToggleState())
 		{
+			Logger::writeToLog (T("toggle on"));
 			setOn();
 		}
 		else
 		{
+			Logger::writeToLog (T("toggle off"));
 			setOff();
 		}
 	}
