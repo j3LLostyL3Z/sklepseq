@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  21 Jun 2008 8:03:49 pm
+  Creation date:  27 Jun 2008 10:00:44 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -29,10 +29,11 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-sklepSeqStepComponentEditor::sklepSeqStepComponentEditor ()
+sklepSeqStepComponentEditor::sklepSeqStepComponentEditor (MidiMessage *msg)
 {
 
     //[UserPreSize]
+
     //[/UserPreSize]
 
     setSize (340, 120);
@@ -89,7 +90,7 @@ void sklepSeqStepComponentEditor::resized()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="sklepSeqStepComponentEditor"
-                 componentName="" parentClasses="public Component" constructorParams=""
+                 componentName="" parentClasses="public Component" constructorParams="MidiMessage *msg"
                  variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
                  overlayOpacity="0.330000013" fixedSize="1" initialWidth="340"
                  initialHeight="120">

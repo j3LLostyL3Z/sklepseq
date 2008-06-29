@@ -137,14 +137,17 @@ MidiMessage* sklepSeqPattern::getStep (int nId)
 
 void sklepSeqPattern::toggleStep(int nId)
 {
+	Logger::writeToLog (String::formatted (T("toggle step: %d"), nId));
 	if (notes[nId])
 	{
 		if (notes[nId]->enabled)
 		{
+			Logger::writeToLog (T("was enabled, disable it"));
 			notes[nId]->enabled = false;
 		}
 		else
 		{
+			Logger::writeToLog (T("was disabled, enable it"));
 			notes[nId]->enabled = true;
 		}
 	}

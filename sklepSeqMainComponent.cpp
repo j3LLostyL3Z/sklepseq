@@ -400,7 +400,7 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 
 	if (step->getPopup())
 	{
-		DialogWindow::showModalDialog (T("Event properties"), new sklepSeqStepComponentEditor(), this, Colours::white, true, false, false);
+		stepRightClicked(i);
 	}
 	else
 	{
@@ -408,7 +408,6 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 
 		sklepSeqPattern *p = ownerFilter->getCurrentPattern();
 		p->toggleStep (i);
-
 		ownerFilter->getCallbackLock().exit();
 	}
     //[/UserbuttonClicked_Post]
@@ -495,22 +494,22 @@ void sklepSeqMainComponent::patternChanged()
 
 	clearSteps();
 
-	for (int x=0; x<p->getPatternLength(); x++)
+	for (int x=0; x<32; x++)
 	{
-		if (firstHalf && x>=15)
+		if (firstHalf && x>15)
 			break;
 
-		if (!firstHalf && x>=15)
+		if (!firstHalf && x>15)
 			continue;
 
-		else if (firstHalf && x<15)
+		else if (firstHalf && x<=15)
 		{
 			if (p->getStep(x))
 			{
 				step[x]->setOn();
 			}
 		}
-		else if (!firstHalf && x>=15)
+		else if (!firstHalf && x>15)
 		{
 			if (p->getStep(x))
 			{
@@ -520,20 +519,11 @@ void sklepSeqMainComponent::patternChanged()
 	}
 }
 
-void sklepSeqMainComponent::stepLeftClicked(int i)
-{
-	Logger::writeToLog (String::formatted (T("step %d left click"), i));
-
-	ownerFilter->getCallbackLock().enter();
-
-	sklepSeqPattern *p = ownerFilter->getCurrentPattern();
-	p->getStep(i);
-
-	ownerFilter->getCallbackLock().exit();
-}
-
 void sklepSeqMainComponent::stepRightClicked(int i)
 {
+	sklepSeqPattern *p = ownerFilter->getCurrentPattern();
+	
+	DialogWindow::showModalDialog (T("Event properties"), new sklepSeqStepComponentEditor(p->getStep(i)), this, Colours::white, true, false, false);
 }
 
 void sklepSeqMainComponent::changeListenerCallback(void *ptr)
