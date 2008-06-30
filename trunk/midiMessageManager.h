@@ -90,6 +90,8 @@ class midiMessageManager
 		bool isDeviceOpen(int device);
 		void initDevices();
 		void prepareDevice(int i);
+		int getCurrentEventsCount ();
+
 	private:
 		StringArray midiOutputList;
 		OwnedArray <midiMessage> m;

@@ -92,35 +92,7 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\midiMessageManager.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\sklepSeqCursorComponent.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqMainComponent.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqPattern.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqPatternControl.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqSkin.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqStep.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqStepComponentEditor.cpp
 # End Source File
 # Begin Source File
 
@@ -132,42 +104,14 @@ SOURCE=.\sklepSeqTransportComponent.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=.\midiMessageManager.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\sklepSeqCursorComponent.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqMainComponent.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqPattern.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqPatternControl.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqSkin.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqStep.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqStepComponentEditor.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\sklepSeqTransportComponent.h
 # End Source File
 # End Group
-# Begin Group "VST"
+# Begin Group "wrapper"
 
 # PROP Default_Filter ""
 # Begin Source File
@@ -202,12 +146,13 @@ SOURCE=.\sklepSeqMain.h
 # Begin Group "playlist"
 
 # PROP Default_Filter ""
-# Begin Group "src"
-
-# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\sklepSeqPlaylist.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylist.h
 # End Source File
 # Begin Source File
 
@@ -215,23 +160,11 @@ SOURCE=.\sklepSeqPlaylistComponent.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\sklepSeqPlaylistStep.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqPlaylistView.cpp
-# End Source File
-# End Group
-# Begin Group "include"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\sklepSeqPlaylist.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\sklepSeqPlaylistComponent.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPlaylistStep.cpp
 # End Source File
 # Begin Source File
 
@@ -239,9 +172,96 @@ SOURCE=.\sklepSeqPlaylistStep.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\sklepSeqPlaylistView.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\sklepSeqPlaylistView.h
 # End Source File
 # End Group
+# Begin Group "pattern"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sklepSeqPattern.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPattern.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPatternControl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqPatternControl.h
+# End Source File
+# End Group
+# Begin Group "step"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sklepSeqStep.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqStep.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqStepComponentEditor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqStepComponentEditor.h
+# End Source File
+# End Group
+# Begin Group "main"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sklepSeqMainComponent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqMainComponent.h
+# End Source File
+# End Group
+# Begin Group "skin "
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sklepSeqSkin.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqSkin.h
+# End Source File
+# End Group
+# Begin Group "midi"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\midiMessageManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\midiMessageManager.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xsync.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xsync.h
+# End Source File
 # End Group
 # End Target
 # End Project

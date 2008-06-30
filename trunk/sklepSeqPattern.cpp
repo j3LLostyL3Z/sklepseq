@@ -74,6 +74,11 @@ void sklepSeqPattern::forward(int pos)
 
 void sklepSeqPattern::triggerEvents ()
 {
+	Logger::writeToLog (String::formatted (T("pattern %d position %d"), patternId, currentPosition));
+	if (notes[currentPosition]->enabled)
+	{
+		midiManager->addMidiMessage (notes[currentPosition]->m, midiDevice);
+	}
 }
 
 void sklepSeqPattern::setActive (bool t)
