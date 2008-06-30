@@ -29,6 +29,53 @@ class midiMessage
 		int id;
 };
 
+class midiDevice
+{
+	public:
+		midiDevice (int _deviceIndex)
+		{
+			deviceIndex = _deviceIndex;
+			d			= 0;
+			open		= false;
+		}
+
+		~midiDevice()
+		{
+		}
+
+		bool openDevice ()
+		{
+			Logger::writeToLog (String::formatted (T("opening device: %d"), deviceIndex));
+			if (d || deviceIndex == 0)
+			{
+				open = true;
+				return (true);
+			}
+			d = MidiOutput::openDevice (deviceIndex);
+			
+			if (d)
+			{
+				open = true;
+				return (true);
+			}
+			else
+			{
+				open = false;
+				d = 0;
+				return (false);
+			}
+		}
+		
+		bool isOpen()
+		{
+			return (open);
+		}
+	private:
+		int deviceIndex;
+		MidiOutput *d;
+		bool open;
+};
+
 class midiMessageManager  
 {
 	public:
@@ -41,10 +88,12 @@ class midiMessageManager
 		void clear();
 		void sendMessageToDevice (midiMessage *m);
 		bool isDeviceOpen(int device);
-
+		void initDevices();
+		void prepareDevice(int i);
 	private:
 		StringArray midiOutputList;
 		OwnedArray <midiMessage> m;
+		OwnedArray <midiDevice> device;
 };
 
 #endif // !defined(AFX_MIDIMESSAGEMANAGER_H__198293E7_B17B_4844_A44A_42B7E392EEDD__INCLUDED_)

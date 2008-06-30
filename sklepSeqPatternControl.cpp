@@ -144,6 +144,7 @@ void sklepSeqPatternControl::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == deviceList)
     {
         //[UserComboBoxCode_deviceList] -- add your combo box handling code here..
+		Logger::writeToLog (T("device changed for pattern"));
 		sendChangeMessage (this);
         //[/UserComboBoxCode_deviceList]
     }

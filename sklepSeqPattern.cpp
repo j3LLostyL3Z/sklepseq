@@ -168,6 +168,8 @@ int sklepSeqPattern::getMidiChannel ()
 
 void sklepSeqPattern::setMidiDevice (int d)
 {
+	Logger::writeToLog (T("pattern, set midi device"));
+	midiManager->prepareDevice (d);
 	midiDevice = d;
 }
 

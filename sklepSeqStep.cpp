@@ -114,7 +114,7 @@ sklepSeqStep::sklepSeqStep(int _index, int x, int y) : ImageButton (T("sklepSeq 
 	posY		= y;
 	index		= _index;
 	popup		= false;
-
+	quickPop	= false;
 	setClickingTogglesState (true);
 	setImages (true, false, true,	ImageCache::getFromMemory (ioff[index], ioffs[index]), 1.0f, Colour(0x0), 
 									ImageCache::getFromMemory (iover[index], iovers[index]), 1.0f, Colour(0x0), 
@@ -142,13 +142,20 @@ void sklepSeqStep::clicked (const ModifierKeys &modifiers)
 {
 	Button::clicked (modifiers);
 
-	if (modifiers.isPopupMenu())
+	if (modifiers.isPopupMenu() && !modifiers.isShiftDown())
 	{
-		popup = true;
+		popup		= true;
+		quickPop	= false;
+	}
+	else if (modifiers.isRightButtonDown() && modifiers.isShiftDown())
+	{
+		popup		= false;
+		quickPop	= true;
 	}
 	else
 	{
-		popup = false;
+		popup		= false;
+		quickPop	= false;
 
 		if (getToggleState())
 		{
@@ -187,6 +194,10 @@ void sklepSeqStep::setOn()
 					ImageCache::getFromMemory (ioff[index], ioffs[index]), 1.0f, Colour(0x0));
 }
 
+bool sklepSeqStep::getQuickPopup()
+{
+	return (quickPop);
+}
 // JUCER_RESOURCE: sq_step_on_1_png, 8024, "C:\Documents and Settings\Administrator\My Documents\sq_step_on_1.png"
 static const unsigned char resource_sklepSeqStep_sq_step_on_1_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,84,0,0,0,84,8,6,0,0,0,28,107,16,193,0,0,0,1,115,82,71,66,0,174,206,28,233,0,
 0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,147,0,0,0,9,112,72,89,115,0,0,11,19,0,0,11,19,1,0,154,156,24,0,0,0,7,116,73,77,69,7,216,6,20,18,24,6,22,88,75,248,0,0,30,216,73,68,65,84,120,218,237,156,

@@ -62,6 +62,7 @@ public:
 	void stepRightClicked(int i);
 	void clearSteps();
 	void changeListenerCallback(void *ptr);
+	void stepQuickEditClicked(int i);
     //[/UserMethods]
 
     void paint (Graphics& g);

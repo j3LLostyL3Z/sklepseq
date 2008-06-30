@@ -19,6 +19,7 @@ class sklepSeqStep : public ImageButton, public MidiKeyboardState
 		void clicked (const ModifierKeys &modifiers);
 		int getIndex();
 		bool getPopup();
+		bool getQuickPopup();
 		void setOff();
 		void setOn();
 	private:
@@ -29,6 +30,7 @@ class sklepSeqStep : public ImageButton, public MidiKeyboardState
 		int midiChannel;
 		int index;
 		bool popup;
+		bool quickPop;
 		const char* ion[16];
 		int ions[16];
 		const char* iover[16];

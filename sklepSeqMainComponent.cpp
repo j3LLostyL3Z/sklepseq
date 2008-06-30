@@ -402,6 +402,10 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 	{
 		stepRightClicked(i);
 	}
+	else if (step->getQuickPopup())
+	{
+		Logger::writeToLog (T("step quickEdit"));
+	}
 	else
 	{
 		ownerFilter->getCallbackLock().enter();
@@ -524,6 +528,11 @@ void sklepSeqMainComponent::stepRightClicked(int i)
 	sklepSeqPattern *p = ownerFilter->getCurrentPattern();
 	
 	DialogWindow::showModalDialog (T("Event properties"), new sklepSeqStepComponentEditor(p->getStep(i)), this, Colours::white, true, false, false);
+}
+
+void sklepSeqMainComponent::stepQuickEditClicked(int i)
+{
+	sklepSeqPattern *p = ownerFilter->getCurrentPattern();
 }
 
 void sklepSeqMainComponent::changeListenerCallback(void *ptr)
