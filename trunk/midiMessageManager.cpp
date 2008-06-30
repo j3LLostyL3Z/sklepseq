@@ -11,6 +11,7 @@
 midiMessageManager::midiMessageManager()
 {
 	m.clear();
+	initDevices();
 	midiOutputList.clear();
 }
 
@@ -88,4 +89,47 @@ void midiMessageManager::sendMessageToDevice (midiMessage *m)
 bool midiMessageManager::isDeviceOpen(int device)
 {
 	return (false);
+}
+
+void midiMessageManager::initDevices()
+{
+	device.clear();
+	
+	device.add (new midiDevice (0));
+
+	int len = MidiOutput::getDevices().size();
+
+	for (int x=0; x<len; x++)
+	{
+		device.add (new midiDevice (x+1));
+	}
+}
+
+void midiMessageManager::prepareDevice (int i)
+{
+	/* devices are indexed on a +1 basis, due to ComboBox internals
+		subtract one but only in this method, don't do it anywhere else */
+
+	int deviceId = i-1;
+	Logger::writeToLog (String::formatted (T("prepareDevice: %d"), i));
+
+	if (deviceId == 0)
+	{
+		Logger::writeToLog (T("internal midi device, no need to open"));
+		return;
+	}
+
+	if (device[deviceId])
+	{
+		if (device[deviceId]->isOpen())
+		{
+			Logger::writeToLog (T("device already opened"));
+			return;
+		}
+		else
+		{
+			Logger::writeToLog (T("device not opened, trying"));
+			device[deviceId]->openDevice();
+		}
+	}
 }
