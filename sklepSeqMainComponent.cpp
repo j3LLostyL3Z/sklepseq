@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  26 Jun 2008 4:27:51 pm
+  Creation date:  30 Jun 2008 10:05:03 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -131,6 +131,7 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
 	firstHalf		= true;
 	ownerFilter		= f;
 	prevPos			= 1;
+	quickEdit		= 0;
 
 	cursor.add (new sklepSeqCursorComponent (ImageCache::getFromMemory (sq_kursor_1_png, sq_kursor_1_pngSize), 190, 342));
 	cursor.add (new sklepSeqCursorComponent (ImageCache::getFromMemory (sq_kursor_2_png, sq_kursor_2_pngSize), 144, 322));
@@ -404,7 +405,7 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 	}
 	else if (step->getQuickPopup())
 	{
-		Logger::writeToLog (T("step quickEdit"));
+		stepQuickEditClicked (step);
 	}
 	else
 	{
@@ -469,6 +470,7 @@ void sklepSeqMainComponent::clearSteps()
 	for (int x=0; x<step.size(); x++)
 	{
 		step[x]->setOff();
+		step[x]->setToggleState (false, false);
 	}
 }
 void sklepSeqMainComponent::patternChanged()
@@ -512,12 +514,20 @@ void sklepSeqMainComponent::patternChanged()
 			{
 				step[x]->setOn();
 			}
+			else
+			{
+				step[x]->setOff();
+			}
 		}
 		else if (!firstHalf && x>15)
 		{
 			if (p->getStep(x))
 			{
 				step[x-15]->setOn();
+			}
+			else
+			{
+				step[x-15]->setOff();
 			}
 		}
 	}
@@ -526,13 +536,32 @@ void sklepSeqMainComponent::patternChanged()
 void sklepSeqMainComponent::stepRightClicked(int i)
 {
 	sklepSeqPattern *p = ownerFilter->getCurrentPattern();
-	
+
 	DialogWindow::showModalDialog (T("Event properties"), new sklepSeqStepComponentEditor(p->getStep(i)), this, Colours::white, true, false, false);
 }
 
-void sklepSeqMainComponent::stepQuickEditClicked(int i)
+void sklepSeqMainComponent::stepQuickEditClicked(sklepSeqStep *step)
 {
 	sklepSeqPattern *p = ownerFilter->getCurrentPattern();
+
+	if (quickEdit)
+	{
+		deleteAndZero (quickEdit);
+	}
+
+	int x,y;
+	getMouseXYRelative (x,y);
+	quickEdit = new stepQuickEdit (this);
+
+	if (step->getY() > getHeight()/2)
+	{
+		quickEdit->setBounds (x,y-272,96,272);
+	}
+	else
+	{
+		quickEdit->setBounds (x,y,96,272);
+	}
+	addAndMakeVisible (quickEdit);
 }
 
 void sklepSeqMainComponent::changeListenerCallback(void *ptr)
@@ -544,6 +573,22 @@ void sklepSeqMainComponent::changeListenerCallback(void *ptr)
 		p->setMidiChannel (options->getMidiChannel());
 		p->setMidiDevice (options->getMidiDevice());
 		ownerFilter->getCallbackLock().exit();
+	}
+}
+
+void sklepSeqMainComponent::handleNoteOn (MidiKeyboardState *source, int midiChannel, int midiNoteNumber, float velocity)
+{
+}
+
+void sklepSeqMainComponent::handleNoteOff (MidiKeyboardState *source, int midiChannel, int midiNoteNumber)
+{
+}
+
+void sklepSeqMainComponent::mouseDown (const MouseEvent &e)
+{
+	if (quickEdit)
+	{
+		deleteAndZero (quickEdit);
 	}
 }
 //[/MiscUserCode]
@@ -558,7 +603,7 @@ void sklepSeqMainComponent::changeListenerCallback(void *ptr)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="sklepSeqMainComponent" componentName="sklepSeq Main Component"
-                 parentClasses="public Component, public AsyncUpdater, public ChangeListener"
+                 parentClasses="public Component, public AsyncUpdater, public ChangeListener, public MidiKeyboardStateListener"
                  constructorParams="DemoJuceFilter *f" variableInitialisers=""
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
                  fixedSize="1" initialWidth="492" initialHeight="492">

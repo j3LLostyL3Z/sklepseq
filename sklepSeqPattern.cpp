@@ -74,10 +74,9 @@ void sklepSeqPattern::forward(int pos)
 
 void sklepSeqPattern::triggerEvents ()
 {
-	Logger::writeToLog (String::formatted (T("pattern %d position %d"), patternId, currentPosition));
-	if (notes[currentPosition]->enabled)
+	if (notes[currentPosition-1]->enabled)
 	{
-		midiManager->addMidiMessage (notes[currentPosition]->m, midiDevice);
+		midiManager->addMidiMessage (notes[currentPosition-1]->m, midiDevice);
 	}
 }
 
@@ -142,17 +141,14 @@ MidiMessage* sklepSeqPattern::getStep (int nId)
 
 void sklepSeqPattern::toggleStep(int nId)
 {
-	Logger::writeToLog (String::formatted (T("toggle step: %d"), nId));
 	if (notes[nId])
 	{
 		if (notes[nId]->enabled)
 		{
-			Logger::writeToLog (T("was enabled, disable it"));
 			notes[nId]->enabled = false;
 		}
 		else
 		{
-			Logger::writeToLog (T("was disabled, enable it"));
 			notes[nId]->enabled = true;
 		}
 	}

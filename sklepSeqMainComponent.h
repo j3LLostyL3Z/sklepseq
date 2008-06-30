@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  26 Jun 2008 4:27:51 pm
+  Creation date:  30 Jun 2008 10:05:03 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_B3087ADC__
-#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_B3087ADC__
+#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_D15F96C9__
+#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_D15F96C9__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -30,6 +30,7 @@
 #include "sklepSeqMain.h"
 #include "sklepSeqStep.h"
 #include "sklepSeqPlaylist.h"
+#include "stepQuickEdit.h"
 //[/Headers]
 
 #include "sklepSeqTransportComponent.h"
@@ -46,6 +47,7 @@
 class sklepSeqMainComponent  : public Component,
                                public AsyncUpdater,
                                public ChangeListener,
+                               public MidiKeyboardStateListener,
                                public ButtonListener
 {
 public:
@@ -62,7 +64,10 @@ public:
 	void stepRightClicked(int i);
 	void clearSteps();
 	void changeListenerCallback(void *ptr);
-	void stepQuickEditClicked(int i);
+	void stepQuickEditClicked(sklepSeqStep *step);
+	void handleNoteOn (MidiKeyboardState *source, int midiChannel, int midiNoteNumber, float velocity);
+	void handleNoteOff (MidiKeyboardState *source, int midiChannel, int midiNoteNumber);
+	void mouseDown (const MouseEvent &e);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -139,6 +144,8 @@ private:
 	Font *lcdSmallFont;
 	bool firstHalf;
 	sklepSeqPlaylist *playlist;
+
+	stepQuickEdit *quickEdit;
     //[/UserVariables]
 
     //==============================================================================
@@ -161,4 +168,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_B3087ADC__
+#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_D15F96C9__

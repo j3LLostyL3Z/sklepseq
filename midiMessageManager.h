@@ -55,17 +55,30 @@ class midiDevice
 			
 			if (d)
 			{
+				Logger::writeToLog (T("success!!!"));
 				open = true;
 				return (true);
 			}
 			else
 			{
+				Logger::writeToLog (T("FAILED!!!"));
 				open = false;
 				d = 0;
 				return (false);
 			}
 		}
 		
+		void sendMessage (const MidiMessage *m)
+		{
+			if (isOpen())
+			{
+				d->sendMessageNow (*m);
+			}
+			else
+			{
+				return;
+			}
+		}
 		bool isOpen()
 		{
 			return (open);
@@ -87,7 +100,7 @@ class midiMessageManager
 		MidiBuffer getLeftMessages();
 		void clear();
 		void sendMessageToDevice (midiMessage *m);
-		bool isDeviceOpen(int device);
+		bool isDeviceOpen(int id);
 		void initDevices();
 		void prepareDevice(int i);
 		int getCurrentEventsCount ();

@@ -282,6 +282,10 @@ SOURCE=.\sklepSeqStepComponentEditor.cpp
 
 SOURCE=.\sklepSeqStepComponentEditor.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\stepQuickEdit.cpp
+# End Source File
 # End Group
 # End Target
 # End Project
