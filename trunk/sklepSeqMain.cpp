@@ -139,9 +139,10 @@ void DemoJuceFilter::processBlock (AudioSampleBuffer& buffer,
 					if (currentBeat > 16)
 						currentBeat = currentBeat - 16;
 
-					Logger::writeToLog (String::formatted (T("current events: %d"), midiManager.getCurrentEventsCount()));
+					//Logger::writeToLog (String::formatted (T("current events: %d"), midiManager.getCurrentEventsCount()));
 
 					/* process midi events to their devices */
+					midiManager.processMidiEvents();
 
 					/* clean the buffers */
 					midiManager.clear();

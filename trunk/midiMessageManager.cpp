@@ -23,12 +23,12 @@ midiMessageManager::~midiMessageManager()
 
 void midiMessageManager::addMidiMessage (MidiMessage *msg, int device)
 {
-	m.add (new midiMessage (msg, device));
+	m.add (new midiMessage (msg, device-1));
 }
 
 void midiMessageManager::addMidiBuffer (MidiBuffer *mBuf, int device)
 {
-	m.add (new midiMessage (mBuf, device));
+	m.add (new midiMessage (mBuf, device-1));
 }
 
 void midiMessageManager::processMidiEvents ()
@@ -84,11 +84,25 @@ void midiMessageManager::clear()
 
 void midiMessageManager::sendMessageToDevice (midiMessage *m)
 {
+	const MidiMessage *msg = m->m;
+	const deviceId = m->id;
+
+	if (device[deviceId])
+	{
+		device[deviceId]->sendMessage (msg);
+	}
 }
 
-bool midiMessageManager::isDeviceOpen(int device)
+bool midiMessageManager::isDeviceOpen(int id)
 {
-	return (false);
+	if (device[id])
+	{
+		return (device[id]->isOpen());
+	}
+	else
+	{
+		return (false);
+	}
 }
 
 void midiMessageManager::initDevices()
@@ -111,7 +125,7 @@ void midiMessageManager::prepareDevice (int i)
 		subtract one but only in this method, don't do it anywhere else */
 
 	int deviceId = i-1;
-	Logger::writeToLog (String::formatted (T("prepareDevice: %d"), i));
+	Logger::writeToLog (String::formatted (T("prepareDevice: %d"), deviceId));
 
 	if (deviceId == 0)
 	{
