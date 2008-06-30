@@ -133,3 +133,8 @@ void midiMessageManager::prepareDevice (int i)
 		}
 	}
 }
+
+int midiMessageManager::getCurrentEventsCount()
+{
+	return (m.size());
+}
