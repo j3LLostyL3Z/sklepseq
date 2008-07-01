@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  30 Jun 2008 10:30:13 pm
+  Creation date:  1 Jul 2008 2:05:57 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_9373626B__
-#define __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_9373626B__
+#ifndef __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_DD579F94__
+#define __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_DD579F94__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -42,7 +42,7 @@ class stepQuickEdit  : public Component,
 {
 public:
     //==============================================================================
-    stepQuickEdit (sklepSeqMainComponent *parent);
+    stepQuickEdit (sklepSeqMainComponent *parent, MidiMessage *msg);
     ~stepQuickEdit();
 
     //==============================================================================
@@ -76,4 +76,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_9373626B__
+#endif   // __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_DD579F94__

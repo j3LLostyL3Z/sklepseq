@@ -543,6 +543,7 @@ void sklepSeqMainComponent::stepRightClicked(int i)
 void sklepSeqMainComponent::stepQuickEditClicked(sklepSeqStep *step)
 {
 	sklepSeqPattern *p = ownerFilter->getCurrentPattern();
+	MidiMessage *msg = p->getStepNoVeirfy (step->getIndex());
 
 	if (quickEdit)
 	{
@@ -551,7 +552,7 @@ void sklepSeqMainComponent::stepQuickEditClicked(sklepSeqStep *step)
 
 	int x,y;
 	getMouseXYRelative (x,y);
-	quickEdit = new stepQuickEdit (this);
+	quickEdit = new stepQuickEdit (this, msg);
 
 	if (step->getY() > getHeight()/2)
 	{

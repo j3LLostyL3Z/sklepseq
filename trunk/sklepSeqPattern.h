@@ -51,6 +51,7 @@ class sklepSeqPattern  : public Component
 		void triggerEvents ();
 		void setStep (int nId, int nNumber, float nVelo);
 		MidiMessage* getStep (int nId);
+		MidiMessage* getStepNoVeirfy (int nId);
 		void toggleStep(int nId);
 
 	private:

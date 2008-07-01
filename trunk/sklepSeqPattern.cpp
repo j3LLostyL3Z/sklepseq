@@ -139,6 +139,18 @@ MidiMessage* sklepSeqPattern::getStep (int nId)
 	}
 }
 
+MidiMessage* sklepSeqPattern::getStepNoVeirfy (int nId)
+{
+	if (notes[nId])
+	{
+		return (notes[nId]->m);
+	}
+	else
+	{
+		return (0);
+	}
+}
+
 void sklepSeqPattern::toggleStep(int nId)
 {
 	if (notes[nId])
