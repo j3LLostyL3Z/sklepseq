@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  30 Jun 2008 10:30:13 pm
+  Creation date:  1 Jul 2008 2:05:57 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -30,15 +30,17 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-stepQuickEdit::stepQuickEdit (sklepSeqMainComponent *parent)
+stepQuickEdit::stepQuickEdit (sklepSeqMainComponent *parent, MidiMessage *msg)
     : veloSlider (0),
       midiKeyboardComponent (0)
 {
     addAndMakeVisible (veloSlider = new Slider (T("Velocity")));
     veloSlider->setTooltip (T("Velocity"));
-    veloSlider->setRange (0, 10, 0);
+    veloSlider->setRange (1, 127, 1);
     veloSlider->setSliderStyle (Slider::LinearVertical);
-    veloSlider->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    veloSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    veloSlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    veloSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xffffff));
     veloSlider->addListener (this);
 
     addAndMakeVisible (midiKeyboardComponent = new MidiKeyboardComponent (midiKeyboardState, MidiKeyboardComponent::verticalKeyboardFacingRight));
@@ -46,6 +48,10 @@ stepQuickEdit::stepQuickEdit (sklepSeqMainComponent *parent)
 
 
     //[UserPreSize]
+	if (msg)
+	{
+		veloSlider->setValue (msg->getVelocity(), false);
+	}
 	midiKeyboardState.addListener (parent);
     //[/UserPreSize]
 
@@ -133,7 +139,7 @@ void stepQuickEdit::mouseDrag (const MouseEvent& e)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="stepQuickEdit" componentName=""
-                 parentClasses="public Component" constructorParams="sklepSeqMainComponent *parent"
+                 parentClasses="public Component" constructorParams="sklepSeqMainComponent *parent, MidiMessage *msg"
                  variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
                  overlayOpacity="0.330000013" fixedSize="1" initialWidth="96"
                  initialHeight="272">
@@ -143,8 +149,9 @@ BEGIN_JUCER_METADATA
   </BACKGROUND>
   <SLIDER name="Velocity" id="946772637523ebbb" memberName="veloSlider"
           virtualName="" explicitFocusOrder="0" pos="72 16 24 256" tooltip="Velocity"
-          min="0" max="10" int="0" style="LinearVertical" textBoxPos="NoTextBox"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textboxtext="ffffffff" textboxbkgd="ffffff" min="1" max="127"
+          int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="0"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="new component" id="9427308f14b9d83e" memberName="midiKeyboardComponent"
                     virtualName="" explicitFocusOrder="0" pos="0 16 72 256" class="MidiKeyboardComponent"
                     params="midiKeyboardState, MidiKeyboardComponent::verticalKeyboardFacingRight"/>
