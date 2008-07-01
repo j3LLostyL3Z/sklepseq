@@ -22,6 +22,7 @@ class sklepSeqStep : public ImageButton, public MidiKeyboardState
 		bool getQuickPopup();
 		void setOff();
 		void setOn();
+
 	private:
 		int posX, posY;
 		Image *image;

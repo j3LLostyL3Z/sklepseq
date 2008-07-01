@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  1 Jul 2008 2:05:57 pm
+  Creation date:  1 Jul 2008 3:24:07 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -48,11 +48,12 @@ stepQuickEdit::stepQuickEdit (sklepSeqMainComponent *parent, MidiMessage *msg)
 
 
     //[UserPreSize]
-	if (msg)
+	midiMsg = msg;
+	if (midiMsg)
 	{
-		veloSlider->setValue (msg->getVelocity(), false);
+		veloSlider->setValue (midiMsg->getVelocity(), false);
 	}
-	midiKeyboardState.addListener (parent);
+	midiKeyboardState.addListener (this);
     //[/UserPreSize]
 
     setSize (96, 272);
@@ -108,6 +109,10 @@ void stepQuickEdit::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == veloSlider)
     {
         //[UserSliderCode_veloSlider] -- add your slider handling code here..
+		if (midiMsg)
+		{
+			midiMsg->setVelocity ((float)veloSlider->getValue()/127);
+		}
         //[/UserSliderCode_veloSlider]
     }
 
@@ -127,6 +132,18 @@ void stepQuickEdit::mouseDrag (const MouseEvent& e)
 {
 	myDragger.dragComponent (this, e);
 }
+
+void stepQuickEdit::handleNoteOn (MidiKeyboardState *source, int midiChannel, int midiNoteNumber, float velocity)
+{
+	if (midiMsg)
+	{
+		midiMsg->setNoteNumber (midiNoteNumber);
+	}
+}
+
+void stepQuickEdit::handleNoteOff (MidiKeyboardState *source, int midiChannel, int midiNoteNumber)
+{
+}
 //[/MiscUserCode]
 
 
@@ -139,7 +156,8 @@ void stepQuickEdit::mouseDrag (const MouseEvent& e)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="stepQuickEdit" componentName=""
-                 parentClasses="public Component" constructorParams="sklepSeqMainComponent *parent, MidiMessage *msg"
+                 parentClasses="public Component, public MidiKeyboardStateListener"
+                 constructorParams="sklepSeqMainComponent *parent, MidiMessage *msg"
                  variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
                  overlayOpacity="0.330000013" fixedSize="1" initialWidth="96"
                  initialHeight="272">
