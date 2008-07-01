@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  1 Jul 2008 2:05:57 pm
+  Creation date:  1 Jul 2008 3:24:07 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_DD579F94__
-#define __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_DD579F94__
+#ifndef __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_86F3C52__
+#define __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_86F3C52__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -38,6 +38,7 @@ class sklepSeqMainComponent;
                                                                     //[/Comments]
 */
 class stepQuickEdit  : public Component,
+                       public MidiKeyboardStateListener,
                        public SliderListener
 {
 public:
@@ -49,6 +50,8 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
 	void mouseDown (const MouseEvent& e);
 	void mouseDrag (const MouseEvent& e);
+	void handleNoteOn (MidiKeyboardState *source, int midiChannel, int midiNoteNumber, float velocity);
+	void handleNoteOff (MidiKeyboardState *source, int midiChannel, int midiNoteNumber);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -63,6 +66,7 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	MidiKeyboardState midiKeyboardState;
 	ComponentDragger myDragger;
+	MidiMessage *midiMsg;
     //[/UserVariables]
 
     //==============================================================================
@@ -76,4 +80,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_DD579F94__
+#endif   // __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_86F3C52__
