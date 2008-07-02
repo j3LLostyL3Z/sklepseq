@@ -401,7 +401,7 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 
 	if (step->getPopup())
 	{
-		stepRightClicked(i);
+		stepQuickEditClicked (step);
 	}
 	else if (step->getQuickPopup())
 	{
@@ -533,17 +533,10 @@ void sklepSeqMainComponent::patternChanged()
 	}
 }
 
-void sklepSeqMainComponent::stepRightClicked(int i)
-{
-	sklepSeqPattern *p = ownerFilter->getCurrentPattern();
-
-	DialogWindow::showModalDialog (T("Event properties"), new sklepSeqStepComponentEditor(p->getStep(i)), this, Colours::white, true, false, false);
-}
-
 void sklepSeqMainComponent::stepQuickEditClicked(sklepSeqStep *step)
 {
 	sklepSeqPattern *p = ownerFilter->getCurrentPattern();
-	MidiMessage *msg = p->getStepNoVeirfy (step->getIndex());
+	myMidiMessage *msg = p->getStepNoVeirfy (step->getIndex());
 
 	if (quickEdit)
 	{
@@ -554,13 +547,21 @@ void sklepSeqMainComponent::stepQuickEditClicked(sklepSeqStep *step)
 	getMouseXYRelative (x,y);
 	quickEdit = new stepQuickEdit (this, msg);
 
-	if (step->getY() > getHeight()/2)
+	if (step->getY() > getHeight()/2 && step->getX() < getWidth()-256)
 	{
-		quickEdit->setBounds (x,y-272,96,272);
+		quickEdit->setBounds (x,y-272,128,272);
+	}
+	else if (step->getY() > getHeight()/2 && step->getX() > getWidth()-256)
+	{
+		quickEdit->setBounds (x-128,y-272,128,272);
+	}
+	else if (step->getY() < getHeight()/2 && step->getX() > getWidth()-256)
+	{
+		quickEdit->setBounds (x-128,y,128,272);
 	}
 	else
 	{
-		quickEdit->setBounds (x,y,96,272);
+		quickEdit->setBounds (x,y,128,272);
 	}
 	addAndMakeVisible (quickEdit);
 }

@@ -256,6 +256,14 @@ SOURCE=.\midiMessageManager.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\myMidiMessage.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\myMidiMessage.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xsync.cpp
 # End Source File
 # Begin Source File
@@ -281,6 +289,30 @@ SOURCE=.\sklepSeqStepComponentEditor.cpp
 # Begin Source File
 
 SOURCE=.\sklepSeqStepComponentEditor.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\stepEditController.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\stepEditController.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\stepEditNote.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\stepEditNote.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\stepEditSysex.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\stepEditSysex.h
 # End Source File
 # Begin Source File
 

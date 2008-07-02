@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  1 Jul 2008 3:24:07 pm
+  Creation date:  2 Jul 2008 1:09:07 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -30,33 +30,34 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-stepQuickEdit::stepQuickEdit (sklepSeqMainComponent *parent, MidiMessage *msg)
-    : veloSlider (0),
-      midiKeyboardComponent (0)
+stepQuickEdit::stepQuickEdit (sklepSeqMainComponent *parent, myMidiMessage *msg)
+    : typeCombo (0)
 {
-    addAndMakeVisible (veloSlider = new Slider (T("Velocity")));
-    veloSlider->setTooltip (T("Velocity"));
-    veloSlider->setRange (1, 127, 1);
-    veloSlider->setSliderStyle (Slider::LinearVertical);
-    veloSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    veloSlider->setColour (Slider::textBoxTextColourId, Colours::white);
-    veloSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xffffff));
-    veloSlider->addListener (this);
-
-    addAndMakeVisible (midiKeyboardComponent = new MidiKeyboardComponent (midiKeyboardState, MidiKeyboardComponent::verticalKeyboardFacingRight));
-    midiKeyboardComponent->setName (T("new component"));
+    addAndMakeVisible (typeCombo = new ComboBox (T("Type")));
+    typeCombo->setTooltip (T("Type"));
+    typeCombo->setEditableText (false);
+    typeCombo->setJustificationType (Justification::centredLeft);
+    typeCombo->setTextWhenNothingSelected (String::empty);
+    typeCombo->setTextWhenNoChoicesAvailable (T("(no choices)"));
+    typeCombo->addItem (T("Note On"), 1);
+    typeCombo->addItem (T("Note Off"), 2);
+    typeCombo->addItem (T("CC"), 3);
+    typeCombo->addItem (T("RPN"), 4);
+    typeCombo->addItem (T("NRPN"), 5);
+    typeCombo->addItem (T("SysEx"), 6);
+    typeCombo->addItem (T("Program Change"), 7);
+    typeCombo->addItem (T("Bank Change"), 8);
+    typeCombo->addItem (T("MMC"), 9);
+    typeCombo->addListener (this);
 
 
     //[UserPreSize]
-	midiMsg = msg;
-	if (midiMsg)
-	{
-		veloSlider->setValue (midiMsg->getVelocity(), false);
-	}
-	midiKeyboardState.addListener (this);
+	midiMessage = msg;
+	editorComponent = 0;
+	messageTypeChanged();
     //[/UserPreSize]
 
-    setSize (96, 272);
+    setSize (128, 272);
 
     //[Constructor] You can add your own custom stuff here..
     //[/Constructor]
@@ -67,8 +68,7 @@ stepQuickEdit::~stepQuickEdit()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    deleteAndZero (veloSlider);
-    deleteAndZero (midiKeyboardComponent);
+    deleteAndZero (typeCombo);
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -86,38 +86,72 @@ void stepQuickEdit::paint (Graphics& g)
                               56.0f, 256.0f,
                               false);
     g.setBrush (&gradient_1);
-    g.fillRoundedRectangle (0.0f, 16.0f, 96.0f, 256.0f, 10.0000f);
+    g.fillRoundedRectangle (0.0f, 0.0f, 128.0f, 272.0f, 10.0000f);
 
     //[UserPaint] Add your own custom painting code here..
-	LookAndFeel::drawGlassLozenge (g, 0, 0, 96, 16, Colour(64,64,64).withAlpha (0.8f), 0.0f, 5.0f, false, false, false, true);
+	LookAndFeel::drawGlassLozenge (g, 4, 2, 120, 16, Colour(64,64,64).withAlpha (0.8f), 0.0f, 5.0f, false, false, false, true);
     //[/UserPaint]
 }
 
 void stepQuickEdit::resized()
 {
-    veloSlider->setBounds (72, 16, 24, 256);
-    midiKeyboardComponent->setBounds (0, 16, 72, 256);
+    typeCombo->setBounds (16, 254, 96, 16);
     //[UserResized] Add your own custom resize handling here..
+	if (editorComponent)
+		editorComponent->setBounds (8,24,112,224);
     //[/UserResized]
 }
 
-void stepQuickEdit::sliderValueChanged (Slider* sliderThatWasMoved)
+void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
-    //[UsersliderValueChanged_Pre]
-    //[/UsersliderValueChanged_Pre]
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
 
-    if (sliderThatWasMoved == veloSlider)
+    if (comboBoxThatHasChanged == typeCombo)
     {
-        //[UserSliderCode_veloSlider] -- add your slider handling code here..
-		if (midiMsg)
+        //[UserComboBoxCode_typeCombo] -- add your combo box handling code here..
+		if (midiMessage == 0)
+			return;
+
+		switch (typeCombo->getSelectedId())
 		{
-			midiMsg->setVelocity ((float)veloSlider->getValue()/127);
+			case noteOn:
+				Logger::writeToLog (T("set noteOn"));
+				midiMessage->setMidiMessage (MidiMessage::noteOn (1,1,1.0f));
+				break;
+
+			case noteOff:
+				midiMessage->setMidiMessage (MidiMessage::noteOff (1,1));
+				break;
+
+			case CC:
+				midiMessage->setMidiMessage (MidiMessage::controllerEvent (1,1,1));
+				break;
+
+			case ProgramChange:
+				midiMessage->setMidiMessage (MidiMessage::programChange (1, 1));
+				break;
+
+			case SysEx:
+				uint8 d[3];
+				d[0] = 0xf0;
+				d[1] = 0x0;
+				d[2] = 0x0f;
+
+				Logger::writeToLog (T("set sysex"));
+				midiMessage->setMidiMessage (MidiMessage::createSysExMessage (&d[0], 3));
+				break;
+
+			default:
+				break;
 		}
-        //[/UserSliderCode_veloSlider]
+
+		messageTypeChanged();
+        //[/UserComboBoxCode_typeCombo]
     }
 
-    //[UsersliderValueChanged_Post]
-    //[/UsersliderValueChanged_Post]
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
 }
 
 
@@ -133,16 +167,68 @@ void stepQuickEdit::mouseDrag (const MouseEvent& e)
 	myDragger.dragComponent (this, e);
 }
 
-void stepQuickEdit::handleNoteOn (MidiKeyboardState *source, int midiChannel, int midiNoteNumber, float velocity)
+void stepQuickEdit::mouseMove (const MouseEvent &e)
 {
-	if (midiMsg)
+	if (e.x > 4 && e.x < 124 && e.y > 2 && e.y < 16)
 	{
-		midiMsg->setNoteNumber (midiNoteNumber);
+		setMouseCursor (MouseCursor::DraggingHandCursor);
+	}
+	else
+	{
+		setMouseCursor (MouseCursor::NormalCursor);
 	}
 }
 
-void stepQuickEdit::handleNoteOff (MidiKeyboardState *source, int midiChannel, int midiNoteNumber)
+void stepQuickEdit::messageTypeChanged()
 {
+	MidiMessage *m = 0;
+	
+	Logger::writeToLog (T("messageTypeChanged"));
+
+	if (editorComponent)
+	{
+		deleteAndZero (editorComponent);
+	}
+	if (!midiMessage)
+	{
+		Logger::writeToLog (T("invalid midi message in editor"));
+		return;
+	}
+
+	m = midiMessage->getMidiMessage();
+
+	if (m->isNoteOn())
+	{
+		
+		addAndMakeVisible (editorComponent = new stepEditNote(midiMessage));
+		typeCombo->setSelectedId (noteOn);
+	}
+	else if (m->isNoteOff())
+	{
+		addAndMakeVisible (editorComponent = new stepEditNote(midiMessage));
+		typeCombo->setSelectedId (noteOff);
+	}
+	else if (m->isProgramChange())
+	{
+		typeCombo->setSelectedId (ProgramChange);
+	}
+	else if (m->isController())
+	{
+		addAndMakeVisible (editorComponent = new stepEditController(midiMessage));
+		typeCombo->setSelectedId (CC);
+	}
+	else if (m->isMidiMachineControlMessage())
+	{
+		typeCombo->setSelectedId (MMC);
+	}
+	else if (m->isSysEx())
+	{
+		
+		addAndMakeVisible (editorComponent = new stepEditSysex(midiMessage));
+		typeCombo->setSelectedId (SysEx);
+	}
+
+	resized();
 }
 //[/MiscUserCode]
 
@@ -156,23 +242,18 @@ void stepQuickEdit::handleNoteOff (MidiKeyboardState *source, int midiChannel, i
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="stepQuickEdit" componentName=""
-                 parentClasses="public Component, public MidiKeyboardStateListener"
-                 constructorParams="sklepSeqMainComponent *parent, MidiMessage *msg"
+                 parentClasses="public Component" constructorParams="sklepSeqMainComponent *parent, myMidiMessage *msg"
                  variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
-                 overlayOpacity="0.330000013" fixedSize="1" initialWidth="96"
+                 overlayOpacity="0.330000013" fixedSize="1" initialWidth="128"
                  initialHeight="272">
   <BACKGROUND backgroundColour="ff6262">
-    <ROUNDRECT pos="0 16 96 256" cornerSize="10" fill="linear: 56 0, 56 256, 0=ad353535, 1=ff000000"
+    <ROUNDRECT pos="0 0 128 272" cornerSize="10" fill="linear: 56 0, 56 256, 0=ad353535, 1=ff000000"
                hasStroke="0"/>
   </BACKGROUND>
-  <SLIDER name="Velocity" id="946772637523ebbb" memberName="veloSlider"
-          virtualName="" explicitFocusOrder="0" pos="72 16 24 256" tooltip="Velocity"
-          textboxtext="ffffffff" textboxbkgd="ffffff" min="1" max="127"
-          int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <GENERICCOMPONENT name="new component" id="9427308f14b9d83e" memberName="midiKeyboardComponent"
-                    virtualName="" explicitFocusOrder="0" pos="0 16 72 256" class="MidiKeyboardComponent"
-                    params="midiKeyboardState, MidiKeyboardComponent::verticalKeyboardFacingRight"/>
+  <COMBOBOX name="Type" id="5852402a7bc052e" memberName="typeCombo" virtualName=""
+            explicitFocusOrder="0" pos="16 254 96 16" tooltip="Type" editable="0"
+            layout="33" items="Note On&#10;Note Off&#10;CC&#10;RPN&#10;NRPN&#10;SysEx&#10;Program Change&#10;Bank Change&#10;MMC"
+            textWhenNonSelected="" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
