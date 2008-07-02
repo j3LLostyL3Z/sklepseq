@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  2 Jul 2008 1:09:07 pm
+  Creation date:  2 Jul 2008 2:39:26 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,17 +19,12 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_43FF748D__
-#define __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_43FF748D__
+#ifndef __JUCER_HEADER_STEPEDITNOTE_STEPEDITNOTE_9C26E7A5__
+#define __JUCER_HEADER_STEPEDITNOTE_STEPEDITNOTE_9C26E7A5__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
-#include "stepEditNote.h"
-#include "stepEditController.h"
-#include "stepEditSysex.h"
 #include "myMidiMessage.h"
-
-class sklepSeqMainComponent;
 //[/Headers]
 
 
@@ -42,25 +37,24 @@ class sklepSeqMainComponent;
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class stepQuickEdit  : public Component,
-                       public ComboBoxListener
+class stepEditNote  : public Component,
+                      public MidiKeyboardStateListener,
+                      public SliderListener
 {
 public:
     //==============================================================================
-    stepQuickEdit (sklepSeqMainComponent *parent, myMidiMessage *msg);
-    ~stepQuickEdit();
+    stepEditNote (myMidiMessage *msg);
+    ~stepEditNote();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void mouseDown (const MouseEvent& e);
-	void mouseDrag (const MouseEvent& e);
-	void mouseMove (const MouseEvent &e);
-	void messageTypeChanged();
+	void handleNoteOn (MidiKeyboardState *source, int midiChannel, int midiNoteNumber, float velocity);
+	void handleNoteOff (MidiKeyboardState *source, int midiChannel, int midiNoteNumber);
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
-    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
     //==============================================================================
@@ -69,34 +63,18 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	MidiKeyboardState midiKeyboardState;
-	ComponentDragger myDragger;
 	myMidiMessage *midiMessage;
-	Component *editorComponent;
-
-	enum editorTypes
-	{
-		none,
-		noteOn,
-		noteOff,
-		CC,
-		RPN,
-		NRPN,
-		SysEx,
-		ProgramChange,
-		BankChange,
-		MMC
-	};
-
     //[/UserVariables]
 
     //==============================================================================
-    ComboBox* typeCombo;
+    MidiKeyboardComponent* midiKeyboard;
+    Slider* veloSlider;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
-    stepQuickEdit (const stepQuickEdit&);
-    const stepQuickEdit& operator= (const stepQuickEdit&);
+    stepEditNote (const stepEditNote&);
+    const stepEditNote& operator= (const stepEditNote&);
 };
 
 
-#endif   // __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_43FF748D__
+#endif   // __JUCER_HEADER_STEPEDITNOTE_STEPEDITNOTE_9C26E7A5__

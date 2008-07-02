@@ -20,7 +20,7 @@ sklepSeqPattern::sklepSeqPattern(int _id)
 
 	for (int x=0; x<32; x++)
 	{
-		notes.add (new midiMessage2());
+		notes.add (new myMidiMessage(midiChannel));
 	}
 }
 
@@ -124,12 +124,12 @@ void sklepSeqPattern::setStep (int nId, int nNumber, float nVelo)
 	}
 }
 
-MidiMessage* sklepSeqPattern::getStep (int nId)
+myMidiMessage* sklepSeqPattern::getStep (int nId)
 {
 	if (notes[nId])
 	{
 		if (notes[nId]->enabled)
-			return (notes[nId]->m);
+			return (notes[nId]);
 		else
 			return (0);
 	}
@@ -139,11 +139,11 @@ MidiMessage* sklepSeqPattern::getStep (int nId)
 	}
 }
 
-MidiMessage* sklepSeqPattern::getStepNoVeirfy (int nId)
+myMidiMessage* sklepSeqPattern::getStepNoVeirfy (int nId)
 {
 	if (notes[nId])
 	{
-		return (notes[nId]->m);
+		return (notes[nId]);
 	}
 	else
 	{
@@ -172,6 +172,14 @@ void sklepSeqPattern::setMidiChannel (int c)
 		midiChannel = c;
 	else
 		midiChannel = 1;
+
+	for (int x=0; x<notes.size(); x++)
+	{
+		if (notes[x])
+		{
+			notes[x]->setMidiChannel (midiChannel);
+		}
+	}
 }
 
 int sklepSeqPattern::getMidiChannel ()

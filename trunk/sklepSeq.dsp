@@ -212,14 +212,6 @@ SOURCE=.\sklepSeqStep.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\sklepSeqStepComponentEditor.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqStepComponentEditor.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\stepQuickEdit.cpp
 # End Source File
 # Begin Source File

@@ -7,20 +7,7 @@
 
 #include <juce.h>
 #include "midiMessageManager.h"
-
-class midiMessage2
-{
-	public:
-		midiMessage2()
-		{
-			m = new MidiMessage (MidiMessage::noteOn (1, 64, 1.0f));
-			id = 0;
-			enabled = false;
-		};
-		MidiMessage *m;
-		int id;
-		bool enabled;
-};
+#include "myMidiMessage.h"
 
 class sklepSeqPattern  : public Component
 {
@@ -50,8 +37,8 @@ class sklepSeqPattern  : public Component
 		void addMidiManager (midiMessageManager *m);
 		void triggerEvents ();
 		void setStep (int nId, int nNumber, float nVelo);
-		MidiMessage* getStep (int nId);
-		MidiMessage* getStepNoVeirfy (int nId);
+		myMidiMessage* getStep (int nId);
+		myMidiMessage* getStepNoVeirfy (int nId);
 		void toggleStep(int nId);
 
 	private:
@@ -65,7 +52,7 @@ class sklepSeqPattern  : public Component
 		midiMessageManager *midiManager;
 		int midiChannel;
 		int midiDevice;
-		OwnedArray <midiMessage2> notes;
+		OwnedArray <myMidiMessage> notes;
 };
 
 #endif // !defined(AFX_SKLEPSEQPATTERN_H__F277BDA6_FA04_4DC5_8E91_89AF43BE3A54__INCLUDED_)
