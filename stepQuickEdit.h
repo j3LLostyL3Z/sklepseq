@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  2 Jul 2008 1:09:07 pm
+  Creation date:  2 Jul 2008 9:31:21 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_43FF748D__
-#define __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_43FF748D__
+#ifndef __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_AFEA208C__
+#define __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_AFEA208C__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -78,12 +78,9 @@ private:
 		none,
 		noteOn,
 		noteOff,
-		CC,
-		RPN,
-		NRPN,
+		Controller,
 		SysEx,
 		ProgramChange,
-		BankChange,
 		MMC
 	};
 
@@ -99,4 +96,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_43FF748D__
+#endif   // __JUCER_HEADER_STEPQUICKEDIT_STEPQUICKEDIT_AFEA208C__
