@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  2 Jul 2008 1:09:07 pm
+  Creation date:  2 Jul 2008 9:31:21 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -41,13 +41,10 @@ stepQuickEdit::stepQuickEdit (sklepSeqMainComponent *parent, myMidiMessage *msg)
     typeCombo->setTextWhenNoChoicesAvailable (T("(no choices)"));
     typeCombo->addItem (T("Note On"), 1);
     typeCombo->addItem (T("Note Off"), 2);
-    typeCombo->addItem (T("CC"), 3);
-    typeCombo->addItem (T("RPN"), 4);
-    typeCombo->addItem (T("NRPN"), 5);
-    typeCombo->addItem (T("SysEx"), 6);
-    typeCombo->addItem (T("Program Change"), 7);
-    typeCombo->addItem (T("Bank Change"), 8);
-    typeCombo->addItem (T("MMC"), 9);
+    typeCombo->addItem (T("Controller"), 3);
+    typeCombo->addItem (T("SysEx"), 4);
+    typeCombo->addItem (T("Program Change"), 5);
+    typeCombo->addItem (T("MMC"), 6);
     typeCombo->addListener (this);
 
 
@@ -116,7 +113,6 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 		switch (typeCombo->getSelectedId())
 		{
 			case noteOn:
-				Logger::writeToLog (T("set noteOn"));
 				midiMessage->setMidiMessage (MidiMessage::noteOn (1,1,1.0f));
 				break;
 
@@ -124,7 +120,7 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 				midiMessage->setMidiMessage (MidiMessage::noteOff (1,1));
 				break;
 
-			case CC:
+			case Controller:
 				midiMessage->setMidiMessage (MidiMessage::controllerEvent (1,1,1));
 				break;
 
@@ -138,7 +134,6 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 				d[1] = 0x0;
 				d[2] = 0x0f;
 
-				Logger::writeToLog (T("set sysex"));
 				midiMessage->setMidiMessage (MidiMessage::createSysExMessage (&d[0], 3));
 				break;
 
@@ -182,8 +177,6 @@ void stepQuickEdit::mouseMove (const MouseEvent &e)
 void stepQuickEdit::messageTypeChanged()
 {
 	MidiMessage *m = 0;
-	
-	Logger::writeToLog (T("messageTypeChanged"));
 
 	if (editorComponent)
 	{
@@ -191,7 +184,6 @@ void stepQuickEdit::messageTypeChanged()
 	}
 	if (!midiMessage)
 	{
-		Logger::writeToLog (T("invalid midi message in editor"));
 		return;
 	}
 
@@ -199,7 +191,6 @@ void stepQuickEdit::messageTypeChanged()
 
 	if (m->isNoteOn())
 	{
-		
 		addAndMakeVisible (editorComponent = new stepEditNote(midiMessage));
 		typeCombo->setSelectedId (noteOn);
 	}
@@ -215,7 +206,7 @@ void stepQuickEdit::messageTypeChanged()
 	else if (m->isController())
 	{
 		addAndMakeVisible (editorComponent = new stepEditController(midiMessage));
-		typeCombo->setSelectedId (CC);
+		typeCombo->setSelectedId (Controller);
 	}
 	else if (m->isMidiMachineControlMessage())
 	{
@@ -223,7 +214,6 @@ void stepQuickEdit::messageTypeChanged()
 	}
 	else if (m->isSysEx())
 	{
-		
 		addAndMakeVisible (editorComponent = new stepEditSysex(midiMessage));
 		typeCombo->setSelectedId (SysEx);
 	}
@@ -252,7 +242,7 @@ BEGIN_JUCER_METADATA
   </BACKGROUND>
   <COMBOBOX name="Type" id="5852402a7bc052e" memberName="typeCombo" virtualName=""
             explicitFocusOrder="0" pos="16 254 96 16" tooltip="Type" editable="0"
-            layout="33" items="Note On&#10;Note Off&#10;CC&#10;RPN&#10;NRPN&#10;SysEx&#10;Program Change&#10;Bank Change&#10;MMC"
+            layout="33" items="Note On&#10;Note Off&#10;Controller&#10;SysEx&#10;Program Change&#10;MMC"
             textWhenNonSelected="" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 

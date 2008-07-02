@@ -76,7 +76,14 @@ void sklepSeqPattern::triggerEvents ()
 {
 	if (notes[currentPosition-1]->enabled)
 	{
-		midiManager->addMidiMessage (notes[currentPosition-1]->m, midiDevice);
+		if (notes[currentPosition-1]->isMulti() == true)
+		{
+			midiManager->addMidiBuffer (notes[currentPosition-1]->mB, midiDevice);
+		}
+		else
+		{
+			midiManager->addMidiMessage (notes[currentPosition-1]->m, midiDevice);
+		}
 	}
 }
 

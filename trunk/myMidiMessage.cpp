@@ -10,9 +10,11 @@
 
 myMidiMessage::myMidiMessage(int ch)
 {
-	m = new MidiMessage (MidiMessage::noteOn (ch, 64, 1.0f));
-	id = 0;
-	enabled = false;
+	multi		= false;
+	m			= new MidiMessage (MidiMessage::noteOn (ch, 64, 1.0f));
+	id			= 0;
+	enabled		= false;
+	midiChannel = ch;
 }
 
 myMidiMessage::~myMidiMessage()
@@ -24,16 +26,40 @@ void myMidiMessage::setMidiChannel (int ch)
 	if (m)
 	{
 		m->setChannel (ch);
+		midiChannel = ch;
 	}
 }
 
 void myMidiMessage::setMidiMessage (MidiMessage midiMessage)
 {
-	const int ch = m->getChannel();
-	m = new MidiMessage (midiMessage);
+	multi	= false;
+	m		= new MidiMessage (midiMessage);
+	m->setChannel (midiChannel);
 
-	if (!m->isSysEx())
-		m->setChannel (ch);
+	uint8 *d = m->getRawData();
+	Logger::writeToLog (String::formatted (T("%x:%x:%x"), *d, *(d+1), *(d+2)));
+}
+
+void myMidiMessage::setMidiMessageMulti (MidiBuffer midiBuffer)
+{
+	multi	= true;
+	m		= 0;
+	mB		= new MidiBuffer(midiBuffer);
+
+	MidiBuffer::Iterator i (*mB);
+	MidiMessage msg (0xf4, 0.0);
+	int s;
+
+	while (i.getNextEvent(msg,s))
+	{
+		uint8 *d = msg.getRawData();
+		Logger::writeToLog (String::formatted (T("%x:%x:%x"), *d, *(d+1), *(d+2)));
+	}
+}
+
+bool myMidiMessage::isMulti()
+{
+	return (multi);
 }
 
 MidiMessage *myMidiMessage::getMidiMessage()

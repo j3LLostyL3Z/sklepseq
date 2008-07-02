@@ -212,6 +212,30 @@ SOURCE=.\sklepSeqStep.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\stepEditController.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\stepEditController.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\stepEditNote.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\stepEditNote.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\stepEditSysex.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\stepEditSysex.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\stepQuickEdit.cpp
 # End Source File
 # Begin Source File
@@ -253,6 +277,14 @@ SOURCE=.\midiMessageManager.cpp
 # Begin Source File
 
 SOURCE=.\midiMessageManager.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\myMidiMessage.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\myMidiMessage.h
 # End Source File
 # Begin Source File
 

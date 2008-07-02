@@ -85,11 +85,23 @@ void midiMessageManager::clear()
 void midiMessageManager::sendMessageToDevice (midiMessage *m)
 {
 	const MidiMessage *msg = m->m;
+	const MidiBuffer *msgB = m->mB;
+
 	const deviceId = m->id;
 
-	if (device[deviceId])
+	if (msg)
 	{
-		device[deviceId]->sendMessage (msg);
+		if (device[deviceId])
+		{
+			device[deviceId]->sendMessage (msg);
+		}
+	}
+	else if (msgB)
+	{
+		if (device[deviceId])
+		{
+			//device[deviceId]->sendMessage (msgB);
+		}
 	}
 }
 
