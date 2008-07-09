@@ -64,12 +64,12 @@ void midiDevice::sendMessageBuffer (const MidiBuffer *mb)
 	if (isOpen())
 	{
 		MidiBuffer::Iterator i (*mb);
-		int len, time;
-		MidiMessage msg;
+		int len;
+		MidiMessage message (0xf4, 0.0);
 
-		while (i.getNextEvent (msg, len, time))
+		while (i.getNextEvent (message, len))
 		{
-			sendMessage (msg);
+			sendMessage (&message);
 		}
 	}
 	else
