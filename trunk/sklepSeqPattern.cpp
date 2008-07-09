@@ -77,14 +77,7 @@ void sklepSeqPattern::triggerEvents ()
 {
 	if (notes[currentPosition-1]->enabled)
 	{
-		if (notes[currentPosition-1]->isMulti() == true)
-		{
-			midiManager->addMidiBuffer (notes[currentPosition-1]->mB, midiDevice);
-		}
-		else
-		{
-			midiManager->addMidiMessage (notes[currentPosition-1]->m, midiDevice);
-		}
+		midiManager->sendMessageToDevice (notes[currentPosition-1]);
 	}
 }
 
@@ -198,6 +191,15 @@ int sklepSeqPattern::getMidiChannel ()
 void sklepSeqPattern::setMidiDevice (int d)
 {
 	Logger::writeToLog (T("pattern, set midi device"));
+	
+	for (int x=0; x<32; x++)
+	{
+		if (notes[x])
+		{
+			notes[x]->setMidiDevice (d-1);
+		}
+	}
+
 	midiManager->prepareDevice (d);
 	midiDevice = d;
 }

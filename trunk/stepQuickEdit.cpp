@@ -182,43 +182,46 @@ void stepQuickEdit::messageTypeChanged()
 	{
 		deleteAndZero (editorComponent);
 	}
-	if (!midiMessage)
+	if (midiMessage == 0)
 	{
 		return;
 	}
 
 	m = midiMessage->getMidiMessage();
 
-	if (m->isNoteOn())
+	if (m) 
 	{
-		addAndMakeVisible (editorComponent = new stepEditNote(midiMessage));
-		typeCombo->setSelectedId (noteOn);
-	}
-	else if (m->isNoteOff())
-	{
-		addAndMakeVisible (editorComponent = new stepEditNote(midiMessage));
-		typeCombo->setSelectedId (noteOff);
-	}
-	else if (m->isProgramChange())
-	{
-		typeCombo->setSelectedId (ProgramChange);
-	}
-	else if (m->isController())
-	{
-		addAndMakeVisible (editorComponent = new stepEditController(midiMessage));
-		typeCombo->setSelectedId (Controller);
-	}
-	else if (m->isMidiMachineControlMessage())
-	{
-		typeCombo->setSelectedId (MMC);
-	}
-	else if (m->isSysEx())
-	{
-		addAndMakeVisible (editorComponent = new stepEditSysex(midiMessage));
-		typeCombo->setSelectedId (SysEx);
-	}
+		if (m->isNoteOn())
+		{
+			addAndMakeVisible (editorComponent = new stepEditNote(midiMessage));
+			typeCombo->setSelectedId (noteOn);
+		}
+		else if (m->isNoteOff())
+		{
+			addAndMakeVisible (editorComponent = new stepEditNote(midiMessage));
+			typeCombo->setSelectedId (noteOff);
+		}
+		else if (m->isProgramChange())
+		{
+			typeCombo->setSelectedId (ProgramChange);
+		}
+		else if (m->isController())
+		{
+			addAndMakeVisible (editorComponent = new stepEditController(midiMessage));
+			typeCombo->setSelectedId (Controller);
+		}
+		else if (m->isMidiMachineControlMessage())
+		{
+			typeCombo->setSelectedId (MMC);
+		}
+		else if (m->isSysEx())
+		{
+			addAndMakeVisible (editorComponent = new stepEditSysex(midiMessage));
+			typeCombo->setSelectedId (SysEx);
+		}
 
-	resized();
+		resized();
+	}
 }
 //[/MiscUserCode]
 
