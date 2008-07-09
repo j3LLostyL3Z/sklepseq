@@ -18,17 +18,8 @@ midiMessageManager::midiMessageManager()
 midiMessageManager::~midiMessageManager()
 {
 	m.clear();
+	device.clear();
 	midiOutputList.clear();
-}
-
-void midiMessageManager::addMidiMessage (MidiMessage *msg, int device)
-{
-	m.add (new midiMessage (msg, device-1));
-}
-
-void midiMessageManager::addMidiBuffer (MidiBuffer *mBuf, int device)
-{
-	m.add (new midiMessage (mBuf, device-1));
 }
 
 void midiMessageManager::processMidiEvents ()
@@ -37,13 +28,13 @@ void midiMessageManager::processMidiEvents ()
 	{
 		for (int x=0; x<m.size(); x++)
 		{
-			midiMessage *msg = m[x];
+			myMidiMessage *msg = m[x];
 			if (msg)
 			{
-				if (msg->id > 0)
+				if (msg->getId() > 0)
 				{
 					/* out to device */
-					if (isDeviceOpen (msg->id))
+					if (isDeviceOpen (msg->getId()))
 					{
 						sendMessageToDevice (msg);
 					}
@@ -82,13 +73,13 @@ void midiMessageManager::clear()
 	m.clear();
 }
 
-void midiMessageManager::sendMessageToDevice (midiMessage *m)
+void midiMessageManager::sendMessageToDevice (myMidiMessage *m)
 {
 	const MidiMessage *msg = m->m;
 	const MidiBuffer *msgB = m->mB;
 
-	const deviceId = m->id;
-
+	const deviceId = m->getDeviceId();
+	
 	if (msg)
 	{
 		if (device[deviceId])
@@ -100,9 +91,11 @@ void midiMessageManager::sendMessageToDevice (midiMessage *m)
 	{
 		if (device[deviceId])
 		{
-			//device[deviceId]->sendMessage (msgB);
+			device[deviceId]->sendMessageBuffer (msgB);
 		}
 	}
+
+	device[deviceId]->process();
 }
 
 bool midiMessageManager::isDeviceOpen(int id)

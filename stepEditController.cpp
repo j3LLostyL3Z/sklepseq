@@ -191,6 +191,9 @@ void stepEditController::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 void stepEditController::setMidiData()
 {
+	if (midiMessage == 0)
+		return;
+
 	if (typeCombo->getSelectedId()-1 == NRPN)
 	{
 		/* (MSB x 128) + LSB == controller number*/

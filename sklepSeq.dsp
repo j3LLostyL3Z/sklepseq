@@ -272,6 +272,14 @@ SOURCE=.\sklepSeqSkin.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\midiDevice.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\midiDevice.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\midiMessageManager.cpp
 # End Source File
 # Begin Source File
