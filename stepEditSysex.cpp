@@ -108,6 +108,9 @@ void stepEditSysex::buttonClicked (Button* buttonThatWasClicked)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+stepEditSysex::stepEditSysex (MidiBuffer *msg)
+{
+}
 //[/MiscUserCode]
 
 

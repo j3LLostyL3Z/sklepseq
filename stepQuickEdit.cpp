@@ -177,6 +177,7 @@ void stepQuickEdit::mouseMove (const MouseEvent &e)
 void stepQuickEdit::messageTypeChanged()
 {
 	MidiMessage *m = 0;
+	MidiBuffer *mB = 0;
 
 	if (editorComponent)
 	{
@@ -188,6 +189,7 @@ void stepQuickEdit::messageTypeChanged()
 	}
 
 	m = midiMessage->getMidiMessage();
+	mB = midiMessage->getMidiBuffer();
 
 	if (m) 
 	{
@@ -221,6 +223,31 @@ void stepQuickEdit::messageTypeChanged()
 		}
 
 		resized();
+	}
+	if (!m && mB)
+	{
+		MidiBuffer::Iterator i(*mB);
+		int len;
+		MidiMessage message (0xf4, 0.0);
+
+		if (i.getNextEvent (message, len))
+		{
+			uint8 *data = message.getRawData();
+
+			if (*data == 0xb0)
+			{
+				addAndMakeVisible (editorComponent = new stepEditController(mB));
+				typeCombo->setSelectedId (Controller);
+			}
+
+			if (*data == 0xf0)
+			{
+				addAndMakeVisible (editorComponent = new stepEditSysex(mB));
+				typeCombo->setSelectedId (SysEx);
+			}
+
+			resized();
+		}
 	}
 }
 //[/MiscUserCode]

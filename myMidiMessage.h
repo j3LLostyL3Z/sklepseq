@@ -22,6 +22,7 @@ class myMidiMessage
 		int getDeviceId();
 		
 		MidiMessage *getMidiMessage();
+		MidiBuffer *getMidiBuffer();
 
 		MidiMessage *m;
 		MidiBuffer *mB;
