@@ -65,6 +65,18 @@ MidiMessage *myMidiMessage::getMidiMessage()
 	}
 }
 
+MidiBuffer *myMidiMessage::getMidiBuffer()
+{
+	if (mB)
+	{
+		return (mB);
+	}
+	else
+	{
+		return (0);
+	}
+}
+
 int myMidiMessage::getId()
 {
 	return (id);

@@ -268,6 +268,10 @@ void stepEditController::setMidiData()
 		return;
 	}
 }
+
+stepEditController::stepEditController (MidiBuffer *msg)
+{
+}
 //[/MiscUserCode]
 
 
