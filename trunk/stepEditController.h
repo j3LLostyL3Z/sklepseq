@@ -70,6 +70,7 @@ private:
 		NRPN
 	};
 
+	MidiBuffer *midiBuffer;
 	MidiBuffer midiBuf;
 	myMidiMessage *midiMessage;
     //[/UserVariables]

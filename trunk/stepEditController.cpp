@@ -79,7 +79,8 @@ stepEditController::stepEditController (myMidiMessage *msg)
 
 
     //[UserPreSize]
-	midiMessage = msg;
+	midiMessage		= msg;
+	midiBuffer		= 0;
     //[/UserPreSize]
 
     setSize (112, 224);
@@ -271,6 +272,8 @@ void stepEditController::setMidiData()
 
 stepEditController::stepEditController (MidiBuffer *msg)
 {
+	midiBuffer = msg;
+	midiMessage = 0;
 }
 //[/MiscUserCode]
 
