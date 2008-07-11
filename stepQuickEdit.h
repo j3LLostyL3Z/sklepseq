@@ -71,6 +71,7 @@ private:
 	MidiKeyboardState midiKeyboardState;
 	ComponentDragger myDragger;
 	myMidiMessage *midiMessage;
+	MidiBuffer *midiBuffer;
 	Component *editorComponent;
 
 	enum editorTypes

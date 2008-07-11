@@ -49,7 +49,9 @@ stepQuickEdit::stepQuickEdit (sklepSeqMainComponent *parent, myMidiMessage *msg)
 
 
     //[UserPreSize]
-	midiMessage = msg;
+	midiMessage		= msg;
+	midiBuffer		= 0;
+
 	editorComponent = 0;
 	messageTypeChanged();
     //[/UserPreSize]
