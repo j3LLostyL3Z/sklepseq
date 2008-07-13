@@ -50,6 +50,25 @@ stepEditSysex::stepEditSysex (myMidiMessage *msg)
 
 
     //[UserPreSize]
+	midiMessage = msg;
+	midiRawData = 0;
+
+	if (midiMessage)
+	{
+		uint8 *d = midiMessage->getMidiMessage()->getRawData();
+		int len  = midiMessage->getMidiMessage()->getRawDataSize();
+
+		String t;
+		for (int x=0; x<len; x++)
+		{
+			if (x==0)
+				t << String::formatted (T("%x"), *(d+x));
+			else
+				t << String::formatted (T(":%x"), *(d+x));
+		}
+
+		midiData->setText (t, false);
+	}
     //[/UserPreSize]
 
     setSize (112, 224);
@@ -98,6 +117,8 @@ void stepEditSysex::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == saveButton)
     {
         //[UserButtonCode_saveButton] -- add your button handler code here..
+		setMidiRawData(midiData->getText());
+		midiMessage->setMidiMessageRaw (midiRawData, midiRawDataLen);
         //[/UserButtonCode_saveButton]
     }
 
@@ -108,8 +129,35 @@ void stepEditSysex::buttonClicked (Button* buttonThatWasClicked)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-stepEditSysex::stepEditSysex (MidiBuffer *msg)
+void stepEditSysex::setMidiRawData (String t)
 {
+	if (t.isEmpty())
+	{
+		return;
+	}
+	int i	=0;
+	int k	=2;
+	int len	=0;
+
+	if (midiRawData)
+		free (midiRawData);
+
+	midiRawData = (uint8 *)malloc(t.length());
+
+	String b = t.substring (i, k);
+
+	while (!b.isEmpty())
+	{	
+		*(midiRawData+len) = b.getHexValue32();
+
+		len++;
+		i=i+3;
+		k=k+3;
+
+		b = t.substring (i, k);
+	}
+
+	midiRawDataLen = len;
 }
 //[/MiscUserCode]
 

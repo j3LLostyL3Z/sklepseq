@@ -115,28 +115,70 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 		switch (typeCombo->getSelectedId())
 		{
 			case noteOn:
-				midiMessage->setMidiMessage (MidiMessage::noteOn (1,1,1.0f));
+				if (midiMessage->getMidiMessage()->isNoteOn())
+				{
+					midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
+				}
+				else
+				{
+					midiMessage->setMidiMessage (MidiMessage::noteOn (1, 64, 1.0f));
+				}
 				break;
 
 			case noteOff:
-				midiMessage->setMidiMessage (MidiMessage::noteOff (1,1));
+				if (midiMessage->getMidiMessage()->isNoteOff())
+				{
+					midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
+				}
+				else
+				{
+					midiMessage->setMidiMessage (MidiMessage::noteOff (1, 64));
+				}
 				break;
 
 			case Controller:
-				midiMessage->setMidiMessage (MidiMessage::controllerEvent (1,1,1));
+				if (!midiMessage->isMulti())
+				{
+					if (midiMessage->getMidiMessage()->isController())
+					{
+						midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
+					}
+					else
+					{
+						midiMessage->setMidiMessage (MidiMessage::controllerEvent (1, 1, 1));
+					}
+				}
+				else
+				{
+					midiMessage->setMidiMessageMulti (*midiMessage->getMidiBuffer());
+				}
 				break;
 
 			case ProgramChange:
-				midiMessage->setMidiMessage (MidiMessage::programChange (1, 1));
+				if (midiMessage->getMidiMessage()->isProgramChange())
+				{
+					midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
+				}
+				else
+				{
+					midiMessage->setMidiMessage (MidiMessage::programChange (1, 1));
+				}
 				break;
 
 			case SysEx:
-				uint8 d[3];
-				d[0] = 0xf0;
-				d[1] = 0x0;
-				d[2] = 0x0f;
+				if (midiMessage->getMidiMessage()->isSysEx())
+				{
+					midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
+				}
+				else
+				{
+					uint8 d[4];
+					d[0] = 0xf0;
+					d[1] = 0x00;
+					d[2] = 0x0f;
 
-				midiMessage->setMidiMessage (MidiMessage::createSysExMessage (&d[0], 3));
+					midiMessage->setMidiMessage (MidiMessage (d, 3, 0));
+				}
 				break;
 
 			default:
@@ -198,30 +240,30 @@ void stepQuickEdit::messageTypeChanged()
 		if (m->isNoteOn())
 		{
 			addAndMakeVisible (editorComponent = new stepEditNote(midiMessage));
-			typeCombo->setSelectedId (noteOn);
+			typeCombo->setSelectedId (noteOn, false);
 		}
 		else if (m->isNoteOff())
 		{
 			addAndMakeVisible (editorComponent = new stepEditNote(midiMessage));
-			typeCombo->setSelectedId (noteOff);
+			typeCombo->setSelectedId (noteOff, false);
 		}
 		else if (m->isProgramChange())
 		{
-			typeCombo->setSelectedId (ProgramChange);
+			typeCombo->setSelectedId (ProgramChange, false);
 		}
 		else if (m->isController())
 		{
 			addAndMakeVisible (editorComponent = new stepEditController(midiMessage));
-			typeCombo->setSelectedId (Controller);
+			typeCombo->setSelectedId (Controller, false);
 		}
 		else if (m->isMidiMachineControlMessage())
 		{
-			typeCombo->setSelectedId (MMC);
+			typeCombo->setSelectedId (MMC, false);
 		}
 		else if (m->isSysEx())
 		{
 			addAndMakeVisible (editorComponent = new stepEditSysex(midiMessage));
-			typeCombo->setSelectedId (SysEx);
+			typeCombo->setSelectedId (SysEx, false);
 		}
 
 		resized();
@@ -238,14 +280,14 @@ void stepQuickEdit::messageTypeChanged()
 
 			if (*data == 0xb0)
 			{
-				addAndMakeVisible (editorComponent = new stepEditController(mB));
-				typeCombo->setSelectedId (Controller);
+				addAndMakeVisible (editorComponent = new stepEditController(midiMessage));
+				typeCombo->setSelectedId (Controller, false);
 			}
 
 			if (*data == 0xf0)
 			{
-				addAndMakeVisible (editorComponent = new stepEditSysex(mB));
-				typeCombo->setSelectedId (SysEx);
+				addAndMakeVisible (editorComponent = new stepEditSysex(midiMessage));
+				typeCombo->setSelectedId (SysEx, false);
 			}
 
 			resized();

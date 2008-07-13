@@ -80,7 +80,42 @@ stepEditController::stepEditController (myMidiMessage *msg)
 
     //[UserPreSize]
 	midiMessage		= msg;
-	midiBuffer		= 0;
+
+	if (midiMessage)
+	{
+		if (midiMessage->isMulti())
+		{
+			MidiBuffer *b = midiMessage->getMidiBuffer();
+			MidiMessage msg1(0xf0,0.0);
+			MidiMessage msg2(0xf0,0.0);
+			MidiMessage msg3(0xf0,0.0);
+			MidiMessage msg4(0xf0,0.0);
+			MidiBuffer::Iterator i(*b);
+			int len;
+
+			if (i.getNextEvent (msg1, len))
+			{
+				if (msg1.getControllerNumber() == 100 || msg1.getControllerNumber() == 101)
+				{
+					typeCombo->setSelectedId (2);
+				}
+
+				if (msg1.getControllerNumber() == 98 || msg1.getControllerNumber() == 99)
+				{
+					typeCombo->setSelectedId (3);
+				}
+			}
+
+			BitArray ctrlrNumber;
+			BitArray ctrlrValue;
+		}
+		else
+		{
+			typeCombo->setSelectedId (1);
+			controllerNumber->setValue (midiMessage->getMidiMessage()->getControllerNumber());
+			controllerValue->setValue (midiMessage->getMidiMessage()->getControllerValue());
+		}
+	}
     //[/UserPreSize]
 
     setSize (112, 224);
@@ -192,14 +227,11 @@ void stepEditController::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 void stepEditController::setMidiData()
 {
-	if (midiMessage == 0)
-		return;
-
 	if (typeCombo->getSelectedId()-1 == NRPN)
 	{
 		/* (MSB x 128) + LSB == controller number*/
 		/* (MSB x 128) + LSB == value */
-		midiBuf.clear();
+		midiBuf.clear();	
 
 		BitArray ctrlrNumber ((int)controllerNumber->getValue());
 		BitArray ctrlrValue ((int)controllerValue->getValue());
@@ -209,12 +241,12 @@ void stepEditController::setMidiData()
 		
 		int ctrlrValueLsb = ctrlrValue.getBitRangeAsInt (0,6);
 		int ctrlrValueMsb = ctrlrValue.getBitRangeAsInt (7,13);
-
+	
 		int firstByte = 0xb0;
-
+	
 		MidiMessage msg (firstByte, 101, ctrlrNumberLsb);
 		midiBuf.addEvent (msg,0);
-
+	
 		msg = MidiMessage(firstByte, 100, ctrlrNumberMsb);
 		midiBuf.addEvent (msg,1);
 
@@ -229,51 +261,46 @@ void stepEditController::setMidiData()
 		return;
 	}
 
+
 	if (typeCombo->getSelectedId()-1 == RPN)
 	{
 		/* (MSB x 128) + LSB == controller number*/
 		/* (MSB x 128) + LSB == value */
 		midiBuf.clear();
-
+	
 		BitArray ctrlrNumber ((int)controllerNumber->getValue());
 		BitArray ctrlrValue ((int)controllerValue->getValue());
-		
+			
 		int ctrlrNumberLsb = ctrlrNumber.getBitRangeAsInt (0,6);
 		int ctrlrNumberMsb = ctrlrNumber.getBitRangeAsInt (7,13);
-		
+			
 		int ctrlrValueLsb = ctrlrValue.getBitRangeAsInt (0,6);
 		int ctrlrValueMsb = ctrlrValue.getBitRangeAsInt (7,13);
-
+	
 		int firstByte = 0xb0;
-
+	
 		MidiMessage msg (firstByte, 99, ctrlrNumberLsb);
 		midiBuf.addEvent (msg,0);
-
+	
 		msg = MidiMessage(firstByte, 98, ctrlrNumberMsb);
 		midiBuf.addEvent (msg,1);
 
 		msg = MidiMessage(firstByte, 6, ctrlrValueLsb);
 		midiBuf.addEvent (msg,2);
-
+	
 		msg = MidiMessage(firstByte, 38, ctrlrValueMsb);
 		midiBuf.addEvent (msg,3);
-
+	
 		midiMessage->setMidiMessageMulti (midiBuf);
-
+	
 		return;
 	}
+
 	if (typeCombo->getSelectedId()-1 == CC)
 	{
 		midiMessage->setMidiMessage (MidiMessage::controllerEvent (1, (int)controllerNumber->getValue(), (int)controllerValue->getValue()));
-
 		return;
 	}
-}
-
-stepEditController::stepEditController (MidiBuffer *msg)
-{
-	midiBuffer = msg;
-	midiMessage = 0;
 }
 //[/MiscUserCode]
 

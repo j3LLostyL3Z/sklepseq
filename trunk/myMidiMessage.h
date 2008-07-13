@@ -16,6 +16,7 @@ class myMidiMessage
 		void setMidiChannel (int ch);
 		void setMidiMessage (MidiMessage midiMessage);
 		void setMidiMessageMulti (MidiBuffer midiBuffer);
+		void setMidiMessageRaw (uint8 *data, int len);
 		void setMidiDevice (int dId);
 		bool isMulti();
 		int getId();
