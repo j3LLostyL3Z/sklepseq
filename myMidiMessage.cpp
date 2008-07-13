@@ -35,10 +35,37 @@ void myMidiMessage::setMidiMessage (MidiMessage midiMessage)
 {
 	multi	= false;
 	m		= new MidiMessage (midiMessage);
-	m->setChannel (midiChannel);
+	if (!m->isSysEx())
+	{
+		m->setChannel (midiChannel);
+	}
 
 	uint8 *d = m->getRawData();
 	Logger::writeToLog (String::formatted (T("%x:%x:%x"), *d, *(d+1), *(d+2)));
+}
+
+void myMidiMessage::setMidiMessageRaw (uint8 *data, int dataLen)
+{
+	multi	= false;
+	m		= new MidiMessage (data, dataLen, 0);
+
+
+	if (m)
+	{
+		uint8 *d = m->getRawData();
+		int len  = m->getRawDataSize();
+
+		String t;
+		for (int x=0; x<len; x++)
+		{
+			if (x==0)
+				t << String::formatted (T("%x"), *(d+x));
+			else
+				t << String::formatted (T(":%x"), *(d+x));
+		}
+
+		Logger::writeToLog (t);
+	}
 }
 
 void myMidiMessage::setMidiMessageMulti (MidiBuffer midiBuffer)
