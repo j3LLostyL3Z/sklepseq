@@ -132,6 +132,7 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
 	ownerFilter		= f;
 	prevPos			= 1;
 	quickEdit		= 0;
+	prevBpm			= 0;
 
 	cursor.add (new sklepSeqCursorComponent (ImageCache::getFromMemory (sq_kursor_1_png, sq_kursor_1_pngSize), 190, 342));
 	cursor.add (new sklepSeqCursorComponent (ImageCache::getFromMemory (sq_kursor_2_png, sq_kursor_2_pngSize), 144, 322));

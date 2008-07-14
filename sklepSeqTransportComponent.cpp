@@ -172,16 +172,19 @@ void sklepSeqTransportComponent::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == puaseButton)
     {
         //[UserButtonCode_puaseButton] -- add your button handler code here..
+		parent->transportPause();
         //[/UserButtonCode_puaseButton]
     }
     else if (buttonThatWasClicked == playButton)
     {
         //[UserButtonCode_playButton] -- add your button handler code here..
+		parent->transportPlay();
         //[/UserButtonCode_playButton]
     }
     else if (buttonThatWasClicked == stopButton)
     {
         //[UserButtonCode_stopButton] -- add your button handler code here..
+		parent->transportStop();
         //[/UserButtonCode_stopButton]
     }
     else if (buttonThatWasClicked == syncToHost)

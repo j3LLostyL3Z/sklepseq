@@ -122,6 +122,10 @@ public:
 	void setBpm (int b);
 	int getBpm ();
 	void changeListenerCallback(void *ptr);
+
+	void transportStop();
+	void transportPlay();
+	void transportPause();
     //==============================================================================
     juce_UseDebuggingNewOperator
 
