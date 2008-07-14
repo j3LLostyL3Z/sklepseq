@@ -86,32 +86,76 @@ stepEditController::stepEditController (myMidiMessage *msg)
 		if (midiMessage->isMulti())
 		{
 			MidiBuffer *b = midiMessage->getMidiBuffer();
-			MidiMessage msg1(0xf0,0.0);
-			MidiMessage msg2(0xf0,0.0);
-			MidiMessage msg3(0xf0,0.0);
-			MidiMessage msg4(0xf0,0.0);
+			MidiMessage msg(0xf0,0.0);
 			MidiBuffer::Iterator i(*b);
 			int len;
+			int controllerNumberLsb=0, controllerNumberMsb=0, controllerValueLsb=0, controllerValueMsb=0;
+			BitArray ctrlrValueArray;
+			BitArray ctrlrNumberArray;
 
-			if (i.getNextEvent (msg1, len))
+			while (i.getNextEvent (msg, len))
 			{
-				if (msg1.getControllerNumber() == 100 || msg1.getControllerNumber() == 101)
+				uint8 *d = msg.getRawData();
+				int len  = msg.getRawDataSize();
+
+				String t;
+				for (int x=0; x<len; x++)
 				{
-					typeCombo->setSelectedId (2);
+					if (x==0)
+						t << String::formatted (T("%x"), *(d+x));
+					else
+						t << String::formatted (T(":%x"), *(d+x));
 				}
 
-				if (msg1.getControllerNumber() == 98 || msg1.getControllerNumber() == 99)
+				Logger::writeToLog (T("message: ") + t);
+
+				if (msg.getControllerNumber() == 98)
+				{					
+					controllerNumberMsb = msg.getControllerValue();
+				}
+				if (msg.getControllerNumber() == 99)
 				{
-					typeCombo->setSelectedId (3);
+					typeCombo->setSelectedId (2, true);
+					controllerNumberLsb = msg.getControllerValue();
+				}
+				if (msg.getControllerNumber() == 100)
+				{
+					controllerNumberMsb = msg.getControllerValue();
+				}
+				if (msg.getControllerNumber() == 101)
+				{
+					typeCombo->setSelectedId (3, true);
+					controllerNumberLsb = msg.getControllerValue();
+				}
+				if (msg.getControllerNumber() == 6)
+				{
+					controllerValueLsb = msg.getControllerValue();
+				}
+				if (msg.getControllerNumber() == 38)
+				{
+					controllerValueMsb = msg.getControllerValue();
 				}
 			}
 
-			BitArray ctrlrNumber;
-			BitArray ctrlrValue;
+			ctrlrNumberArray.setBitRangeAsInt (0, 7, controllerNumberLsb);
+			ctrlrNumberArray.setBitRangeAsInt (7, 7, controllerNumberMsb);
+
+			ctrlrValueArray.setBitRangeAsInt (0, 7, controllerValueLsb);
+			ctrlrValueArray.setBitRangeAsInt (7, 7, controllerValueMsb);
+
+			controllerNumber->setRange (0, 16383, 1);
+			controllerValue->setRange (0, 16383, 1);
+
+			controllerValue->setValue (ctrlrValueArray.getBitRangeAsInt(0,14));
+			controllerNumber->setValue (ctrlrNumberArray.getBitRangeAsInt(0,14));
 		}
 		else
 		{
-			typeCombo->setSelectedId (1);
+			controllerNumber->setRange (0, 127, 1);
+			controllerValue->setRange (0, 127, 1);
+
+			typeCombo->setSelectedId (1, true);
+
 			controllerNumber->setValue (midiMessage->getMidiMessage()->getControllerNumber());
 			controllerValue->setValue (midiMessage->getMidiMessage()->getControllerValue());
 		}
