@@ -24,7 +24,9 @@ DemoJuceFilter::DemoJuceFilter()
 	currentPattern = 0;
 	currentPatternPtr = patterns[0];
 	
-	isSyncedToHost = true;
+	syncThread = new xsync();
+	syncThread->addChangeListener (this);
+	isSyncedToHost = false;
 
     zeromem (&lastPosInfo, sizeof (lastPosInfo));
     lastPosInfo.timeSigNumerator = 4;
@@ -104,6 +106,15 @@ void DemoJuceFilter::releaseResources()
 {
 }
 
+void DemoJuceFilter::changeListenerCallback(void *ptr)
+{
+	/* this is called by our internal sync thread */
+	if (!isSyncedToHost)
+	{
+		Logger::writeToLog (T("xsync changed"));
+	}
+}
+
 void DemoJuceFilter::processBlock (AudioSampleBuffer& buffer,
                                    MidiBuffer& midiMessages)
 {
@@ -138,8 +149,6 @@ void DemoJuceFilter::processBlock (AudioSampleBuffer& buffer,
 
 					if (currentBeat > 16)
 						currentBeat = currentBeat - 16;
-
-					//Logger::writeToLog (String::formatted (T("current events: %d"), midiManager.getCurrentEventsCount()));
 
 					/* process midi events to their devices */
 					midiManager.processMidiEvents();
@@ -215,10 +224,17 @@ void DemoJuceFilter::setSyncToHost (bool t)
 		lastPosInfo.timeSigNumerator = 4;
 		lastPosInfo.timeSigDenominator = 4;
 		lastPosInfo.bpm = 120;
-
 		sendChangeMessage (this);
 	}
 	
+	if (!t)
+	{
+		syncThread->startThread();
+	}
+	else
+	{
+		syncThread->signalThreadShouldExit();
+	}
 	isSyncedToHost = t;
 }
 
@@ -239,4 +255,21 @@ void DemoJuceFilter::activatePattern (bool t, int pId)
 void DemoJuceFilter::addPatternToActiveList (bool t, int pId)
 {
 	activePatterns.set (pId, t);
+}
+
+void DemoJuceFilter::setBpm (int b)
+{
+	intBpm = b;
+}
+
+int DemoJuceFilter::getBpm ()
+{
+	if (!getSyncToHost())
+	{
+		return (intBpm);
+	}
+	else
+	{
+		return (currentBpm);
+	}
 }

@@ -22,7 +22,7 @@ midiMessageManager::~midiMessageManager()
 	midiOutputList.clear();
 }
 
-void midiMessageManager::processMidiEvents ()
+void midiMessageManager::processMidiEvents (MidiBuffer *b)
 {
 	if (m.size() > 0)
 	{
@@ -39,6 +39,20 @@ void midiMessageManager::processMidiEvents ()
 						sendMessageToDevice (msg);
 					}
 					m.remove (x, true);
+				}
+				if (msg->getId() == 0)
+				{
+					if (b)
+					{
+						if (msg->isMulti())
+						{
+							b->addEvents (*msg->getMidiBuffer(), 0, -1, 0);
+						}
+						else
+						{
+							b->addEvent (*msg->getMidiMessage(), 0);
+						}
+					}
 				}
 			}
 		}

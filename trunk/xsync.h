@@ -15,10 +15,11 @@ class xsync : public Thread, public ChangeBroadcaster
 		void run();
 		void setBPM (unsigned int bpm);
 		void setGui (void *ptr);
+		void stopSync();
 		unsigned int getMidiQuarterNote();
 		unsigned int getMidiEighthNote();
 		unsigned int getMidiSixteenthNote();
-
+		
 	private:
 		unsigned int timeElapsed;
 		unsigned int timeNow;

@@ -34,6 +34,7 @@
 
 #include "sklepSeqPattern.h"
 #include "midiMessageManager.h"
+#include "xsync.h"
 
 //==============================================================================
 /**
@@ -42,7 +43,8 @@
 
 */
 class DemoJuceFilter  : public AudioProcessor,
-                        public ChangeBroadcaster
+                        public ChangeBroadcaster,
+						public ChangeListener
 {
 public:
     //==============================================================================
@@ -117,6 +119,9 @@ public:
 	bool getSyncToHost();
 	void activatePattern (bool t, int pId);
 	void addPatternToActiveList (bool t, int pId);
+	void setBpm (int b);
+	int getBpm ();
+	void changeListenerCallback(void *ptr);
     //==============================================================================
     juce_UseDebuggingNewOperator
 
@@ -125,8 +130,10 @@ private:
     // parameter 0.
 	midiMessageManager midiManager;
 	int _p;
+	int intBpm;
 	bool isSyncedToHost;
 	Array <bool> activePatterns;
+	xsync *syncThread;
 };
 
 

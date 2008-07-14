@@ -15,7 +15,10 @@ xsync::xsync() : Thread (T("Sync thread"))
 	timeBPM = 120;
 	timeElapsed = 0;
 	timeNow = 0;
+	timeMidiTick = 1;
 	midiQuarterNote = midiTicks = midiEighthNote = midiSixteenthNote = 0;
+
+	Logger::writeToLog (T("xsync created"));
 }
 
 xsync::~xsync()
@@ -38,6 +41,13 @@ void xsync::run()
 
 		if (timeElapsed >= timeMidiTick)
 		{
+			
+			if (threadShouldExit())
+			{
+				stopSync();
+				return;
+			}
+
 			if (midiTicks == 6 || midiTicks == 12 || midiTicks == 18 || midiTicks == 0)
 			{
 				midiSixteenthNote++;
@@ -82,7 +92,10 @@ void xsync::run()
 		}
 
 		if (threadShouldExit())
+		{
+			stopSync();
 			return;
+		}
 	}
 }
 
@@ -110,4 +123,14 @@ unsigned int xsync::getMidiEighthNote()
 unsigned int xsync::getMidiSixteenthNote()
 {
 	return (midiSixteenthNote);
+}
+
+void xsync::stopSync()
+{
+	timeElapsed = 0;
+	timeNow = 0;
+	midiQuarterNote = midiEighthNote = midiSixteenthNote = 0;
+	midiTicks = 0;
+
+	Logger::writeToLog (T("xsync stopped"));
 }
