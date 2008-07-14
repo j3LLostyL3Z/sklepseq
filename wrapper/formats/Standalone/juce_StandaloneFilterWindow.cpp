@@ -81,7 +81,7 @@ StandaloneFilterWindow::StandaloneFilterWindow (const String& title,
 
             if (globalSettings != 0)
             {
-                juce::MemoryBlock data;
+                JUCE_NAMESPACE::MemoryBlock data;
 
                 if (data.fromBase64Encoding (globalSettings->getValue (T("filterState")))
                      && data.getSize() > 0)
@@ -130,7 +130,7 @@ StandaloneFilterWindow::~StandaloneFilterWindow()
 
     if (globalSettings != 0 && filter != 0)
     {
-        juce::MemoryBlock data;
+        JUCE_NAMESPACE::MemoryBlock data;
         filter->getStateInformation (data);
 
         globalSettings->setValue (T("filterState"), data.toBase64Encoding());
@@ -185,7 +185,7 @@ void StandaloneFilterWindow::saveState()
 
     if (fc.browseForFileToSave (true))
     {
-        juce::MemoryBlock data;
+        JUCE_NAMESPACE::MemoryBlock data;
         filter->getStateInformation (data);
 
         if (! fc.getResult().replaceWithData (data.getData(), data.getSize()))
@@ -207,7 +207,7 @@ void StandaloneFilterWindow::loadState()
 
     if (fc.browseForFileToOpen())
     {
-        juce::MemoryBlock data;
+        JUCE_NAMESPACE::MemoryBlock data;
 
         if (fc.getResult().loadFileAsData (data))
         {
@@ -243,9 +243,9 @@ void StandaloneFilterWindow::showAudioSettingsDialog()
                                                filter->getNumInputChannels(),
                                                filter->getNumOutputChannels(),
                                                filter->getNumOutputChannels(),
-                                               true, false);
+                                               true, false, true);
 
-    selectorComp.setSize (500, 350);
+    selectorComp.setSize (500, 450);
 
     DialogWindow::showModalDialog (TRANS("Audio Settings"), &selectorComp, this, Colours::lightgrey, true, false, false);
 }
@@ -299,47 +299,3 @@ void StandaloneFilterWindow::buttonClicked (Button*)
         break;
     }
 }
-
-class app : public JUCEApplication
-{
-    StandaloneFilterWindow *wnd;
-	
-	public:
-	    app()
-	    {
-			wnd = 0;
-		}
-		~app()
-		{
-		}
-	    void initialise (const String& commandLine)
-	    {
-			ApplicationProperties::getInstance()->setStorageParameters(T("sklepSeq"),T(".options"),T("settings"),250,PropertiesFile::storeAsXML);
-			wnd = new StandaloneFilterWindow(T("sklepSeq"), Colours::white);
-
-			wnd->centreWithSize (492, 492+28);
-			wnd->setVisible (true);
-		}
-		void shutdown()
-		{
-		    if (wnd != 0)
-				delete wnd;
-		}
-		const String getApplicationName()
-		{
-	        return T("sklepSeq");
-	    }
-		const String getApplicationVersion()
-		{
-	        return T("1.0");
-	    }
-		bool moreThanOneInstanceAllowed()
-		{
-	        return false;
-		}
-		void anotherInstanceStarted (const String& commandLine)
-		{
-		}
-};
-
-START_JUCE_APPLICATION (app)

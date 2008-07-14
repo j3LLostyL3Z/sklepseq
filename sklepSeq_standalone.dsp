@@ -146,6 +146,10 @@ SOURCE=.\wrapper\formats\Standalone\juce_StandaloneFilterWindow.cpp
 
 SOURCE=.\wrapper\formats\Standalone\juce_StandaloneFilterWindow.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqStandaloneMain.cpp
+# End Source File
 # End Group
 # Begin Group "playlist"
 
@@ -249,6 +253,10 @@ SOURCE=.\sklepSeqSkin.h
 # Begin Source File
 
 SOURCE=.\midiDevice.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\midiDevice.h
 # End Source File
 # Begin Source File
 
