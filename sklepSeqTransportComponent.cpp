@@ -156,6 +156,7 @@ void sklepSeqTransportComponent::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == bpmInput)
     {
         //[UserSliderCode_bpmInput] -- add your slider handling code here..
+		parent->setBpm ((int)bpmInput->getValue());
         //[/UserSliderCode_bpmInput]
     }
 

@@ -14,7 +14,7 @@ class midiMessageManager
 	public:
 		midiMessageManager();
 		~midiMessageManager();
-		void processMidiEvents ();
+		void processMidiEvents (MidiBuffer *b=0);
 		MidiBuffer getLeftMessages();
 		void clear();
 		void sendMessageToDevice (myMidiMessage *m);
