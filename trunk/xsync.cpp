@@ -10,12 +10,12 @@
 
 xsync::xsync() : Thread (T("Sync thread"))
 {
-	setPriority (9);
+	setPriority (7);
 	updateAsync = 0;
 	timeBPM = 120;
 	timeElapsed = 0;
 	timeNow = 0;
-	timeMidiTick = 1;
+	setBPM (120);
 	midiQuarterNote = midiTicks = midiEighthNote = midiSixteenthNote = 0;
 
 	Logger::writeToLog (T("xsync created"));
@@ -35,13 +35,12 @@ void xsync::run()
 	while (1)
 	{
 		timeNow =  Time::getMillisecondCounter();
-		Time::waitForMillisecondCounter (timeNow + 1);
+		Time::waitForMillisecondCounter (timeNow + 3);
 
 		timeElapsed = timeElapsed + (Time::getMillisecondCounter() - timeNow);
 
 		if (timeElapsed >= timeMidiTick)
 		{
-			
 			if (threadShouldExit())
 			{
 				stopSync();
@@ -131,6 +130,12 @@ void xsync::stopSync()
 	timeNow = 0;
 	midiQuarterNote = midiEighthNote = midiSixteenthNote = 0;
 	midiTicks = 0;
+	timeBPM = 120;
 
 	Logger::writeToLog (T("xsync stopped"));
+}
+
+int xsync::getBpm()
+{
+	return (timeBPM);
 }

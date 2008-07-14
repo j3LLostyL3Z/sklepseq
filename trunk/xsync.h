@@ -16,6 +16,7 @@ class xsync : public Thread, public ChangeBroadcaster
 		void setBPM (unsigned int bpm);
 		void setGui (void *ptr);
 		void stopSync();
+		int getBpm();
 		unsigned int getMidiQuarterNote();
 		unsigned int getMidiEighthNote();
 		unsigned int getMidiSixteenthNote();
