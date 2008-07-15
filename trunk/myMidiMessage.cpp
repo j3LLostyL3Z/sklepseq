@@ -10,16 +10,56 @@
 
 myMidiMessage::myMidiMessage(int ch)
 {
-	multi		= false;
-	m			= new MidiMessage (MidiMessage::noteOn (ch, 64, 1.0f));
-	id			= 0;
-	enabled		= false;
-	midiChannel = ch;
-	deviceId	= 0;
+	multi			= false;
+	m				= new MidiMessage (MidiMessage::noteOn (ch, 64, 1.0f));
+	mB				= 0;
+	id				= 0;
+	messageLength	= 1;
+	enabled			= false;
+	midiChannel		= ch;
+	deviceId		= 0;
 }
 
 myMidiMessage::~myMidiMessage()
 {
+}
+
+/* append a midi message as the first one on stack
+	if the message is a single message, make it a multi
+*/
+void myMidiMessage::insertMidiMessage (MidiMessage midiMessage)
+{
+	if (isMulti())
+	{
+		MidiBuffer copy;
+		MidiBuffer::Iterator i (*mB);
+		MidiMessage msg(0xf0, 0.0);
+		int pos;
+
+		copy.addEvent (midiMessage, 0);
+
+		while (i.getNextEvent (msg, pos))
+		{
+			copy.addEvent (msg, pos+1);
+		}
+
+		if (mB)
+			deleteAndZero (mB);
+
+		mB = new MidiBuffer (copy);
+	}
+	else
+	{
+		multi = true;
+		MidiBuffer copy;
+
+		copy.addEvent (midiMessage, 0);
+		copy.addEvent (*m, 1);
+
+		mB = new MidiBuffer (copy);
+
+		deleteAndZero (m);
+	}
 }
 
 void myMidiMessage::setMidiChannel (int ch)
@@ -35,13 +75,13 @@ void myMidiMessage::setMidiMessage (MidiMessage midiMessage)
 {
 	multi	= false;
 	m		= new MidiMessage (midiMessage);
+	if (mB)
+		deleteAndZero (mB);
+
 	if (!m->isSysEx())
 	{
 		m->setChannel (midiChannel);
 	}
-
-	uint8 *d = m->getRawData();
-	Logger::writeToLog (String::formatted (T("%x:%x:%x"), *d, *(d+1), *(d+2)));
 }
 
 void myMidiMessage::setMidiMessageRaw (uint8 *data, int dataLen)
@@ -71,6 +111,9 @@ void myMidiMessage::setMidiMessageRaw (uint8 *data, int dataLen)
 void myMidiMessage::setMidiMessageMulti (MidiBuffer midiBuffer)
 {
 	multi	= true;
+	if (m)
+		deleteAndZero (m);
+
 	m		= 0;
 	mB		= new MidiBuffer(midiBuffer);
 }
@@ -123,4 +166,14 @@ void myMidiMessage::setMidiDevice (int dId)
 int myMidiMessage::getDeviceId ()
 {
 	return (deviceId);
+}
+
+void myMidiMessage::setLength (short l)
+{
+	messageLength = l;
+}
+
+short myMidiMessage::getLength ()
+{
+	return (messageLength);
 }
