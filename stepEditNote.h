@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  2 Jul 2008 2:39:26 pm
+  Creation date:  15 Jul 2008 3:01:22 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_STEPEDITNOTE_STEPEDITNOTE_9C26E7A5__
-#define __JUCER_HEADER_STEPEDITNOTE_STEPEDITNOTE_9C26E7A5__
+#ifndef __JUCER_HEADER_STEPEDITNOTE_STEPEDITNOTE_D786918C__
+#define __JUCER_HEADER_STEPEDITNOTE_STEPEDITNOTE_D786918C__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -69,6 +69,7 @@ private:
     //==============================================================================
     MidiKeyboardComponent* midiKeyboard;
     Slider* veloSlider;
+    Slider* noteLength;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
@@ -77,4 +78,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_STEPEDITNOTE_STEPEDITNOTE_9C26E7A5__
+#endif   // __JUCER_HEADER_STEPEDITNOTE_STEPEDITNOTE_D786918C__

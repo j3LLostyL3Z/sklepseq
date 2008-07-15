@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  2 Jul 2008 2:39:26 pm
+  Creation date:  15 Jul 2008 3:01:22 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -31,7 +31,8 @@
 //==============================================================================
 stepEditNote::stepEditNote (myMidiMessage *msg)
     : midiKeyboard (0),
-      veloSlider (0)
+      veloSlider (0),
+      noteLength (0)
 {
     addAndMakeVisible (midiKeyboard = new MidiKeyboardComponent (midiKeyboardState,
                                                                  MidiKeyboardComponent::verticalKeyboardFacingRight));
@@ -47,11 +48,19 @@ stepEditNote::stepEditNote (myMidiMessage *msg)
     veloSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x0));
     veloSlider->addListener (this);
 
+    addAndMakeVisible (noteLength = new Slider (T("Note Length")));
+    noteLength->setTooltip (T("Note Length"));
+    noteLength->setRange (1, 32, 1);
+    noteLength->setSliderStyle (Slider::IncDecButtons);
+    noteLength->setTextBoxStyle (Slider::TextBoxLeft, false, 20, 14);
+    noteLength->addListener (this);
+
 
     //[UserPreSize]
 	midiMessage = msg;
 
 	veloSlider->setValue (midiMessage->getMidiMessage()->getVelocity());
+	noteLength->setValue (midiMessage->getLength());
     //[/UserPreSize]
 
     setSize (112, 224);
@@ -67,6 +76,7 @@ stepEditNote::~stepEditNote()
 
     deleteAndZero (midiKeyboard);
     deleteAndZero (veloSlider);
+    deleteAndZero (noteLength);
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -84,8 +94,9 @@ void stepEditNote::paint (Graphics& g)
 
 void stepEditNote::resized()
 {
-    midiKeyboard->setBounds (0, 0, 80, 224);
-    veloSlider->setBounds (88, 0, 24, 224);
+    midiKeyboard->setBounds (0, 0, 80, 200);
+    veloSlider->setBounds (88, 0, 24, 200);
+    noteLength->setBounds (8, 206, 88, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -100,8 +111,18 @@ void stepEditNote::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_veloSlider] -- add your slider handling code here..
 		if (midiMessage)
 		{
+			midiMessage->getMidiMessage()->setVelocity ((float)veloSlider->getValue());
 		}
         //[/UserSliderCode_veloSlider]
+    }
+    else if (sliderThatWasMoved == noteLength)
+    {
+        //[UserSliderCode_noteLength] -- add your slider handling code here..
+		if (midiMessage)
+		{
+			midiMessage->setLength ((short)noteLength->getValue());
+		}
+        //[/UserSliderCode_noteLength]
     }
 
     //[UsersliderValueChanged_Post]
@@ -139,13 +160,17 @@ BEGIN_JUCER_METADATA
                  fixedSize="1" initialWidth="112" initialHeight="224">
   <BACKGROUND backgroundColour="ffffff"/>
   <GENERICCOMPONENT name="Midi Keyboard" id="1d491a13579ae9cc" memberName="midiKeyboard"
-                    virtualName="" explicitFocusOrder="0" pos="0 0 80 224" class="MidiKeyboardComponent"
+                    virtualName="" explicitFocusOrder="0" pos="0 0 80 200" class="MidiKeyboardComponent"
                     params="midiKeyboardState,&#10;MidiKeyboardComponent::verticalKeyboardFacingRight"/>
   <SLIDER name="Velocity" id="f4dabf8bc7889870" memberName="veloSlider"
-          virtualName="" explicitFocusOrder="0" pos="88 0 24 224" tooltip="Velocity"
+          virtualName="" explicitFocusOrder="0" pos="88 0 24 200" tooltip="Velocity"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="0"
           min="1" max="127" int="1" style="LinearVertical" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Note Length" id="8dd68f1f1ef8d0fe" memberName="noteLength"
+          virtualName="" explicitFocusOrder="0" pos="8 206 88 16" tooltip="Note Length"
+          min="1" max="32" int="1" style="IncDecButtons" textBoxPos="TextBoxLeft"
+          textBoxEditable="1" textBoxWidth="20" textBoxHeight="14" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
