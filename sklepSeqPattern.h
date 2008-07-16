@@ -34,6 +34,7 @@ class sklepSeqPattern  : public Component
 			patternReverse,
 			patternRandom
 		};
+		void reset();
 		void addMidiManager (midiMessageManager *m);
 		void triggerEvents ();
 		void setStep (int nId, int nNumber, float nVelo);

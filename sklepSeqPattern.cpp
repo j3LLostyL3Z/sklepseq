@@ -20,8 +20,7 @@ sklepSeqPattern::sklepSeqPattern(int _id)
 
 	for (int x=0; x<32; x++)
 	{
-		notes.add (new myMidiMessage(midiChannel));
-		notes[x]->getMidiMessage()->setTimeStamp (double(x+1));
+		notes.add (new myMidiMessage(midiChannel, x, this));
 	}
 }
 
@@ -218,4 +217,9 @@ MidiMessageSequence sklepSeqPattern::serialize()
 	}
 
 	return (sequence);
+}
+
+void sklepSeqPattern::reset()
+{
+	currentPosition = 1;
 }

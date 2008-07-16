@@ -298,12 +298,45 @@ int DemoJuceFilter::getBpm ()
 
 void DemoJuceFilter::transportStop()
 {
+	if (!getSyncToHost())
+	{
+		if (syncThread->isThreadRunning())
+		{
+			syncThread->signalThreadShouldExit();
+			restartSequencer();
+		}
+	}
 }
 
 void DemoJuceFilter::transportPlay()
 {
+	if (!getSyncToHost())
+	{
+		if (!syncThread->isThreadRunning())
+		{
+			syncThread->startThread();
+		}
+	}
 }
 
 void DemoJuceFilter::transportPause()
 {
+	if (!getSyncToHost())
+	{
+		if (syncThread->isThreadRunning())
+		{
+			syncThread->signalThreadShouldExit();
+		}
+	}
+}
+
+void DemoJuceFilter::restartSequencer()
+{
+	for (int x=0; x<64; x++)
+	{
+		if (activePatterns[x])
+		{
+			patterns[x]->reset();
+		}
+	}
 }

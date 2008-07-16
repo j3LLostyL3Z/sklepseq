@@ -3,25 +3,37 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "myMidiMessage.h"
+#include "sklepSeqPattern.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-myMidiMessage::myMidiMessage(int ch)
+myMidiMessage::myMidiMessage(int ch, int nIndex, sklepSeqPattern *owner)
 {
 	multi			= false;
 	m				= new MidiMessage (MidiMessage::noteOn (ch, 64, 1.0f));
 	mB				= 0;
-	id				= 0;
+	index			= nIndex;
 	messageLength	= 1;
 	enabled			= false;
 	midiChannel		= ch;
 	deviceId		= 0;
+	ownerPattern	= owner;
 }
 
 myMidiMessage::~myMidiMessage()
 {
+}
+
+void myMidiMessage::setOwner (sklepSeqPattern *owner)
+{
+	ownerPattern = owner;
+}
+
+Array <myMidiMessage *>*myMidiMessage::getExtraEvents()
+{
+	return (&extraMessages);
 }
 
 /* append a midi message as the first one on stack
@@ -147,9 +159,9 @@ MidiBuffer *myMidiMessage::getMidiBuffer()
 	}
 }
 
-int myMidiMessage::getId()
+int myMidiMessage::getIndex()
 {
-	return (id);
+	return (index);
 }
 
 void myMidiMessage::setMidiDevice (int dId)
@@ -170,10 +182,55 @@ int myMidiMessage::getDeviceId ()
 
 void myMidiMessage::setLength (short l)
 {
-	messageLength = l;
+	if (l != messageLength)
+	{
+		/* midi len changed */
+		myMidiMessage *noteOffMessage = ownerPattern->getStep (getMyNoteOff());
+
+		/* remove my note off */
+		noteOffMessage->removeExtra (noteOff);
+
+		/* set new length */
+		messageLength = l;
+
+		/* add my new note off based on my new length */
+		noteOffMessage = ownerPattern->getStep (getMyNoteOff());
+		if (noteOff)
+		{
+			/* we can do this, the array in the note off event is not a ownedArray */
+			deleteAndZero (noteOff);
+		}
+
+		noteOff = new myMidiMessage (midiChannel, 1, ownerPattern);
+		noteOff->setMidiMessage (MidiMessage::noteOff (midiChannel, m->getNoteNumber()));
+		noteOffMessage->addExtra (noteOff);
+	}
 }
 
 short myMidiMessage::getLength ()
 {
 	return (messageLength);
+}
+
+short myMidiMessage::getMyNoteOff()
+{
+	if (messageLength+index < 32)
+	{
+		return (messageLength+(index+1));
+	}
+	else
+	{
+		/* d0h */
+		return ((32 - (index+1))+messageLength);
+	}
+}
+
+void myMidiMessage::removeExtra (myMidiMessage *m)
+{
+	extraMessages.removeValue (m);
+}
+
+void myMidiMessage::addExtra(myMidiMessage *m)
+{
+	extraMessages.add (m);
 }
