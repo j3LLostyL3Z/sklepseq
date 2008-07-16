@@ -31,28 +31,23 @@ void midiMessageManager::processMidiEvents (MidiBuffer *b)
 			myMidiMessage *msg = m[x];
 			if (msg)
 			{
-				if (msg->getId() > 0)
+				/* out to device */
+				if (isDeviceOpen (msg->getDeviceId()))
 				{
-					/* out to device */
-					if (isDeviceOpen (msg->getId()))
-					{
-						sendMessageToDevice (msg);
-					}
-					m.remove (x, true);
+					sendMessageToDevice (msg);
 				}
-				if (msg->getId() == 0)
+				m.remove (x, true);
+			}
+			
+			if (b)
+			{
+				if (msg->isMulti())
 				{
-					if (b)
-					{
-						if (msg->isMulti())
-						{
-							b->addEvents (*msg->getMidiBuffer(), 0, -1, 0);
-						}
-						else
-						{
-							b->addEvent (*msg->getMidiMessage(), 0);
-						}
-					}
+					b->addEvents (*msg->getMidiBuffer(), 0, -1, 0);
+				}
+				else
+				{
+					b->addEvent (*msg->getMidiMessage(), 0);
 				}
 			}
 		}
@@ -109,6 +104,11 @@ void midiMessageManager::sendMessageToDevice (myMidiMessage *m)
 		}
 	}
 
+	const int e = m->getExtraEvents()->size();
+	if (e>0)
+	{
+		/* extra events from other messages go here */
+	}
 	device[deviceId]->process();
 }
 

@@ -126,6 +126,7 @@ public:
 	void transportStop();
 	void transportPlay();
 	void transportPause();
+	void restartSequencer();
     //==============================================================================
     juce_UseDebuggingNewOperator
 
