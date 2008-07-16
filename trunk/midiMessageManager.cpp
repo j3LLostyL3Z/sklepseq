@@ -105,6 +105,7 @@ void midiMessageManager::sendMessageToDevice (myMidiMessage *m)
 	}
 
 	const int e = m->getExtraEvents()->size();
+	Logger::writeToLog (T("check for extra events"));
 	if (e>0)
 	{
 		/* extra events from other messages go here */
