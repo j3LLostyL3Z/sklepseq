@@ -38,11 +38,14 @@ DemoJuceFilter::DemoJuceFilter()
 
 DemoJuceFilter::~DemoJuceFilter()
 {
+	syncThread->signalThreadShouldExit();
+
+	deleteAndZero (syncThread);
 }
 
 const String DemoJuceFilter::getName() const
 {
-    return "Juce Demo Filter";
+    return "sklepSeq";
 }
 
 int DemoJuceFilter::getNumParameters()
