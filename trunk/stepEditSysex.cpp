@@ -62,9 +62,9 @@ stepEditSysex::stepEditSysex (myMidiMessage *msg)
 		for (int x=0; x<len; x++)
 		{
 			if (x==0)
-				t << String::formatted (T("%x"), *(d+x));
+				t << String::formatted (T("%02x"), *(d+x));
 			else
-				t << String::formatted (T(":%x"), *(d+x));
+				t << String::formatted (T(":%02x"), *(d+x));
 		}
 
 		midiData->setText (t, false);
