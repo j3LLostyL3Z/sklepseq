@@ -32,6 +32,15 @@ void xsync::run()
 	midiQuarterNote = midiEighthNote = midiSixteenthNote = 0;
 	midiTicks = 0;
 
+	/* async updates, like GUI */
+	if (updateAsync)
+	{
+		((AsyncUpdater *)updateAsync)->triggerAsyncUpdate();
+	}
+
+	/* sync updates, like midi manager */
+	sendChangeMessage (this);
+
 	while (1)
 	{
 		timeNow =  Time::getMillisecondCounter();

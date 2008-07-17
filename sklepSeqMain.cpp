@@ -19,7 +19,7 @@ DemoJuceFilter::DemoJuceFilter()
 
 	activePatterns.set (0, true);
 	patterns[0]->setActive (true);
-	_p = 1;
+	_p = 0;
 
 	currentPattern = 0;
 	currentPatternPtr = patterns[0];
@@ -119,6 +119,8 @@ void DemoJuceFilter::changeListenerCallback(void *ptr)
 		const int beat = ((xsync *)ptr)->getMidiSixteenthNote();
 		currentBpm = ((xsync *)ptr)->getBpm();
 
+		Logger::writeToLog (String::formatted (T("_p=%d beat=%d"), _p, beat));
+
 		if (_p != beat)
 		{
 			for (int x=0; x<64; x++)
@@ -165,8 +167,11 @@ void DemoJuceFilter::processBlock (AudioSampleBuffer& buffer,
 				
 				currentBpm	= (int)pos.bpm;
 
+				
+
 				if (_p != beat)
 				{
+					Logger::writeToLog (String::formatted (T("_p=%d beat=%d"), _p, beat));
 					for (int x=0; x<64; x++)
 					{
 						if (activePatterns[x])
@@ -342,4 +347,6 @@ void DemoJuceFilter::restartSequencer()
 			patterns[x]->reset();
 		}
 	}
+
+	_p = -1;
 }

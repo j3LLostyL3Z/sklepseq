@@ -134,14 +134,6 @@ SOURCE=.\sklepSeqEditor.cpp
 
 SOURCE=.\sklepSeqEditor.h
 # End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqMain.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\sklepSeqMain.h
-# End Source File
 # End Group
 # Begin Group "playlist"
 
@@ -246,6 +238,14 @@ SOURCE=.\stepQuickEdit.h
 # Begin Group "main"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\sklepSeqMain.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sklepSeqMain.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\sklepSeqMainComponent.cpp
