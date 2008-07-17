@@ -115,9 +115,16 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 		switch (typeCombo->getSelectedId())
 		{
 			case noteOn:
-				if (midiMessage->getMidiMessage()->isNoteOn())
+				if (!midiMessage->isMulti())
 				{
-					midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
+					if (midiMessage->getMidiMessage()->isNoteOn())
+					{
+						midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
+					}
+					else
+					{
+						midiMessage->setMidiMessage (MidiMessage::noteOn (1, 64, 1.0f));
+					}
 				}
 				else
 				{
@@ -150,7 +157,14 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 				}
 				else
 				{
-					midiMessage->setMidiMessageMulti (*midiMessage->getMidiBuffer());
+					if (midiMessage->getMidiMessage()->isController())
+					{
+						midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
+					}
+					else
+					{
+						midiMessage->setMidiMessage (MidiMessage::controllerEvent (1, 1, 1));
+					}
 				}
 				break;
 
