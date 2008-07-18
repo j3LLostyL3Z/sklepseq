@@ -116,6 +116,9 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 			case noteOn:
 				if (!midiMessage->isMulti())
 				{
+					if (!midiMessage->getMidiMessage())
+						return;
+
 					if (midiMessage->getMidiMessage()->isNoteOn())
 					{
 						midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
@@ -134,6 +137,9 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 			case Controller:
 				if (!midiMessage->isMulti())
 				{
+					if (!midiMessage->getMidiMessage())
+						return;
+
 					if (midiMessage->getMidiMessage()->isController())
 					{
 						midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
@@ -147,6 +153,9 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 				{
 					if (midiMessage->getMidiMessage()->isController())
 					{
+						if (!midiMessage->getMidiMessage())
+							return;
+
 						midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
 					}
 					else
@@ -157,8 +166,14 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 				break;
 
 			case ProgramChange:
+				if (!midiMessage->getMidiMessage())
+						return;
+
 				if (midiMessage->getMidiMessage()->isProgramChange())
 				{
+					if (!midiMessage->getMidiMessage())
+						return;
+
 					midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
 				}
 				else
@@ -168,8 +183,14 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 				break;
 
 			case SysEx:
+				if (!midiMessage->getMidiMessage())
+						return;
+
 				if (midiMessage->getMidiMessage()->isSysEx())
 				{
+					if (!midiMessage->getMidiMessage())
+						return;
+
 					midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
 				}
 				else
@@ -235,7 +256,6 @@ void stepQuickEdit::messageTypeChanged()
 	}
 
 	m = midiMessage->getMidiMessage();
-	mB = midiMessage->getMidiBuffer();
 
 	if (m)
 	{
@@ -265,6 +285,12 @@ void stepQuickEdit::messageTypeChanged()
 
 		resized();
 	}
+
+	mB = midiMessage->getMidiBuffer();
+	
+	if (mB == 0)
+		return;
+
 	if (!m && mB)
 	{
 		MidiBuffer::Iterator i(*mB);
