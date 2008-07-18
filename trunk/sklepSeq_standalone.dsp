@@ -240,6 +240,14 @@ SOURCE=.\sklepSeqPatternControl.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\myMidiKeyboardComponent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\myMidiKeyboardComponent.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\sklepSeqSkin.cpp
 # End Source File
 # Begin Source File
