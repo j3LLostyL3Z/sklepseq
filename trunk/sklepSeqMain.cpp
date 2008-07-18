@@ -350,3 +350,8 @@ void DemoJuceFilter::restartSequencer()
 
 	_p = -1;
 }
+
+sklepSeqPattern *DemoJuceFilter::getPattern(int pId)
+{
+	return (patterns[pId]);
+}

@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  23 Jun 2008 2:06:24 pm
+  Creation date:  18 Jul 2008 12:06:40 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_7DC855BB__
-#define __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_7DC855BB__
+#ifndef __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_F5B1BE98__
+#define __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_F5B1BE98__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -81,6 +81,10 @@ public:
     static const int rondw_10_1_pngSize;
     static const char* playlist_png;
     static const int playlist_pngSize;
+    static const char* save_png;
+    static const int save_pngSize;
+    static const char* open_png;
+    static const int open_pngSize;
 
     //==============================================================================
     juce_UseDebuggingNewOperator
@@ -99,6 +103,8 @@ private:
     Label* bpmLabel;
     ToggleButton* syncToHost;
     ImageButton* playlistButton;
+    ImageButton* saveButton;
+    ImageButton* openButton;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
@@ -107,4 +113,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_7DC855BB__
+#endif   // __JUCER_HEADER_SKLEPSEQTRANSPORTCOMPONENT_SKLEPSEQTRANSPORTCOMPONENT_F5B1BE98__

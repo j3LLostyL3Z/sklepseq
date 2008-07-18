@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  30 Jun 2008 10:05:03 pm
+  Creation date:  18 Jul 2008 12:43:10 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -33,7 +33,6 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
     : Component (T("sklepSeq Main Component")),
       transportComponent (0),
       optionsButton (0),
-      currentStepInPatternLabel (0),
       patternLenLabel (0),
       patternLenDown (0),
       patternLenUp (0),
@@ -41,6 +40,8 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
       currentPatternDown (0),
       currentPatternUp (0),
       powerButton (0),
+      upperHalf (0),
+      lowerHalf (0),
       internalCachedImage1 (0)
 {
     addAndMakeVisible (transportComponent = new sklepSeqTransportComponent (f));
@@ -53,15 +54,6 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
                               ImageCache::getFromMemory (rondw_03_png, rondw_03_pngSize), 0.7000f, Colour (0x0),
                               0, 1.0000f, Colour (0x0),
                               0, 1.0000f, Colour (0x0));
-    addAndMakeVisible (currentStepInPatternLabel = new Label (String::empty,
-                                                              T("0.0")));
-    currentStepInPatternLabel->setFont (Font (19.6000f, Font::plain));
-    currentStepInPatternLabel->setJustificationType (Justification::centred);
-    currentStepInPatternLabel->setEditable (false, false, false);
-    currentStepInPatternLabel->setColour (Label::textColourId, Colour (0xff00ff5e));
-    currentStepInPatternLabel->setColour (TextEditor::textColourId, Colours::black);
-    currentStepInPatternLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
-
     addAndMakeVisible (patternLenLabel = new Label (T("new label"),
                                                     T("16")));
     patternLenLabel->setTooltip (T("Pattern length in steps"));
@@ -125,6 +117,24 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
                             ImageCache::getFromMemory (power_off_png, power_off_pngSize), 0.7000f, Colour (0x0),
                             ImageCache::getFromMemory (power_off_png, power_off_pngSize), 1.0000f, Colour (0x0),
                             0, 1.0000f, Colour (0x0));
+    addAndMakeVisible (upperHalf = new ImageButton (T("Upper Half")));
+    upperHalf->setTooltip (T("Upper Half"));
+    upperHalf->setButtonText (T("new button"));
+    upperHalf->addButtonListener (this);
+
+    upperHalf->setImages (false, true, true,
+                          ImageCache::getFromMemory (up_big_png, up_big_pngSize), 0.8050f, Colour (0x0),
+                          0, 1.0000f, Colour (0x0),
+                          0, 1.0000f, Colour (0x0));
+    addAndMakeVisible (lowerHalf = new ImageButton (T("Lower Half")));
+    lowerHalf->setTooltip (T("Lower Half"));
+    lowerHalf->setButtonText (T("new button"));
+    lowerHalf->addButtonListener (this);
+
+    lowerHalf->setImages (false, true, true,
+                          ImageCache::getFromMemory (down_big_png, down_big_pngSize), 0.8050f, Colour (0x0),
+                          0, 1.0000f, Colour (0x0),
+                          0, 1.0000f, Colour (0x0));
     internalCachedImage1 = ImageCache::getFromMemory (sq_back_png, sq_back_pngSize);
 
     //[UserPreSize]
@@ -198,7 +208,6 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
 
 	currentPatternLabel->setFont (*lcdBigFont);
 	currentPatternLabel->setFont (*lcdBigFont);
-	currentStepInPatternLabel->setFont (*lcdSmallFont);
 	patternLenLabel->setFont (*lcdBigFont);
 
 	options = new sklepSeqPatternControl();
@@ -230,7 +239,6 @@ sklepSeqMainComponent::~sklepSeqMainComponent()
 
     deleteAndZero (transportComponent);
     deleteAndZero (optionsButton);
-    deleteAndZero (currentStepInPatternLabel);
     deleteAndZero (patternLenLabel);
     deleteAndZero (patternLenDown);
     deleteAndZero (patternLenUp);
@@ -238,6 +246,8 @@ sklepSeqMainComponent::~sklepSeqMainComponent()
     deleteAndZero (currentPatternDown);
     deleteAndZero (currentPatternUp);
     deleteAndZero (powerButton);
+    deleteAndZero (upperHalf);
+    deleteAndZero (lowerHalf);
     ImageCache::release (internalCachedImage1);
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -263,9 +273,6 @@ void sklepSeqMainComponent::paint (Graphics& g)
     g.setColour (Colour (0x5f000000));
     g.fillRoundedRectangle (181.0f, 187.0f, 75.0f, 38.0f, 10.0000f);
 
-    g.setColour (Colour (0xc5000000));
-    g.fillRoundedRectangle (259.0f, 193.0f, 35.0f, 29.0f, 3.5000f);
-
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
 }
@@ -274,7 +281,6 @@ void sklepSeqMainComponent::resized()
 {
     transportComponent->setBounds (0, 462, 488, 32);
     optionsButton->setBounds (3, 3, 24, 24);
-    currentStepInPatternLabel->setBounds (256, 200, 40, 16);
     patternLenLabel->setBounds (203, 279, 68, 26);
     patternLenDown->setBounds (259, 293, 16, 16);
     patternLenUp->setBounds (259, 279, 16, 16);
@@ -282,6 +288,8 @@ void sklepSeqMainComponent::resized()
     currentPatternDown->setBounds (234, 207, 16, 16);
     currentPatternUp->setBounds (234, 193, 16, 16);
     powerButton->setBounds (224, 224, 48, 48);
+    upperHalf->setBounds (200, 240, 24, 24);
+    lowerHalf->setBounds (272, 240, 24, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -391,6 +399,18 @@ void sklepSeqMainComponent::buttonClicked (Button* buttonThatWasClicked)
 
 		return;
         //[/UserButtonCode_powerButton]
+    }
+    else if (buttonThatWasClicked == upperHalf)
+    {
+        //[UserButtonCode_upperHalf] -- add your button handler code here..
+		return;
+        //[/UserButtonCode_upperHalf]
+    }
+    else if (buttonThatWasClicked == lowerHalf)
+    {
+        //[UserButtonCode_lowerHalf] -- add your button handler code here..
+		return;
+        //[/UserButtonCode_lowerHalf]
     }
 
     //[UserbuttonClicked_Post]
@@ -614,7 +634,6 @@ BEGIN_JUCER_METADATA
     <IMAGE pos="0 0 492 492" resource="sq_back_png" opacity="1" mode="0"/>
     <ROUNDRECT pos="207 274 75 38" cornerSize="10" fill="solid: 5f000000" hasStroke="0"/>
     <ROUNDRECT pos="181 187 75 38" cornerSize="10" fill="solid: 5f000000" hasStroke="0"/>
-    <ROUNDRECT pos="259 193 35 29" cornerSize="3.5" fill="solid: c5000000" hasStroke="0"/>
   </BACKGROUND>
   <JUCERCOMP name="" id="7895c18604b2892a" memberName="transportComponent"
              virtualName="" explicitFocusOrder="0" pos="0 462 488 32" sourceFile="sklepSeqTransportComponent.cpp"
@@ -626,11 +645,6 @@ BEGIN_JUCER_METADATA
                opacityNormal="0.699999988" colourNormal="0" resourceOver=""
                opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
                colourDown="0"/>
-  <LABEL name="" id="9202c88ac0788122" memberName="currentStepInPatternLabel"
-         virtualName="" explicitFocusOrder="0" pos="256 200 40 16" textCol="ff00ff5e"
-         edTextCol="ff000000" edBkgCol="0" labelText="0.0" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="19.6" bold="0" italic="0" justification="36"/>
   <LABEL name="new label" id="6ac240eabb144fb5" memberName="patternLenLabel"
          virtualName="" explicitFocusOrder="0" pos="203 279 68 26" tooltip="Pattern length in steps"
          textCol="ff7cffac" edTextCol="ff000000" edBkgCol="0" labelText="16"
@@ -672,6 +686,20 @@ BEGIN_JUCER_METADATA
                buttonText="new button" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="power_off_png"
                opacityNormal="0.699999988" colourNormal="0" resourceOver="power_off_png"
+               opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
+               colourDown="0"/>
+  <IMAGEBUTTON name="Upper Half" id="fad7001abb10e8d8" memberName="upperHalf"
+               virtualName="" explicitFocusOrder="0" pos="200 240 24 24" tooltip="Upper Half"
+               buttonText="new button" connectedEdges="0" needsCallback="1"
+               radioGroupId="0" keepProportions="1" resourceNormal="up_big_png"
+               opacityNormal="0.805031419" colourNormal="0" resourceOver=""
+               opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
+               colourDown="0"/>
+  <IMAGEBUTTON name="Lower Half" id="896921665201e2" memberName="lowerHalf"
+               virtualName="" explicitFocusOrder="0" pos="272 240 24 24" tooltip="Lower Half"
+               buttonText="new button" connectedEdges="0" needsCallback="1"
+               radioGroupId="0" keepProportions="1" resourceNormal="down_big_png"
+               opacityNormal="0.805031419" colourNormal="0" resourceOver=""
                opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
                colourDown="0"/>
 </JUCER_COMPONENT>

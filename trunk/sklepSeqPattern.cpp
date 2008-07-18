@@ -155,13 +155,13 @@ void sklepSeqPattern::toggleStep(int nId)
 {
 	if (notes[nId])
 	{
-		if (notes[nId]->enabled)
+		if (notes[nId]->isEnabled())
 		{
-			notes[nId]->enabled = false;
+			notes[nId]->setEnabled (false);
 		}
 		else
 		{
-			notes[nId]->enabled = true;
+			notes[nId]->setEnabled (true);
 		}
 	}
 }
@@ -211,9 +211,30 @@ int sklepSeqPattern::getMidiDevice ()
 MidiMessageSequence sklepSeqPattern::serialize()
 {
 	MidiMessageSequence sequence;
+
 	for (int x=0; x<32; x++)
 	{
-		sequence.addEvent (*notes[x]->getMidiMessage());
+		if (!notes[x]->isMulti())
+		{
+			if (notes[x]->getMidiMessage())
+			{
+				Logger::writeToLog (String::formatted (T("add message with len %.2f to seq"), notes[x]->getMidiMessage()->getTimeStamp()));
+				sequence.addEvent (*notes[x]->getMidiMessage());
+			}
+		}
+		else
+		{
+			MidiBuffer *mB = notes[x]->getMidiBuffer();
+			MidiBuffer::Iterator i (*mB);
+			MidiMessage msg(0xf0, 0.0);
+			int pos;
+
+			while (i.getNextEvent (msg, pos))
+			{
+				msg.setTimeStamp ((double)x+1);
+				sequence.addEvent (msg);
+			}
+		}
 	}
 
 	return (sequence);
@@ -222,4 +243,54 @@ MidiMessageSequence sklepSeqPattern::serialize()
 void sklepSeqPattern::reset()
 {
 	currentPosition = 1;
+}
+
+void sklepSeqPattern::unserialize (const MidiMessageSequence *seq)
+{
+	int realEvents = 0;
+	for (int x=0; x<seq->getNumEvents(); x++)
+	{
+		if (realEvents>31)
+			break;
+
+		MidiMessageSequence::MidiEventHolder *e = seq->getEventPointer (x);
+
+		if (e->message.isNoteOn())
+		{
+			const int position = (int)e->message.getTimeStamp();
+			notes[position]->setMidiMessage (e->message);
+
+			realEvents++;
+
+			Logger::writeToLog (T("midiFile load noteon"));
+		}
+		if (e->message.isController())
+		{
+			/* can be a sequence of 4 messages, check */
+			const int ctrlrNumber = e->message.getControllerNumber();
+
+			if ((ctrlrNumber >= 98 && ctrlrNumber < 101) || (ctrlrNumber == 38 || ctrlrNumber == 6))
+			{
+				Logger::writeToLog (T("midiFile load controller MULTI"));
+				continue;
+			}
+
+			const int position = (int)e->message.getTimeStamp();
+			notes[position]->setMidiMessage (e->message);
+
+			realEvents++;
+
+			Logger::writeToLog (T("midiFile load controller"));
+		}
+		if (e->message.isSysEx())
+		{
+			/* this can also be a sequence of messages */
+			const int position = (int)e->message.getTimeStamp();
+			notes[position]->setMidiMessage (e->message);
+
+			realEvents++;
+
+			Logger::writeToLog (T("midiFile load sysex"));
+		}
+	}
 }

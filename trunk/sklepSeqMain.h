@@ -114,6 +114,7 @@ public:
 	short currentPattern;
 	
 	sklepSeqPattern *getCurrentPattern();
+	sklepSeqPattern *getPattern(int pId);
 	void setCurrentPattern (int p);
 	void setSyncToHost (bool t);
 	bool getSyncToHost();
