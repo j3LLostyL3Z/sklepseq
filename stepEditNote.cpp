@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  15 Jul 2008 3:01:22 pm
+  Creation date:  18 Jul 2008 3:59:00 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -34,8 +34,8 @@ stepEditNote::stepEditNote (myMidiMessage *msg)
       veloSlider (0),
       noteLength (0)
 {
-    addAndMakeVisible (midiKeyboard = new MidiKeyboardComponent (midiKeyboardState,
-                                                                 MidiKeyboardComponent::verticalKeyboardFacingRight));
+    addAndMakeVisible (midiKeyboard = new myMidiKeyboardComponent (midiKeyboardState,
+                                                                   MidiKeyboardComponent::verticalKeyboardFacingRight, msg));
     midiKeyboard->setName (T("Midi Keyboard"));
 
     addAndMakeVisible (veloSlider = new Slider (T("Velocity")));
@@ -59,6 +59,7 @@ stepEditNote::stepEditNote (myMidiMessage *msg)
     //[UserPreSize]
 	midiMessage = msg;
 
+	midiKeyboardState.addListener (this);
 	veloSlider->setValue (midiMessage->getMidiMessage()->getVelocity());
 	noteLength->setValue (midiMessage->getLength());
     //[/UserPreSize]
@@ -134,8 +135,12 @@ void stepEditNote::sliderValueChanged (Slider* sliderThatWasMoved)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void stepEditNote::handleNoteOn (MidiKeyboardState *source, int midiChannel, int midiNoteNumber, float velocity)
 {
+	Logger::writeToLog (T("midiKeyboard listener noteon"));
 	if (midiMessage)
 	{
+		Logger::writeToLog (String::formatted (T("change note number: %d"), midiNoteNumber));
+		midiMessage->getMidiMessage()->setNoteNumber(midiNoteNumber);
+		midiMessage->getMidiMessage()->setVelocity(velocity);
 	}
 }
 
@@ -160,8 +165,8 @@ BEGIN_JUCER_METADATA
                  fixedSize="1" initialWidth="112" initialHeight="224">
   <BACKGROUND backgroundColour="ffffff"/>
   <GENERICCOMPONENT name="Midi Keyboard" id="1d491a13579ae9cc" memberName="midiKeyboard"
-                    virtualName="" explicitFocusOrder="0" pos="0 0 80 200" class="MidiKeyboardComponent"
-                    params="midiKeyboardState,&#10;MidiKeyboardComponent::verticalKeyboardFacingRight"/>
+                    virtualName="" explicitFocusOrder="0" pos="0 0 80 200" class="myMidiKeyboardComponent"
+                    params="midiKeyboardState,&#10;MidiKeyboardComponent::verticalKeyboardFacingRight, msg"/>
   <SLIDER name="Velocity" id="f4dabf8bc7889870" memberName="veloSlider"
           virtualName="" explicitFocusOrder="0" pos="88 0 24 200" tooltip="Velocity"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="0"
