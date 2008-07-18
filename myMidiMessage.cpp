@@ -12,7 +12,7 @@
 myMidiMessage::myMidiMessage(int ch, int nIndex, sklepSeqPattern *owner)
 {
 	multi			= false;
-	m				= new MidiMessage (MidiMessage::noteOn (ch, 64, 1.0f));
+	m				= 0;
 	mB				= 0;
 	index			= nIndex;
 	messageLength	= 1;
@@ -86,48 +86,54 @@ void myMidiMessage::setMidiChannel (int ch)
 void myMidiMessage::setMidiMessage (MidiMessage midiMessage)
 {
 	multi	= false;
-	m		= new MidiMessage (midiMessage);
+	
+	if (m)
+		deleteAndZero (m);
+
 	if (mB)
 		deleteAndZero (mB);
+
+	m		= new MidiMessage (midiMessage);
+	m->setTimeStamp ((double)index);
 
 	if (!m->isSysEx())
 	{
 		m->setChannel (midiChannel);
 	}
+
+	setEnabled(true);
+	setLength (1);
 }
 
 void myMidiMessage::setMidiMessageRaw (uint8 *data, int dataLen)
 {
 	multi	= false;
-	m		= new MidiMessage (data, dataLen, 0);
-
 
 	if (m)
-	{
-		uint8 *d = m->getRawData();
-		int len  = m->getRawDataSize();
+		deleteAndZero (m);
 
-		String t;
-		for (int x=0; x<len; x++)
-		{
-			if (x==0)
-				t << String::formatted (T("%x"), *(d+x));
-			else
-				t << String::formatted (T(":%x"), *(d+x));
-		}
+	if (mB)
+		deleteAndZero (mB);
 
-		Logger::writeToLog (t);
-	}
+	m		= new MidiMessage (data, dataLen, 0);
+	m->setTimeStamp ((double)index);
+
+	setEnabled(true);
+	setLength (1);
 }
 
 void myMidiMessage::setMidiMessageMulti (MidiBuffer midiBuffer)
 {
 	multi	= true;
+
 	if (m)
 		deleteAndZero (m);
 
-	m		= 0;
+	if (mB)
+		deleteAndZero (mB);
+
 	mB		= new MidiBuffer(midiBuffer);
+	setEnabled(true);
 }
 
 bool myMidiMessage::isMulti()
@@ -233,4 +239,38 @@ void myMidiMessage::removeExtra (myMidiMessage *m)
 void myMidiMessage::addExtra(myMidiMessage *m)
 {
 	extraMessages.add (m);
+}
+
+bool myMidiMessage::isEnabled ()
+{
+	return (enabled);
+}
+
+void myMidiMessage::setEnabled (bool t)
+{
+	if (t != enabled)
+		enablementChanged();
+
+	enabled = t;
+}
+
+void myMidiMessage::enablementChanged()
+{
+	if (isEnabled())
+	{
+		/* we are beeing deactivated*/
+	}
+	else
+	{
+		/* we are beeing turned on */
+		if (!isMulti())
+		{
+			if (!m)
+			{
+				/* this is a initial midi message */
+				m = new MidiMessage (MidiMessage::noteOn (midiChannel, 64, 1.0f));
+				m->setTimeStamp ((double)index);
+			}
+		}
+	}
 }

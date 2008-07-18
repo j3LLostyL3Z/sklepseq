@@ -42,7 +42,7 @@ class sklepSeqPattern  : public Component
 		myMidiMessage* getStepNoVeirfy (int nId);
 		void toggleStep(int nId);
 		MidiMessageSequence serialize();
-
+		void unserialize (const MidiMessageSequence *seq);
 	private:
 		int patternLength;
 		int patternId;

@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  2 Jul 2008 9:31:21 pm
+  Creation date:  18 Jul 2008 2:05:35 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -40,11 +40,10 @@ stepQuickEdit::stepQuickEdit (sklepSeqMainComponent *parent, myMidiMessage *msg)
     typeCombo->setTextWhenNothingSelected (String::empty);
     typeCombo->setTextWhenNoChoicesAvailable (T("(no choices)"));
     typeCombo->addItem (T("Note On"), 1);
-    typeCombo->addItem (T("Note Off"), 2);
-    typeCombo->addItem (T("Controller"), 3);
-    typeCombo->addItem (T("SysEx"), 4);
-    typeCombo->addItem (T("Program Change"), 5);
-    typeCombo->addItem (T("MMC"), 6);
+    typeCombo->addItem (T("Controller"), 2);
+    typeCombo->addItem (T("SysEx"), 3);
+    typeCombo->addItem (T("Program Change"), 4);
+    typeCombo->addItem (T("MMC"), 5);
     typeCombo->addListener (this);
 
 
@@ -129,17 +128,6 @@ void stepQuickEdit::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 				else
 				{
 					midiMessage->setMidiMessage (MidiMessage::noteOn (1, 64, 1.0f));
-				}
-				break;
-
-			case noteOff:
-				if (midiMessage->getMidiMessage()->isNoteOff())
-				{
-					midiMessage->setMidiMessage (*midiMessage->getMidiMessage());
-				}
-				else
-				{
-					midiMessage->setMidiMessage (MidiMessage::noteOff (1, 64));
 				}
 				break;
 
@@ -249,17 +237,12 @@ void stepQuickEdit::messageTypeChanged()
 	m = midiMessage->getMidiMessage();
 	mB = midiMessage->getMidiBuffer();
 
-	if (m) 
+	if (m)
 	{
 		if (m->isNoteOn())
 		{
 			addAndMakeVisible (editorComponent = new stepEditNote(midiMessage));
 			typeCombo->setSelectedId (noteOn, true);
-		}
-		else if (m->isNoteOff())
-		{
-			addAndMakeVisible (editorComponent = new stepEditNote(midiMessage));
-			typeCombo->setSelectedId (noteOff, true);
 		}
 		else if (m->isProgramChange())
 		{
@@ -330,7 +313,7 @@ BEGIN_JUCER_METADATA
   </BACKGROUND>
   <COMBOBOX name="Type" id="5852402a7bc052e" memberName="typeCombo" virtualName=""
             explicitFocusOrder="0" pos="16 254 96 16" tooltip="Type" editable="0"
-            layout="33" items="Note On&#10;Note Off&#10;Controller&#10;SysEx&#10;Program Change&#10;MMC"
+            layout="33" items="Note On&#10;Controller&#10;SysEx&#10;Program Change&#10;MMC"
             textWhenNonSelected="" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 

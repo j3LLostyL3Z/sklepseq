@@ -32,6 +32,9 @@ class myMidiMessage
 		void setOwner (sklepSeqPattern *owner);
 		void removeExtra (myMidiMessage *m);
 		void addExtra(myMidiMessage *m);
+		bool isEnabled();
+		void setEnabled (bool t);
+		void enablementChanged();
 
 		MidiMessage *m;
 		MidiBuffer *mB;

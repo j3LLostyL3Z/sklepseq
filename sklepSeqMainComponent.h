@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  30 Jun 2008 10:05:03 pm
+  Creation date:  18 Jul 2008 12:43:10 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_D15F96C9__
-#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_D15F96C9__
+#ifndef __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_567E0F79__
+#define __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_567E0F79__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -149,7 +149,6 @@ private:
     //==============================================================================
     sklepSeqTransportComponent* transportComponent;
     ImageButton* optionsButton;
-    Label* currentStepInPatternLabel;
     Label* patternLenLabel;
     ImageButton* patternLenDown;
     ImageButton* patternLenUp;
@@ -157,6 +156,8 @@ private:
     ImageButton* currentPatternDown;
     ImageButton* currentPatternUp;
     ImageButton* powerButton;
+    ImageButton* upperHalf;
+    ImageButton* lowerHalf;
     Image* internalCachedImage1;
 
     //==============================================================================
@@ -166,4 +167,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_D15F96C9__
+#endif   // __JUCER_HEADER_SKLEPSEQMAINCOMPONENT_SKLEPSEQMAINCOMPONENT_567E0F79__
