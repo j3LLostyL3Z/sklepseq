@@ -22,64 +22,15 @@ midiMessageManager::~midiMessageManager()
 	midiOutputList.clear();
 }
 
-void midiMessageManager::processMidiEvents (MidiBuffer *b)
+MidiBuffer midiMessageManager::getVstMidiEvents()
 {
-	if (m.size() > 0)
-	{
-		for (int x=0; x<m.size(); x++)
-		{
-			myMidiMessage *msg = m[x];
-			if (msg)
-			{
-				/* out to device */
-				if (isDeviceOpen (msg->getDeviceId()))
-				{
-					sendMessageToDevice (msg);
-				}
-				m.remove (x, true);
-			}
-			
-			if (b)
-			{
-				if (msg->isMulti())
-				{
-					b->addEvents (*msg->getMidiBuffer(), 0, -1, 0);
-				}
-				else
-				{
-					b->addEvent (*msg->getMidiMessage(), 0);
-				}
-			}
-		}
-	}
-	else
-	{
-		return;
-	}
-}
-
-MidiBuffer midiMessageManager::getLeftMessages()
-{
-	MidiBuffer b;
-
-	for (int x=0; x<m.size(); x++)
-	{
-		if (m[x]->m)
-		{
-			b.addEvent (*m[x]->m, x);
-		}
-		if (m[x]->mB)
-		{
-			b.addEvents (*m[x]->mB, 0, 0, 0);
-		}
-	}
-
-	return (b);
+	return (vstMidiBuffer);
 }
 
 void midiMessageManager::clear()
 {
 	m.clear();
+	vstMidiBuffer.clear();
 }
 
 void midiMessageManager::sendMessageToDevice (myMidiMessage *m)
@@ -87,16 +38,21 @@ void midiMessageManager::sendMessageToDevice (myMidiMessage *m)
 	const MidiMessage *msg = m->m;
 	const MidiBuffer *msgB = m->mB;
 
-	const deviceId = m->getDeviceId();
-	
-	if (msg)
+	const int deviceId = m->getDeviceId();
+
+	if (msg && deviceId == 0)
+	{
+		vstMidiBuffer.addEvent (*msg, 0);
+	}
+
+	if (msg && deviceId > 0)
 	{
 		if (device[deviceId])
 		{
 			device[deviceId]->sendMessage (msg);
 		}
 	}
-	else if (msgB)
+	else if (msgB && deviceId > 0)
 	{
 		if (device[deviceId])
 		{
@@ -105,12 +61,16 @@ void midiMessageManager::sendMessageToDevice (myMidiMessage *m)
 	}
 
 	const int e = m->getExtraEvents()->size();
-	Logger::writeToLog (T("check for extra events"));
+	
 	if (e>0)
 	{
 		/* extra events from other messages go here */
 	}
-	device[deviceId]->process();
+
+	if (device[deviceId])
+	{
+		device[deviceId]->process();
+	}
 }
 
 bool midiMessageManager::isDeviceOpen(int id)

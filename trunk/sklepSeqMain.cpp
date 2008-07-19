@@ -116,6 +116,7 @@ void DemoJuceFilter::changeListenerCallback(void *ptr)
 	/* this is called by our internal sync thread */
 	if (!isSyncedToHost)
 	{
+		MidiBuffer b;
 		const int beat = ((xsync *)ptr)->getMidiSixteenthNote();
 		currentBpm = ((xsync *)ptr)->getBpm();
 
@@ -135,8 +136,6 @@ void DemoJuceFilter::changeListenerCallback(void *ptr)
 
 			if (currentBeat > 16)
 				currentBeat = currentBeat - 16;
-
-			midiManager.processMidiEvents();
 			
 			midiManager.clear();
 
@@ -167,11 +166,8 @@ void DemoJuceFilter::processBlock (AudioSampleBuffer& buffer,
 				
 				currentBpm	= (int)pos.bpm;
 
-				
-
 				if (_p != beat)
 				{
-					Logger::writeToLog (String::formatted (T("_p=%d beat=%d"), _p, beat));
 					for (int x=0; x<64; x++)
 					{
 						if (activePatterns[x])
@@ -186,8 +182,9 @@ void DemoJuceFilter::processBlock (AudioSampleBuffer& buffer,
 						currentBeat = currentBeat - 16;
 
 					/* process midi events to their devices */
-					midiManager.processMidiEvents();
+					midiMessages.addEvents (midiManager.getVstMidiEvents(),0,-1,0);
 
+					Logger::writeToLog (String::formatted (T("processMidiEvents: %d"), midiMessages.getNumEvents()));
 					/* clean the buffers */
 					midiManager.clear();
 
