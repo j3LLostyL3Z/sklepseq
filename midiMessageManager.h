@@ -14,19 +14,19 @@ class midiMessageManager
 	public:
 		midiMessageManager();
 		~midiMessageManager();
-		void processMidiEvents (MidiBuffer *b=0);
-		MidiBuffer getLeftMessages();
 		void clear();
 		void sendMessageToDevice (myMidiMessage *m);
 		bool isDeviceOpen(int id);
 		void initDevices();
 		void prepareDevice(int i);
 		int getCurrentEventsCount ();
+		MidiBuffer getVstMidiEvents();
 
 	private:
 		StringArray midiOutputList;
 		OwnedArray <myMidiMessage> m;
 		OwnedArray <midiDevice> device;
+		MidiBuffer vstMidiBuffer;
 };
 
 #endif // !defined(AFX_MIDIMESSAGEMANAGER_H__198293E7_B17B_4844_A44A_42B7E392EEDD__INCLUDED_)
