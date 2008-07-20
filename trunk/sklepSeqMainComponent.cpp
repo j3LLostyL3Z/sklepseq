@@ -224,6 +224,8 @@ sklepSeqMainComponent::sklepSeqMainComponent (DemoJuceFilter *f)
 	ownerFilter->getCallbackLock().enter();
 	patternChanged();
 	ownerFilter->getCallbackLock().exit();
+
+	glow.setGlowProperties (3.0f, Colours::red);
     //[/UserPreSize]
 
     setSize (492, 492);
@@ -460,8 +462,6 @@ void sklepSeqMainComponent::setPosition (int beat, int bpm)
 
 		if (beat-2 >= 0)
 			cursor[beat-2]->setVisible (false);
-
-		// currentStepInPatternLabel->setText (String (beat), false);
 	}
 
 	prevPos = beat;
@@ -595,6 +595,7 @@ void sklepSeqMainComponent::changeListenerCallback(void *ptr)
 		sklepSeqPattern *p = ownerFilter->getCurrentPattern();
 		p->setMidiChannel (options->getMidiChannel());
 		p->setMidiDevice (options->getMidiDevice());
+		p->setSyncMode (options->getSyncMode()); /* true - full sync, false - step sync */
 		ownerFilter->getCallbackLock().exit();
 	}
 }

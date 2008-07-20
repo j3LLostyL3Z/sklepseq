@@ -15,11 +15,12 @@ myMidiMessage::myMidiMessage(int ch, int nIndex, sklepSeqPattern *owner)
 	m				= 0;
 	mB				= 0;
 	index			= nIndex;
-	messageLength	= 1;
+	messageLength	= 0;
 	enabled			= false;
 	midiChannel		= ch;
 	deviceId		= 0;
 	ownerPattern	= owner;
+	noteOff			= 0;
 }
 
 myMidiMessage::~myMidiMessage()
@@ -83,7 +84,7 @@ void myMidiMessage::setMidiChannel (int ch)
 	}
 }
 
-void myMidiMessage::setMidiMessage (MidiMessage midiMessage)
+void myMidiMessage::setMidiMessage (MidiMessage midiMessage, int len)
 {
 	multi	= false;
 	
@@ -102,7 +103,11 @@ void myMidiMessage::setMidiMessage (MidiMessage midiMessage)
 	}
 
 	setEnabled(true);
-	setLength (1);
+
+	if (m->isNoteOn())
+	{
+		setLength (len);
+	}
 }
 
 void myMidiMessage::setMidiMessageRaw (uint8 *data, int dataLen)
@@ -190,6 +195,7 @@ void myMidiMessage::setLength (short l)
 {
 	if (l != messageLength)
 	{
+		Logger::writeToLog (T("setLength()"));
 		/* midi len changed */
 		myMidiMessage *noteOffMessage = ownerPattern->getStep (getMyNoteOff());
 
@@ -200,7 +206,10 @@ void myMidiMessage::setLength (short l)
 		messageLength = l;
 
 		/* add my new note off based on my new length */
-		noteOffMessage = ownerPattern->getStep (getMyNoteOff());
+		const int myNoteOffIndex = getMyNoteOff();
+		ownerPattern->setEnabled (myNoteOffIndex, false);
+		noteOffMessage = ownerPattern->getStep (myNoteOffIndex);
+
 		if (noteOff)
 		{
 			/* we can do this, the array in the note off event is not a ownedArray */
@@ -231,14 +240,21 @@ short myMidiMessage::getMyNoteOff()
 	}
 }
 
-void myMidiMessage::removeExtra (myMidiMessage *m)
+void myMidiMessage::removeExtra (myMidiMessage *_m)
 {
-	extraMessages.removeValue (m);
+	if (_m)
+	{
+		extraMessages.removeValue (_m);
+	}
 }
 
-void myMidiMessage::addExtra(myMidiMessage *m)
+void myMidiMessage::addExtra(myMidiMessage *_m)
 {
-	extraMessages.add (m);
+	if (_m)
+	{
+		Logger::writeToLog (T("addExtra()"));
+		extraMessages.add (_m);
+	}
 }
 
 bool myMidiMessage::isEnabled ()
@@ -246,9 +262,9 @@ bool myMidiMessage::isEnabled ()
 	return (enabled);
 }
 
-void myMidiMessage::setEnabled (bool t)
+void myMidiMessage::setEnabled (bool t, bool initialCheck)
 {
-	if (t != enabled)
+	if (t != enabled && initialCheck)
 		enablementChanged();
 
 	enabled = t;
@@ -270,6 +286,7 @@ void myMidiMessage::enablementChanged()
 				/* this is a initial midi message */
 				m = new MidiMessage (MidiMessage::noteOn (midiChannel, 64, 1.0f));
 				m->setTimeStamp ((double)index);
+				setLength(1);
 			}
 		}
 	}
