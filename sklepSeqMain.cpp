@@ -184,7 +184,6 @@ void DemoJuceFilter::processBlock (AudioSampleBuffer& buffer,
 					/* process midi events to their devices */
 					midiMessages.addEvents (midiManager.getVstMidiEvents(),0,-1,0);
 
-					Logger::writeToLog (String::formatted (T("processMidiEvents: %d"), midiMessages.getNumEvents()));
 					/* clean the buffers */
 					midiManager.clear();
 

@@ -35,6 +35,12 @@ void midiMessageManager::clear()
 
 void midiMessageManager::sendMessageToDevice (myMidiMessage *m)
 {
+	if (!m)
+		return;
+
+	if (!m->isEnabled())
+		return;
+
 	const MidiMessage *msg = m->m;
 	const MidiBuffer *msgB = m->mB;
 
@@ -64,6 +70,7 @@ void midiMessageManager::sendMessageToDevice (myMidiMessage *m)
 	
 	if (e>0)
 	{
+		Logger::writeToLog (T("extra events"));
 		/* extra events from other messages go here */
 	}
 

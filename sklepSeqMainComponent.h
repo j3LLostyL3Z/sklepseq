@@ -134,7 +134,7 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	OwnedArray <sklepSeqCursorComponent> cursor;
 	OwnedArray <sklepSeqStep> step;
-
+	GlowEffect glow;
 	DemoJuceFilter *ownerFilter;
 	int prevPos;
 	double prevBpm;

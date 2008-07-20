@@ -15,7 +15,7 @@ class myMidiMessage
 		~myMidiMessage();
 
 		void setMidiChannel (int ch);
-		void setMidiMessage (MidiMessage midiMessage);
+		void setMidiMessage (MidiMessage midiMessage, int len=1);
 		void setMidiMessageMulti (MidiBuffer midiBuffer);
 		void setMidiMessageRaw (uint8 *data, int len);
 		void setMidiDevice (int dId);
@@ -30,10 +30,10 @@ class myMidiMessage
 		MidiBuffer *getMidiBuffer();
 		Array <myMidiMessage *>*getExtraEvents();
 		void setOwner (sklepSeqPattern *owner);
-		void removeExtra (myMidiMessage *m);
-		void addExtra(myMidiMessage *m);
+		void removeExtra (myMidiMessage *_m);
+		void addExtra(myMidiMessage *_m);
 		bool isEnabled();
-		void setEnabled (bool t);
+		void setEnabled (bool t, bool noInitialCheck=true);
 		void enablementChanged();
 
 		MidiMessage *m;

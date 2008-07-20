@@ -11,12 +11,14 @@
 sklepSeqPattern::sklepSeqPattern(int _id)
 {
 	patternId		=	_id;
-	patternLength	=	12;
+	patternLength	=	16;
 	isActive		=	false;
 	currentPosition	=	1;
 	mode			=	patternForward;
 	midiChannel		=	1;
 	midiDevice		=	1;
+	syncMode		=	true;
+	waitingForSync	=	false;
 
 	for (int x=0; x<32; x++)
 	{
@@ -49,11 +51,27 @@ int sklepSeqPattern::getPatternLength()
 
 void sklepSeqPattern::forward(int pos)
 {
+	/* pattern is not active, or nothing changed */
 	if (pos == currentPosition || !isActive)
 		return;
 
-	if (patternHasBeenActivated)
+	if (patternHasBeenActivated && syncMode && isActive)
 	{
+		/* full sync mode, start at beat start */
+		if (pos!=patternLength)
+		{
+			waitingForSync = true;
+			return;
+		}
+
+		waitingForSync = false;
+
+		currentPosition = pos;
+		patternHasBeenActivated = false;
+	}
+	else if (patternHasBeenActivated && !syncMode && isActive)
+	{
+		/* half sync mode, start at next step */
 		currentPosition = pos;
 		patternHasBeenActivated = false;
 	}
@@ -157,11 +175,11 @@ void sklepSeqPattern::toggleStep(int nId)
 	{
 		if (notes[nId]->isEnabled())
 		{
-			notes[nId]->setEnabled (false);
+			notes[nId]->setEnabled (false, true);
 		}
 		else
 		{
-			notes[nId]->setEnabled (true);
+			notes[nId]->setEnabled (true, true);
 		}
 	}
 }
@@ -292,5 +310,28 @@ void sklepSeqPattern::unserialize (const MidiMessageSequence *seq)
 
 			Logger::writeToLog (T("midiFile load sysex"));
 		}
+	}
+}
+
+void sklepSeqPattern::setSyncMode (bool m)
+{
+	syncMode = m;
+}
+
+bool sklepSeqPattern::getSyncMode()
+{
+	return (syncMode);
+}
+
+bool sklepSeqPattern::isWaitingForSync()
+{
+	return (waitingForSync);
+}
+
+void sklepSeqPattern::setEnabled (int nIndex, bool noInitialCheck)
+{
+	if (notes[nIndex])
+	{
+		notes[nIndex]->setEnabled (true, noInitialCheck);
 	}
 }

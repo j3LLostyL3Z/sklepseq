@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  26 Jun 2008 4:45:18 pm
+  Creation date:  19 Jul 2008 7:21:22 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_A5CF43C8__
-#define __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_A5CF43C8__
+#ifndef __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_1649D679__
+#define __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_1649D679__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "juce.h"
@@ -40,7 +40,8 @@
 class sklepSeqPatternControl  : public Component,
                                 public ChangeBroadcaster,
                                 public ComboBoxListener,
-                                public SliderListener
+                                public SliderListener,
+                                public ButtonListener
 {
 public:
     //==============================================================================
@@ -52,12 +53,14 @@ public:
 	void setPattern (sklepSeqPattern *p);
 	int getMidiChannel();
 	int getMidiDevice();
+	bool getSyncMode();
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
 
     // Binary resources:
     static const char* rondw_03_png;
@@ -85,6 +88,7 @@ private:
     Label* label;
     Label* label2;
     Label* patternId;
+    ToggleButton* syncTypeToggle;
 
     //==============================================================================
     // (prevent copy constructor and operator= being generated..)
@@ -93,4 +97,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_A5CF43C8__
+#endif   // __JUCER_HEADER_SKLEPSEQPATTERNCONTROL_SKLEPSEQPATTERNCONTROL_1649D679__

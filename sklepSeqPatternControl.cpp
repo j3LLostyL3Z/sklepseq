@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  26 Jun 2008 4:45:18 pm
+  Creation date:  19 Jul 2008 7:21:22 pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -34,7 +34,8 @@ sklepSeqPatternControl::sklepSeqPatternControl ()
       midiCh (0),
       label (0),
       label2 (0),
-      patternId (0)
+      patternId (0),
+      syncTypeToggle (0)
 {
     addAndMakeVisible (deviceList = new ComboBox (T("new combo box")));
     deviceList->setEditableText (false);
@@ -77,6 +78,11 @@ sklepSeqPatternControl::sklepSeqPatternControl ()
     patternId->setColour (TextEditor::textColourId, Colours::black);
     patternId->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
+    addAndMakeVisible (syncTypeToggle = new ToggleButton (T("Full Sync")));
+    syncTypeToggle->setTooltip (T("Full Sync Mode"));
+    syncTypeToggle->addButtonListener (this);
+    syncTypeToggle->setColour (ToggleButton::textColourId, Colours::white);
+
 
     //[UserPreSize]
 	StringArray d = MidiOutput::getDevices();
@@ -104,6 +110,7 @@ sklepSeqPatternControl::~sklepSeqPatternControl()
     deleteAndZero (label);
     deleteAndZero (label2);
     deleteAndZero (patternId);
+    deleteAndZero (syncTypeToggle);
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -132,6 +139,7 @@ void sklepSeqPatternControl::resized()
     label->setBounds (0, 16, 40, 8);
     label2->setBounds (192, 16, 40, 8);
     patternId->setBounds (392, 72, 24, 24);
+    syncTypeToggle->setBounds (304, 8, 71, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -144,7 +152,6 @@ void sklepSeqPatternControl::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == deviceList)
     {
         //[UserComboBoxCode_deviceList] -- add your combo box handling code here..
-		Logger::writeToLog (T("device changed for pattern"));
 		sendChangeMessage (this);
         //[/UserComboBoxCode_deviceList]
     }
@@ -169,6 +176,22 @@ void sklepSeqPatternControl::sliderValueChanged (Slider* sliderThatWasMoved)
     //[/UsersliderValueChanged_Post]
 }
 
+void sklepSeqPatternControl::buttonClicked (Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == syncTypeToggle)
+    {
+        //[UserButtonCode_syncTypeToggle] -- add your button handler code here..
+		sendChangeMessage (this);
+        //[/UserButtonCode_syncTypeToggle]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
+}
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
@@ -179,6 +202,7 @@ void sklepSeqPatternControl::setPattern (sklepSeqPattern *p)
 	midiCh->setValue (p->getMidiChannel(), false);
 	deviceList->setSelectedId (p->getMidiDevice(), false);
 	patternId->setText (String (pId), false);
+	syncTypeToggle->setToggleState (p->getSyncMode(), false);
 }
 
 int sklepSeqPatternControl::getMidiChannel()
@@ -189,6 +213,11 @@ int sklepSeqPatternControl::getMidiChannel()
 int sklepSeqPatternControl::getMidiDevice()
 {
 	return (deviceList->getSelectedId());
+}
+
+bool sklepSeqPatternControl::getSyncMode()
+{
+	return (syncTypeToggle->getToggleState());
 }
 //[/MiscUserCode]
 
@@ -232,6 +261,10 @@ BEGIN_JUCER_METADATA
          textCol="ffffffff" edTextCol="ff000000" edBkgCol="0" labelText="0"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="1" italic="0" justification="36"/>
+  <TOGGLEBUTTON name="Full Sync" id="5c8f6979cd0f1162" memberName="syncTypeToggle"
+                virtualName="" explicitFocusOrder="0" pos="304 8 71 16" tooltip="Full Sync Mode"
+                txtcol="ffffffff" buttonText="Full Sync" connectedEdges="0" needsCallback="1"
+                radioGroupId="0" state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

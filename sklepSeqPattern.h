@@ -43,13 +43,19 @@ class sklepSeqPattern  : public Component
 		void toggleStep(int nId);
 		MidiMessageSequence serialize();
 		void unserialize (const MidiMessageSequence *seq);
+		void setSyncMode (bool m);
+		bool getSyncMode();
+		bool isWaitingForSync();
+		void setEnabled(int nIndex, bool initialCheck=true);
 	private:
+		bool waitingForSync;
 		int patternLength;
 		int patternId;
 		int currentPosition;
 		int previousPosition;
 		bool isActive;
 		short mode;
+		bool syncMode;
 		bool patternHasBeenActivated;
 		midiMessageManager *midiManager;
 		int midiChannel;
